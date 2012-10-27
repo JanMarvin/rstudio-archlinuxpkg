@@ -1,0 +1,18 @@
+post_install() {
+  # make install complete
+  ln -s /usr/local/lib/rstudio/bin/rstudio /usr/bin
+  # rehash ? does not work
+}
+
+post_upgrade() {
+  rm -r /usr/bin/rstudio
+  post_install $1
+}
+
+post_remove () {
+  rm -r /usr/bin/rstudio
+  echo -n "updating desktop mime database ... "
+  xdg-icon-resource forceupdate --theme hicolor &> /dev/null
+  update-mime-database usr/share/mime &> /dev/null
+  echo "done."
+}

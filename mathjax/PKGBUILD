@@ -1,0 +1,35 @@
+# Maintainer: WorMzy Tykashi <wormzy.tykashi@gmail.com>
+# Contributor: Joel Burget <joelburget@gmail.com>
+# Contributor: Guff <kasull88@gmail.com>
+pkgname=mathjax-git
+pkgver=20120915
+pkgrel=1
+pkgdesc="MathJax"
+arch=('i686' 'x86_64')
+url="http://github.com/mathjax/"
+license=('Apache Version 2.0')
+makedepends=('git')
+provides=('mathjax')
+md5sums=()
+
+_gitroot="git://github.com/mathjax/MathJax.git"
+_gitname="mathjax"
+
+build() {
+  cd "$srcdir"
+  # Fetch Sources
+  if [ -d "$_gitname" ] ; then
+    msg "Updating repository from server …" 
+    cd "$_gitname"
+    git pull
+  else
+    msg "Cloning from GIT server …"
+    git clone "$_gitroot" "$_gitname"
+  fi
+ }
+
+package(){
+  cd $srcdir
+  mkdir $startdir/pkg/opt/
+  cp -R $_gitname $startdir/pkg/opt/
+  }

@@ -1,0 +1,98 @@
+# Inspired by https://aur.archlinux.org/packages.php?ID=47225
+#
+
+verdate=$(date +"%Y%m%d")
+
+pkgname=rstudio-desktop-git
+pkgver=$verdate
+pkgrel=1
+pkgdesc="rstudio git release pkgbuild by jmg"
+arch=('i686' 'x86_64')
+url="http://www.rstudio.org/"
+license=('AGPL3')
+depends=('r>=2.11.1' 'qt>=4.7' 'boost-libs>=1.40')
+makedepends=('git' 'cmake>=2.6' 'boost>=1.40' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'gin' 'gwt' 'mathjax')
+provides=('rstudio-desktop')
+conflicts=('rstudio-desktop')
+install=rstudio.install
+
+_gitroot="git://github.com/rstudio/rstudio.git"
+_gitname="rstudio"
+
+build() {
+  cd "$srcdir"
+  # Fetch Sources
+  if [ -d "$_gitname" ] ; then
+    msg "Updating repository from server …" 
+    cd "$_gitname"
+    # git reset required for the sed-gin-hack
+    git reset --hard && git pull
+  else
+    msg "Cloning from GIT server …"
+    git clone "$_gitroot" "$_gitname"
+  fi
+
+  # get version information from git
+  # works, but CPACK does not work
+    cd "$srcdir/$_gitname"
+    _gittag=$(git describe --abbrev=0 --tags)
+
+    gittag=${_gittag#v*}
+    major=${gittag%.*.*}
+    gittag=${gittag#$major.*}
+    minor=${gittag%.*}
+    patch=${gittag#*.}
+
+    echo "${major}.${minor}.${patch}"
+
+  # Additional Requirements
+  mkdir "$srcdir/$_gitname/src/gwt/lib"
+  msg "GWT"
+  ln -s /opt/gwt $srcdir/$_gitname/src/gwt/lib 
+  msg "GIN"
+  # sed-gin-hack
+  sed -i 's/gin\/1.5/gin\/2.0/g' $srcdir/$_gitname/src/gwt/build.xml
+  ln -s /opt/gin $srcdir/$_gitname/src/gwt/lib
+  msg "JUNIT"
+  # ToDO: hardcoded junit number
+  ln -s /opt/junit/junit-4.10.jar $srcdir/$_gitname/src/gwt/lib
+
+  mkdir -p $srcdir/$_gitname/dependencies/common/dictionaries
+  ln -s /opt/mathjax $srcdir/$_gitname/dependencies/common
+
+  # Desktop, Release and  PATH=/opt/rstudio
+  cd "$srcdir/$_gitname"
+  mkdir build && cd build
+
+  # another sed hack for correct version information in rstudio
+  sed -i -e "s/CPACK_PACKAGE_VERSION_MAJOR \"99\"/CPACK_PACKAGE_VERSION_MAJOR \"$major\"/g; \
+             s/CPACK_PACKAGE_VERSION_MINOR \"9\"/CPACK_PACKAGE_VERSION_MINOR \"$minor\"/g; \
+             s/CPACK_PACKAGE_VERSION_PATCH \"9\"/CPACK_PACKAGE_VERSION_PATCH \"$patch\"/g" \
+             "$srcdir/$_gitname/CMakeGlobals.txt"
+
+  cmake -DRSTUDIO_TARGET=Desktop \
+        -DCMAKE_BUILD_TYPE=Release \
+        ..
+  # Generiert ohne debug Informationen verschieden komprimierte Pakete die trotzdem 9.99.999 heißen
+  #cpack -DCPACK_PACKAGE_VERSION_MAJOR=$major \
+  #      -DCPACK_PACKAGE_VERSION_MINOR=$minor \
+  #      -DCPACK_PACKAGE_VERSION_PATCH=$patch \
+  #      ..
+}
+
+package() {
+  cd "$pkgdir/../src/$_gitname/build/"
+  msg "Starting make and install …"
+  make -j4
+  make DESTDIR="$pkgdir/" install
+  
+  msg "Cleaning Sources …"
+  rm -rf "$pkgdir/../src/$_gitname/build"
+  rm "$pkgdir/../src/$_gitname/src/gwt/lib/gwt"
+  rm "$pkgdir/../src/$_gitname/src/gwt/lib/gin"
+  rm $pkgdir/../src/$_gitname/src/gwt/lib/junit-4.10.jar
+  rm -r "$pkgdir/../src/$_gitname/src/gwt/lib"
+  rm -r "$pkgdir/../src/$_gitname/dependencies/common/dictionaries/"
+  rm "$pkgdir/../src/$_gitname/dependencies/common/mathjax"
+
+}

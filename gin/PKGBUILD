@@ -1,0 +1,21 @@
+# Contributor:
+pkgname=gin
+pkgver=2.0
+arch=(i686 x86_64)
+pkgrel=1
+pkgdesc="Gin."
+url="http://code.google.com/webtoolkit/"
+license=('Apache 2')
+depends=('java-environment')
+source=(http://google-gin.googlecode.com/files/$pkgname-$pkgver.zip)
+
+build() {
+  cd $srcdir
+  # rm zipfile
+  rm -rf $pkgname-$pkgver.zip
+  # rstudio requires this structure
+  mkdir -p $pkgdir/opt/$pkgname/$pkgver
+  cp -R $srcdir/* $pkgdir/opt/$pkgname/$pkgver
+}
+
+md5sums=('eca8e3216e9e818ee9d0cd6e2ae56fa8')
