@@ -1,7 +1,3 @@
-# Maintainer: Adrian Berriel <berriel@gmail.com>
-# Contributor: Tomas Urgosik <tomas.urgosik@gmail.com>
-# Contributor: Lee.MaRS <leemars@gmail.com>
-
 pkgname=gwt
 pkgver=2.5.0.rc1
 arch=(i686 x86_64)
