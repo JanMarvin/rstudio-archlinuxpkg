@@ -1,6 +1,3 @@
-# Maintainer: WorMzy Tykashi <wormzy.tykashi@gmail.com>
-# Contributor: Joel Burget <joelburget@gmail.com>
-# Contributor: Guff <kasull88@gmail.com>
 pkgname=mathjax-git
 pkgver=20120915
 pkgrel=1
