@@ -1,5 +1,6 @@
 pkgname=mathjax-git
-pkgver=20130121
+_verdate=$(date +"%Y%m%d")
+pkgver=$_verdate
 pkgrel=1
 pkgdesc="MathJax"
 arch=('i686' 'x86_64')
@@ -27,6 +28,7 @@ build() {
 
 package(){
   cd $srcdir
-  mkdir $startdir/pkg/opt/
-  cp -R $_gitname $startdir/pkg/opt/
+  mkdir $pkgdir/opt/
+  cp -R $_gitname $pkgdir/opt/
+  rm -rf $_gitname
   }
