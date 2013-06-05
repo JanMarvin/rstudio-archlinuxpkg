@@ -1,5 +1,5 @@
 pkgname=mathjax-git
-pkgver=20120915
+pkgver=20130121
 pkgrel=1
 pkgdesc="MathJax"
 arch=('i686' 'x86_64')
