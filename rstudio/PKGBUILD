@@ -32,6 +32,10 @@ build() {
     msg "Cloning from GIT server …"
     git clone "$_gitroot" "$_gitname"
   fi
+  
+  # build rmarkdown outside of the build tree
+  cd dependencies/common
+  ./install-rmarkdown
 
   # srcdir
   cd "$srcdir"
@@ -65,6 +69,10 @@ build() {
   # ToDo: hardcoded pandoc number
   mkdir -p "$srcdir/$_gitname/dependencies/common/pandoc/1.12.3"
   ln -s /usr/bin/pandoc $srcdir/$_gitname/dependencies/common/pandoc/1.12.3
+  # Copy rmarkdown.tar.gz (folder is empty and not needed, cmake checks for it)
+  mkdir -p "$srcdir/$_gitname/dependencies/common/rmarkdown"
+  cp "$srcdir/../$_gitname/dependencies/common/"rmarkdown_*.tar.gz "$srcdir/$_gitname/dependencies/common"
+
 
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
   ln -s /opt/mathjax $srcdir/$_gitname/dependencies/common
