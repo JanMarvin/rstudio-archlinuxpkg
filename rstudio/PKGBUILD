@@ -82,16 +82,13 @@ build() {
   #-DQT_QMAKE_EXECUTABLE=/usr/lib/qt/qmake \
   cmake -DRSTUDIO_TARGET=Desktop \
         -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio \
         ..
 }
 
 package() {
   cd "$srcdir/$_gitname/build/"
   msg "Starting make and install …"
-
-  # fix java stuff
-  [ -z "$JAVA_HOME" ] && . /etc/profile.d/jdk.sh && . /etc/profile.d/jre.sh
-  [ -z "$ANT_HOME" ] && . /etc/profile.d/apache-ant.sh
 
   make -j4
   make DESTDIR="$pkgdir/" install
