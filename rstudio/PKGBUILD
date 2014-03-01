@@ -1,3 +1,4 @@
+# Maintainer: Jan Marvin Garbuszus <jan.garbuszus@ruhr-uni-bochum.de
 # Inspired by https://aur.archlinux.org/packages.php?ID=47225
 #
 
@@ -55,20 +56,26 @@ build() {
     echo "${major}.${minor}.${patch}"
 
   # Additional Requirements
-  mkdir "$srcdir/$_gitname/src/gwt/lib"
+  
   msg "GWT"
+  mkdir "$srcdir/$_gitname/src/gwt/lib"
   ln -s /opt/gwt $srcdir/$_gitname/src/gwt/lib 
+  
   msg "GIN"
   # sed-gin-hack
   sed -i 's/gin\/1.5/gin\/2.0/g' $srcdir/$_gitname/src/gwt/build.xml
   ln -s /opt/gin $srcdir/$_gitname/src/gwt/lib
+  
   msg "JUNIT"
   # ToDo: hardcoded junit number
   ln -s /opt/junit/junit-4.10.jar $srcdir/$_gitname/src/gwt/lib
+  
   msg "Pandoc"
   # ToDo: hardcoded pandoc number
   mkdir -p "$srcdir/$_gitname/dependencies/common/pandoc/1.12.3"
   ln -s /usr/bin/pandoc $srcdir/$_gitname/dependencies/common/pandoc/1.12.3
+  
+  msg "rmarkdown"
   # Copy rmarkdown.tar.gz (folder is empty and not needed, cmake checks for it)
   mkdir -p "$srcdir/$_gitname/dependencies/common/rmarkdown"
   cp "$srcdir/../$_gitname/dependencies/common/"rmarkdown_*.tar.gz "$srcdir/$_gitname/dependencies/common"
