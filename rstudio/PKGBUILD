@@ -120,7 +120,7 @@ package() {
   make DESTDIR="$pkgdir/" install
 
   # Create config directory
-  install -dm755 "$pkgdir/etc/$_pkgnames"
+  install -dm755 "$pkgdir/etc/rstudio/"
 
   # Create var directories
   install -dm755 "$pkgdir/var/run/$_pkgnames"
