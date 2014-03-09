@@ -22,7 +22,8 @@ conflicts=('rstudio-server')
 install=rstudio-server.install
 source=('rstudio-server.install'
         'rstudio-server.service')
-md5sums=('afab28f5888ec78af93349c182993fa0'
+
+md5sums=('d03eb5287c1b269fc63cadfbf8050f00'
          'ca223384ab0b01efe61d8020c6f04454')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
