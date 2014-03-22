@@ -1,4 +1,4 @@
-# Maintainer: Jan Marvin Garbuszus <jan.garbuszus@ruhr-uni-bochum.de
+# Maintainer: Jan Marvin Garbuszus <jan.garbuszus@ruhr-uni-bochum.de>
 # Inspired by https://aur.archlinux.org/packages.php?ID=47225
 #
 
@@ -58,8 +58,10 @@ build() {
   # Additional Requirements
   
   msg "GWT"
-  mkdir "$srcdir/$_gitname/src/gwt/lib"
-  ln -s /opt/gwt $srcdir/$_gitname/src/gwt/lib 
+  # not the nicest way of handling the updated gwt. this way
+  # it will build with gwt from aur.
+  mkdir -p "$srcdir/$_gitname/src/gwt/lib/gwt/2.6.0"
+  cp -R /opt/gwt/* $srcdir/$_gitname/src/gwt/lib/gwt/2.6.0/ 
   
   msg "GIN"
   # sed-gin-hack

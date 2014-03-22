@@ -1,6 +1,7 @@
-# Contributor:
+# Maintainer: Jan Marvin Garbuszus <Jan.Garbuszus@ruhr-uni-bochum.de>
+# This package is required for my personal rstudio PKGBUILD
 pkgname=gin
-pkgver=2.0
+pkgver=1.5
 arch=(i686 x86_64)
 pkgrel=1
 pkgdesc="Gin."
@@ -9,7 +10,7 @@ license=('Apache 2')
 depends=('java-environment')
 source=(http://google-gin.googlecode.com/files/$pkgname-$pkgver.zip)
 
-build() {
+package() {
   cd $srcdir
   # rm zipfile
   rm -rf $pkgname-$pkgver.zip
@@ -18,4 +19,4 @@ build() {
   cp -R $srcdir/* $pkgdir/opt/$pkgname/$pkgver
 }
 
-md5sums=('eca8e3216e9e818ee9d0cd6e2ae56fa8')
+md5sums=('2409168cc18bf5f341e107e6887fe359')
