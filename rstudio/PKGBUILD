@@ -16,6 +16,10 @@ makedepends=('git' 'cmake>=2.6' 'boost>=1.40' 'java-environment' 'apache-ant' 'u
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
 install=rstudio.install
+source=('rstudio.desktop'
+        'rstudio.png')
+md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
+         '99ad4e9914f50ecec97e5cdb4001ad29')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -106,8 +110,11 @@ package() {
   cd "$srcdir/$_gitname/build/"
   msg "Starting make and install …"
 
-  make -j4
+  make -j2
   make DESTDIR="$pkgdir/" install
+
+  install -Dm644 "$srcdir/rstudio.desktop" "$pkgdir/usr/share/applications/rstudio.desktop"
+  install -Dm644 "$srcdir/rstudio.png" "$pkgdir/usr/share/pixmaps/rstudio.png"
   
   msg "Cleaning Sources …"
   rm -rf "$srcdir/$_gitname/build"
