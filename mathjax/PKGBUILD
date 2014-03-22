@@ -1,3 +1,4 @@
+# Maintainer: Jan Marvin Garbuszus <Jan.Garbuszus@ruhr-uni-bochum.de>
 pkgname=mathjax-git
 _verdate=$(date +"%Y%m%d")
 pkgver=$_verdate

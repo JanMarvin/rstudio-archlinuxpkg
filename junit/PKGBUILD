@@ -1,19 +1,17 @@
 # Contributor:
 pkgname=junit
-pkgver=4.10
+pkgver=4.9b3
 arch=(i686 x86_64)
 pkgrel=1
 pkgdesc="junit."
 url="http://junit.com/"
 license=('BSD')
-source=(https://github.com/downloads/KentBeck/junit/$pkgname$pkgver.zip)
+source=(https://s3.amazonaws.com/rstudio-buildtools/junit-4.9b3.jar)
 
 build() {
   cd $srcdir/
-  # remove zipfile
-  rm $pkgname$pkgver.zip
-  mkdir $pkgdir/opt/
+  mkdir -p $pkgdir/opt/junit
   cp -R $srcdir/* $pkgdir/opt/junit
 }
 
-md5sums=('5daf0a18e4f2dbb4a34fbdad455d6182')
+md5sums=('542e08e4fac8819735331966c5c16016')
