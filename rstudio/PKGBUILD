@@ -58,19 +58,16 @@ build() {
   # Additional Requirements
   
   msg "GWT"
-  # not the nicest way of handling the updated gwt. this way
-  # it will build with gwt from aur.
-  mkdir -p "$srcdir/$_gitname/src/gwt/lib/gwt/2.6.0"
-  cp -R /opt/gwt/* $srcdir/$_gitname/src/gwt/lib/gwt/2.6.0/ 
+  mkdir "$srcdir/$_gitname/src/gwt/lib"
+  ln -s /opt/gwt $srcdir/$_gitname/src/gwt/lib 
   
   msg "GIN"
-  # sed-gin-hack
-  sed -i 's/gin\/1.5/gin\/2.0/g' $srcdir/$_gitname/src/gwt/build.xml
+  # build: requires gin 1.5
   ln -s /opt/gin $srcdir/$_gitname/src/gwt/lib
   
   msg "JUNIT"
   # ToDo: hardcoded junit number
-  ln -s /opt/junit/junit-4.10.jar $srcdir/$_gitname/src/gwt/lib
+  ln -s /opt/junit/junit-4.93b.jar $srcdir/$_gitname/src/gwt/lib
   
   msg "Pandoc"
   # ToDo: hardcoded pandoc number
@@ -104,6 +101,8 @@ build() {
 }
 
 package() {
+  LANG=POSIX
+
   cd "$srcdir/$_gitname/build/"
   msg "Starting make and install …"
 
@@ -114,7 +113,7 @@ package() {
   rm -rf "$srcdir/$_gitname/build"
   rm "$srcdir/$_gitname/src/gwt/lib/gwt"
   rm "$srcdir/$_gitname/src/gwt/lib/gin"
-  rm $srcdir/$_gitname/src/gwt/lib/junit-4.10.jar
+  rm $srcdir/$_gitname/src/gwt/lib/junit-4.9b3.jar
   rm -r "$srcdir/$_gitname/src/gwt/lib"
   rm -r "$srcdir/$_gitname/dependencies/common/dictionaries/"
   rm "$srcdir/$_gitname/dependencies/common/mathjax"
