@@ -40,7 +40,7 @@ build() {
   
   # build rmarkdown outside of the build tree
   cd dependencies/common
-  ./install-rmarkdown
+  ./install-packages
 
   # srcdir
   cd "$srcdir"
