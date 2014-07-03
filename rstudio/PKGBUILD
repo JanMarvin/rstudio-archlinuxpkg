@@ -41,6 +41,9 @@ build() {
   
   # build rmarkdown outside of the build tree
   cd dependencies/common
+  msg "Install additional packages (install-packages)"
+  rm -rf rmarkdown
+  rm -rf packrat    # Heavy development (?), some merge errors
   ./install-packages
 
   # srcdir
