@@ -25,7 +25,7 @@ md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
 
-build() {
+prepare() {
   cd $srcdir/..
 
   # Fetch Sources
@@ -33,7 +33,7 @@ build() {
     msg "Updating repository from server …" 
     cd "$_gitname"
     # git reset required for the sed-gin-hack
-    git reset --hard && git pull
+    #git reset --hard && git pull
   else
     msg "Cloning from GIT server …"
     git clone "$_gitroot" "$_gitname"
@@ -83,6 +83,8 @@ build() {
   ./install-pandoc
   cd $srcdir/$_gitname/dependencies/common/
   ln -s $srcdir/../$_gitname/dependencies/common/pandoc .
+  #mkdir pandoc
+  #ln -s /usr/bin/pandoc .
   
   msg "rmarkdown"
   # Copy rmarkdown.tar.gz (folder is empty and not needed, cmake checks for it. These packages are not included.)
@@ -92,8 +94,8 @@ build() {
   mkdir -p "$srcdir/$_gitname/dependencies/common/packrat"
   cp "$srcdir/../$_gitname/dependencies/common/"packrat_*.tar.gz "$srcdir/$_gitname/dependencies/common"
   # Copy shiny
-  mkdir -p "$srcdir/$_gitname/dependencies/common/shiny"
-  cp "$srcdir/../$_gitname/dependencies/common/"shiny_*.tar.gz "$srcdir/$_gitname/dependencies/common"
+  #mkdir -p "$srcdir/$_gitname/dependencies/common/shiny"
+  #cp "$srcdir/../$_gitname/dependencies/common/"shiny_*.tar.gz "$srcdir/$_gitname/dependencies/common"
 
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
   ln -s /opt/mathjax $srcdir/$_gitname/dependencies/common
@@ -116,13 +118,19 @@ build() {
         ..
 }
 
-package() {
+build(){
   LANG=POSIX
 
   cd "$srcdir/$_gitname/build/"
-  msg "Starting make and install …"
+  msg "Starting make"
 
-  make -j2
+  make
+}
+
+package() {
+  cd "$srcdir/$_gitname/build/"
+
+  msg "Starting install"
   make DESTDIR="$pkgdir/" install
 
   rm -rf "$pkgdir/usr/lib/rstudio/R/packages/"*.tar.gz
