@@ -9111,7 +9111,7 @@ index 4214cd8..42b4875 100644
     std::string errMsg;
     if (isCodeExecutionError(error, &errMsg))
 diff --git a/src/cpp/r/RExec.cpp b/src/cpp/r/RExec.cpp
-index 73b2f3e..7e7b15a 100644
+index 94ec24c..7b2f269 100644
 --- a/src/cpp/r/RExec.cpp
 +++ b/src/cpp/r/RExec.cpp
 @@ -33,7 +33,7 @@ LibExtern int R_interrupts_pending;
@@ -9123,7 +9123,7 @@ index 73b2f3e..7e7b15a 100644
  
  namespace r {
     
-@@ -202,7 +202,7 @@ Error executeSafely(boost::function<void()> function)
+@@ -206,7 +206,7 @@ Error executeSafely(boost::function<void()> function)
     }
  }
     
@@ -9132,7 +9132,7 @@ index 73b2f3e..7e7b15a 100644
  {
     // disable custom error handlers while we execute code
     DisableErrorHandlerScope disableErrorHandler;
-@@ -469,7 +469,7 @@ void checkUserInterrupt()
+@@ -480,7 +480,7 @@ void checkUserInterrupt()
  }
     
  IgnoreInterruptsScope::IgnoreInterruptsScope()
@@ -9141,7 +9141,7 @@ index 73b2f3e..7e7b15a 100644
  {
     // save suspend state and set suspend flag
     previousInterruptsSuspended_ = (R_interrupts_suspended == TRUE);
-@@ -479,7 +479,7 @@ IgnoreInterruptsScope::IgnoreInterruptsScope()
+@@ -490,7 +490,7 @@ IgnoreInterruptsScope::IgnoreInterruptsScope()
     setInterruptsPending(false);
        
     // enable signal blocker
@@ -9466,7 +9466,7 @@ index 23173ea..922d768 100644
  namespace r {
  namespace options {
 diff --git a/src/cpp/r/RSexp.cpp b/src/cpp/r/RSexp.cpp
-index 7f39d3b..db0a6fc 100644
+index 3ac3f35..460c6b0 100644
 --- a/src/cpp/r/RSexp.cpp
 +++ b/src/cpp/r/RSexp.cpp
 @@ -35,7 +35,7 @@
@@ -9478,7 +9478,7 @@ index 7f39d3b..db0a6fc 100644
  
  namespace r {
     
-@@ -271,7 +271,7 @@ void clearExternalPtr(SEXP extptr)
+@@ -274,7 +274,7 @@ void clearExternalPtr(SEXP extptr)
     R_ClearExternalPtr(extptr);
  }
  
@@ -9487,7 +9487,7 @@ index 7f39d3b..db0a6fc 100644
                               const std::string& name,
                               SEXP* pValueSEXP)
  {
-@@ -281,12 +281,12 @@ core::Error getNamedListSEXP(SEXP listSEXP,
+@@ -284,12 +284,12 @@ core::Error getNamedListSEXP(SEXP listSEXP,
     {
        // get the appropriate value
        *pValueSEXP = VECTOR_ELT(listSEXP, valueIndex);
@@ -9580,11 +9580,11 @@ index bd64499..092f8b6 100644
  
  } // namespace r
 diff --git a/src/cpp/r/include/r/RExec.hpp b/src/cpp/r/include/r/RExec.hpp
-index 30a5aa6..4588a8a 100644
+index 8bec6c0..886caf4 100644
 --- a/src/cpp/r/include/r/RExec.hpp
 +++ b/src/cpp/r/include/r/RExec.hpp
-@@ -30,7 +30,7 @@
- #include <r/RSexp.hpp> 
+@@ -31,7 +31,7 @@
+ #include <r/RInterface.hpp>
  
  
 -namespace core {
@@ -9592,7 +9592,7 @@ index 30a5aa6..4588a8a 100644
     class FilePath;
  }
  
-@@ -41,7 +41,7 @@ namespace r {
+@@ -42,7 +42,7 @@ namespace r {
  namespace exec {
     
  // safe (no r error longjump) execution of abritrary nullary function
@@ -9601,7 +9601,7 @@ index 30a5aa6..4588a8a 100644
  
  // helper class for variation of executeSafely w/ return value (impl below)
  template <typename T>
-@@ -62,7 +62,7 @@ private:
+@@ -63,7 +63,7 @@ private:
   
  // safe (no r error longjump) execution of abritrary nullary function w/ return
  template <typename T>
@@ -9610,7 +9610,7 @@ index 30a5aa6..4588a8a 100644
  {
     ExecuteTargetWithReturn<T> target(function, pReturn);
     return executeSafely(target);
-@@ -70,16 +70,16 @@ core::Error executeSafely(boost::function<T()> function, T* pReturn)
+@@ -71,16 +71,16 @@ core::Error executeSafely(boost::function<T()> function, T* pReturn)
  
     
  // parse and evaluate expressions  
@@ -9631,7 +9631,7 @@ index 30a5aa6..4588a8a 100644
     if (error)
        return error ;
  
-@@ -173,27 +173,27 @@ public:
+@@ -174,27 +174,27 @@ public:
        params_.push_back(Param(name, paramSEXP));
     }
                          
@@ -9667,7 +9667,7 @@ index 30a5aa6..4588a8a 100644
        if (error)
           return error ;
        
-@@ -252,9 +252,9 @@ private:
+@@ -253,9 +253,9 @@ private:
  };
     
     
@@ -9679,7 +9679,7 @@ index 30a5aa6..4588a8a 100644
     
  // raise error and get last error message
  void error(const std::string& message);
-@@ -273,7 +273,7 @@ public:
+@@ -274,7 +274,7 @@ public:
     virtual ~IgnoreInterruptsScope();
  private:
     bool previousInterruptsSuspended_ ;
@@ -9687,7 +9687,7 @@ index 30a5aa6..4588a8a 100644
 +   boost::scoped_ptr<rstudiocore::system::SignalBlocker> pSignalBlocker_;
  };
  
- class InterruptException {};
+ // returns true if the global context is on the top (i.e. the context stack is
 diff --git a/src/cpp/r/include/r/RFunctionHook.hpp b/src/cpp/r/include/r/RFunctionHook.hpp
 index 3a439f3..d611713 100644
 --- a/src/cpp/r/include/r/RFunctionHook.hpp
@@ -14705,7 +14705,7 @@ index 1a0e68d..c8d5f8c 100644
  } // namespace module_context
  } // namespace session
 diff --git a/src/cpp/session/SessionOptions.cpp b/src/cpp/session/SessionOptions.cpp
-index 3aaad92..9166a37 100644
+index 0c4be58..a003dcf 100644
 --- a/src/cpp/session/SessionOptions.cpp
 +++ b/src/cpp/session/SessionOptions.cpp
 @@ -35,7 +35,7 @@
@@ -19043,7 +19043,7 @@ index 176ccb8..8f7a42c 100644
  } // namespace git
  } // namespace modules
 diff --git a/src/cpp/session/modules/SessionHTMLPreview.cpp b/src/cpp/session/modules/SessionHTMLPreview.cpp
-index ded6690..777f566 100644
+index 235fd2a..0f2049b 100644
 --- a/src/cpp/session/modules/SessionHTMLPreview.cpp
 +++ b/src/cpp/session/modules/SessionHTMLPreview.cpp
 @@ -54,7 +54,7 @@
@@ -19100,7 +19100,7 @@ index ded6690..777f566 100644
                                        previewHtml);
        if (error)
        {
-@@ -971,7 +971,7 @@ void addFileSpecificHeaders(const FilePath& filePath, http::Response* pResponse)
+@@ -972,7 +972,7 @@ void addFileSpecificHeaders(const FilePath& filePath, http::Response* pResponse)
     }
  }
  
@@ -19109,7 +19109,7 @@ index ded6690..777f566 100644
  {
     // default to unsupported
     json::Object capsJson;
-@@ -997,7 +997,7 @@ core::json::Object capabilitiesAsJson()
+@@ -998,7 +998,7 @@ core::json::Object capabilitiesAsJson()
        error = r::json::jsonValueFromList(capsSEXP, &valJson);
        if (error)
           LOG_ERROR(error);
@@ -19397,10 +19397,10 @@ index be4be2d..58a4444 100644
  } // namespace lists
  } // namespace modules
 diff --git a/src/cpp/session/modules/SessionPackages.cpp b/src/cpp/session/modules/SessionPackages.cpp
-index 518bb8e..cf2549e 100644
+index 8ccc057..12a82ac 100644
 --- a/src/cpp/session/modules/SessionPackages.cpp
 +++ b/src/cpp/session/modules/SessionPackages.cpp
-@@ -41,7 +41,7 @@
+@@ -42,7 +42,7 @@
  
  #include "session-config.h"
  
@@ -19409,7 +19409,7 @@ index 518bb8e..cf2549e 100644
  
  namespace session {
  namespace modules { 
-@@ -49,7 +49,7 @@ namespace packages {
+@@ -50,7 +50,7 @@ namespace packages {
  
  namespace {
  
@@ -19418,7 +19418,7 @@ index 518bb8e..cf2549e 100644
                               std::vector<std::string>* pContribUrls)
  {
     return r::exec::evaluateString<std::vector<std::string> >(
-@@ -161,9 +161,9 @@ void downloadAvailablePackages(const std::string& contribUrl,
+@@ -162,9 +162,9 @@ void downloadAvailablePackages(const std::string& contribUrl,
     }
  }
  
@@ -19430,7 +19430,7 @@ index 518bb8e..cf2549e 100644
  {
     // download available packages
     std::vector<std::string> availablePackages;
-@@ -289,9 +289,9 @@ void initializeRStudioPackages(bool newSession)
+@@ -294,9 +294,9 @@ void initializeRStudioPackages(bool newSession)
     
     if (newSession || (options().programMode() == kSessionProgramModeServer))
     {
@@ -22291,7 +22291,7 @@ index 644f2c4..58b1f10 100644
                           std::string* pSlides,
                           std::string* pRevealConfig,
 diff --git a/src/cpp/session/modules/presentation/SlideRequestHandler.cpp b/src/cpp/session/modules/presentation/SlideRequestHandler.cpp
-index e6eb935..d23f42a 100644
+index 3e17623..04d341f 100644
 --- a/src/cpp/session/modules/presentation/SlideRequestHandler.cpp
 +++ b/src/cpp/session/modules/presentation/SlideRequestHandler.cpp
 @@ -44,7 +44,7 @@
@@ -22526,7 +22526,7 @@ index 4c4c479..2887249 100644
  
  } // namespace presentation
 diff --git a/src/cpp/session/modules/rmarkdown/SessionRMarkdown.cpp b/src/cpp/session/modules/rmarkdown/SessionRMarkdown.cpp
-index 6f397da..2a86e16 100644
+index 0704a64..c575501 100644
 --- a/src/cpp/session/modules/rmarkdown/SessionRMarkdown.cpp
 +++ b/src/cpp/session/modules/rmarkdown/SessionRMarkdown.cpp
 @@ -50,7 +50,7 @@
@@ -22538,7 +22538,7 @@ index 6f397da..2a86e16 100644
  
  namespace session {
  namespace modules {
-@@ -800,7 +800,7 @@ Error renderRmdSource(const json::JsonRpcRequest& request,
+@@ -803,7 +803,7 @@ Error renderRmdSource(const json::JsonRpcRequest& request,
  
     // create temp file
     FilePath rmdTempFile = module_context::tempFile("Preview-", "Rmd");

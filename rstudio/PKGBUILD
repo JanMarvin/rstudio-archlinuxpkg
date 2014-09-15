@@ -22,7 +22,7 @@ source=('rstudio.desktop'
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         '0d2634a6331bbdbcaf27eaf6f081ba2f')
+         '3d53b13bdb57662c1cc719b959d4b2d2')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -50,7 +50,9 @@ prepare() {
   cd "$srcdir"
   rm -rf rstudio
   git clone ../$_gitname
-  git apply boost156.patch
+  cd $_gitname
+  git apply --whitespace=fix ../boost156.patch
+  cd ..
 
   # get version information from git
     cd "$srcdir/$_gitname"
