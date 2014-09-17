@@ -49,7 +49,7 @@ build() {
   # srcdir
   cd "$srcdir"
   rm -rf rstudio
-  git clone ../$_gitname
+  git clone ../$_gitname # -b revert # revert magrittr commit
 
   # get version information from git
     cd "$srcdir/$_gitname"
@@ -91,9 +91,9 @@ build() {
   # Copy packrat
   mkdir -p "$srcdir/$_gitname/dependencies/common/packrat"
   cp "$srcdir/../$_gitname/dependencies/common/"packrat_*.tar.gz "$srcdir/$_gitname/dependencies/common"
-  # Copy shiny
-  mkdir -p "$srcdir/$_gitname/dependencies/common/shiny"
-  cp "$srcdir/../$_gitname/dependencies/common/"shiny_*.tar.gz "$srcdir/$_gitname/dependencies/common"
+  ## Copy shiny
+  #mkdir -p "$srcdir/$_gitname/dependencies/common/shiny"
+  #cp "$srcdir/../$_gitname/dependencies/common/"shiny_*.tar.gz "$srcdir/$_gitname/dependencies/common"
 
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
   ln -s /opt/mathjax $srcdir/$_gitname/dependencies/common
