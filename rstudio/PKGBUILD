@@ -11,21 +11,23 @@ pkgdesc="rstudio git release pkgbuild by jmg"
 arch=('i686' 'x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
-depends=('r>=2.11.1' 'qt4>=4.7' 'boost-libs>=1.40')
-makedepends=('git' 'cmake>=2.6' 'boost>=1.40' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'gin' 'gwt' 'mathjax' 'rrdtool')
+depends=('r>=2.11.1' 'qt4>=4.7' 'boost-libs>=1.50')
+makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'gin' 'gwt' 'mathjax' 'rrdtool')
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
 install=rstudio.install
 source=('rstudio.desktop'
-        'rstudio.png' )
+        'rstudio.png'
+        'boost156.patch')
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
-         '99ad4e9914f50ecec97e5cdb4001ad29' )
+         '99ad4e9914f50ecec97e5cdb4001ad29'
+         '62e2e4b4545f2343e3f0c8635e907bd3')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
 
-build() {
+prepare() {
   cd $srcdir/..
 
   # Fetch Sources
@@ -42,14 +44,15 @@ build() {
   # build rmarkdown outside of the build tree
   cd dependencies/common
   msg "Install additional packages (install-packages)"
-  rm -rf rmarkdown
-  rm -rf packrat    # Heavy development (?), some merge errors
   ./install-packages
 
   # srcdir
   cd "$srcdir"
   rm -rf rstudio
-  git clone ../$_gitname # -b revert # revert magrittr commit
+  git clone ../$_gitname
+  cd $_gitname
+  git apply --whitespace=fix ../boost156.patch
+  cd ..
 
   # get version information from git
     cd "$srcdir/$_gitname"
@@ -83,6 +86,8 @@ build() {
   ./install-pandoc
   cd $srcdir/$_gitname/dependencies/common/
   ln -s $srcdir/../$_gitname/dependencies/common/pandoc .
+  #mkdir pandoc
+  #ln -s /usr/bin/pandoc .
   
   msg "rmarkdown"
   # Copy rmarkdown.tar.gz (folder is empty and not needed, cmake checks for it. These packages are not included.)
@@ -92,11 +97,12 @@ build() {
   mkdir -p "$srcdir/$_gitname/dependencies/common/packrat"
   cp "$srcdir/../$_gitname/dependencies/common/"packrat_*.tar.gz "$srcdir/$_gitname/dependencies/common"
   ## Copy shiny
-  #mkdir -p "$srcdir/$_gitname/dependencies/common/shiny"
-  #cp "$srcdir/../$_gitname/dependencies/common/"shiny_*.tar.gz "$srcdir/$_gitname/dependencies/common"
+  mkdir -p "$srcdir/$_gitname/dependencies/common/shinyapps"
+  cp "$srcdir/../$_gitname/dependencies/common/"shinyapps_*.tar.gz "$srcdir/$_gitname/dependencies/common"
 
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
-  ln -s /opt/mathjax $srcdir/$_gitname/dependencies/common
+  mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-23"
+  ln -s /opt/mathjax/* $srcdir/$_gitname/dependencies/common/mathjax-23
 
   # Desktop, Release and  PATH=/opt/rstudio
   cd "$srcdir/$_gitname"
@@ -116,13 +122,19 @@ build() {
         ..
 }
 
-package() {
+build(){
   LANG=POSIX
 
   cd "$srcdir/$_gitname/build/"
-  msg "Starting make and install …"
+  msg "Starting make"
 
-  make -j2
+  make -j4
+}
+
+package() {
+  cd "$srcdir/$_gitname/build/"
+
+  msg "Starting install"
   make DESTDIR="$pkgdir/" install
 
   rm -rf "$pkgdir/usr/lib/rstudio/R/packages/"*.tar.gz
@@ -137,6 +149,6 @@ package() {
   rm $srcdir/$_gitname/src/gwt/lib/junit-4.93b.jar
   rm -r "$srcdir/$_gitname/src/gwt/lib"
   rm -r "$srcdir/$_gitname/dependencies/common/dictionaries/"
-  rm "$srcdir/$_gitname/dependencies/common/mathjax"
+  rm -r "$srcdir/$_gitname/dependencies/common/mathjax-23"
 
 }
