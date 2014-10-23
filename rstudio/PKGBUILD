@@ -11,7 +11,7 @@ pkgdesc="rstudio git release pkgbuild by jmg"
 arch=('i686' 'x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
-depends=('r>=2.11.1' 'qt4>=4.7' 'boost-libs>=1.50')
+depends=('r>=3.0.1' 'qt4>=4.7' 'boost-libs>=1.50' 'clang')
 makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'gin' 'gwt' 'mathjax' 'rrdtool')
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
@@ -22,7 +22,7 @@ source=('rstudio.desktop'
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         '62e2e4b4545f2343e3f0c8635e907bd3')
+         'fde9868e37a46620cd0684b84b9e8697')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -102,7 +102,15 @@ prepare() {
 
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
   mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-23"
-  ln -s /opt/mathjax/* $srcdir/$_gitname/dependencies/common/mathjax-23
+  ln -s "/opt/mathjax/*" "$srcdir/$_gitname/dependencies/common/mathjax-23"
+
+  # Clang
+  mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/3.5"
+  ln -s "/usr/lib/libclang.so" "$srcdir/$_gitname/dependencies/common/libclang/3.5"
+
+  mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/libc++/3.5"
+  ln -s "/usr/lib/clang/3.5.0/include/*" "$srcdir/$_gitname/dependencies/common/builtin-headers"
+  ln -s "/usr/include/c++/v1/*" "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/libc++/3.5"
 
   # Desktop, Release and  PATH=/opt/rstudio
   cd "$srcdir/$_gitname"
