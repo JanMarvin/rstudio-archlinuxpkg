@@ -744,19 +744,19 @@ index 5247c38..45b471b 100644
 -} // namespace core
 +} // namespace rscore
 diff --git a/src/cpp/core/StringUtils.cpp b/src/cpp/core/StringUtils.cpp
-index ed19792..03d1a44 100644
+index b88964f..f5746a4 100644
 --- a/src/cpp/core/StringUtils.cpp
 +++ b/src/cpp/core/StringUtils.cpp
-@@ -33,7 +33,7 @@
+@@ -34,7 +34,7 @@
  #include <winnls.h>
  #endif
  
 -namespace core {
 +namespace rscore {
- namespace string_utils {   
+ namespace string_utils {
  
- void convertLineEndings(std::string* pStr, LineEnding type)
-@@ -315,7 +315,7 @@ bool parseVersion(const std::string& str, uint64_t* pVersion)
+ bool isSubsequence(std::string const& self,
+@@ -373,7 +373,7 @@ bool parseVersion(const std::string& str, uint64_t* pVersion)
  
     for (size_t i = 0; i < chunks.size() && i < 4; i++)
     {
@@ -765,7 +765,7 @@ index ed19792..03d1a44 100644
              chunks[i], std::numeric_limits<uint16_t>::max());
        if (value == std::numeric_limits<uint16_t>::max())
           return false;
-@@ -359,7 +359,7 @@ void stripQuotes(std::string* pStr)
+@@ -417,7 +417,7 @@ void stripQuotes(std::string* pStr)
  }
  
  } // namespace string_utils
@@ -2236,7 +2236,7 @@ index 462c184..b365ab4 100644
  
  #endif // STDERR_LOG_WRITER_HPP
 diff --git a/src/cpp/core/include/core/StringUtils.hpp b/src/cpp/core/include/core/StringUtils.hpp
-index 3aea432..ed2a563 100644
+index 80c01ed..00a0480 100644
 --- a/src/cpp/core/include/core/StringUtils.hpp
 +++ b/src/cpp/core/include/core/StringUtils.hpp
 @@ -20,7 +20,7 @@
@@ -2248,7 +2248,7 @@ index 3aea432..ed2a563 100644
  namespace string_utils {
  
  enum LineEnding {
-@@ -175,7 +175,7 @@ void trimLeadingLines(int maxLines, std::string* pLines);
+@@ -183,7 +183,7 @@ void trimLeadingLines(int maxLines, std::string* pLines);
  void stripQuotes(std::string* pStr);
  
  } // namespace string_utils
@@ -4294,7 +4294,7 @@ index a950e38..2fe54ae 100644
  
  #endif // CORE_R_UTIL_R_SESSION_LAUNCH_PROFILE_HPP
 diff --git a/src/cpp/core/include/core/r_util/RSourceIndex.hpp b/src/cpp/core/include/core/r_util/RSourceIndex.hpp
-index 19537ee..c743615 100644
+index 10c1fdd..0c9c9a3 100644
 --- a/src/cpp/core/include/core/r_util/RSourceIndex.hpp
 +++ b/src/cpp/core/include/core/r_util/RSourceIndex.hpp
 @@ -33,7 +33,7 @@
@@ -4317,7 +4317,7 @@ index 19537ee..c743615 100644
  
     // support for RSourceIndex::search
  
-@@ -192,7 +192,7 @@ public:
+@@ -197,7 +197,7 @@ public:
                    OutputIterator out) const
     {
        // perform the copy and transform to include context
@@ -4326,7 +4326,7 @@ index 19537ee..c743615 100644
                  items_.begin(),
                  items_.end(),
                  out,
-@@ -263,7 +263,7 @@ private:
+@@ -268,7 +268,7 @@ private:
  
  
  } // namespace r_util
@@ -17610,7 +17610,7 @@ index ff6e21b..618ac1a 100644
  bool haveAdvancedStepCommands();
  
 diff --git a/src/cpp/session/modules/SessionCodeSearch.cpp b/src/cpp/session/modules/SessionCodeSearch.cpp
-index 00b485b..f82061a 100644
+index e184063..2725409 100644
 --- a/src/cpp/session/modules/SessionCodeSearch.cpp
 +++ b/src/cpp/session/modules/SessionCodeSearch.cpp
 @@ -46,7 +46,7 @@
@@ -17622,7 +17622,7 @@ index 00b485b..f82061a 100644
  
  namespace session {  
  namespace modules {
-@@ -111,7 +111,7 @@ public:
+@@ -112,7 +112,7 @@ public:
     void enqueFiles(ForwardIterator begin, ForwardIterator end)
     {
        // add all source files to the indexing queue
@@ -17631,7 +17631,7 @@ index 00b485b..f82061a 100644
        for ( ; begin != end; ++begin)
        {
           if (isSourceFile(*begin))
-@@ -136,7 +136,7 @@ public:
+@@ -137,7 +137,7 @@ public:
        }
     }
  
@@ -17640,7 +17640,7 @@ index 00b485b..f82061a 100644
     {
        // screen out files which aren't source files
        if (!isSourceFile(event.fileInfo()))
-@@ -284,7 +284,7 @@ public:
+@@ -286,7 +286,7 @@ public:
     void clear()
     {
        indexing_ = false;
@@ -17649,7 +17649,7 @@ index 00b485b..f82061a 100644
        entries_.clear();
     }
  
-@@ -299,20 +299,20 @@ private:
+@@ -301,20 +301,20 @@ private:
        }
  
        Entry(const FileInfo& fileInfo,
@@ -17673,7 +17673,7 @@ index 00b485b..f82061a 100644
        }
     };
  
-@@ -320,7 +320,7 @@ private:
+@@ -322,7 +322,7 @@ private:
  
     bool dequeAndIndex()
     {
@@ -17682,7 +17682,7 @@ index 00b485b..f82061a 100644
  
        if (!indexingQueue_.empty())
        {
-@@ -373,7 +373,7 @@ private:
+@@ -375,7 +375,7 @@ private:
           {
              // log if not path not found error (this can happen if the
              // file was removed after entering the indexing queue)
@@ -17691,7 +17691,7 @@ index 00b485b..f82061a 100644
              {
                 error.addProperty("src-file", filePath.absolutePath());
                 LOG_ERROR(error);
-@@ -465,7 +465,7 @@ private:
+@@ -467,7 +467,7 @@ private:
  
     // indexing queue
     bool indexing_;
@@ -17700,7 +17700,7 @@ index 00b485b..f82061a 100644
  };
  
  // global source file index
-@@ -1457,12 +1457,12 @@ Error findFunctionInSearchPath(const json::JsonRpcRequest& request,
+@@ -1585,12 +1585,12 @@ Error findFunctionInSearchPath(const json::JsonRpcRequest& request,
     return Success();
  }
  
