@@ -277,7 +277,7 @@ index acad952..7cddff4 100644
 -} // namespace core
 +} // namespace rscore
 diff --git a/src/cpp/core/FilePath.cpp b/src/cpp/core/FilePath.cpp
-index 772ad48..98930be 100644
+index 5348a23..a4767ac 100644
 --- a/src/cpp/core/FilePath.cpp
 +++ b/src/cpp/core/FilePath.cpp
 @@ -39,7 +39,7 @@
@@ -298,7 +298,7 @@ index 772ad48..98930be 100644
  
     Error error = safePath.makeCurrentPath();
     if (error)
-@@ -1155,11 +1155,11 @@ bool RecursiveDirectoryIterator::finished() const
+@@ -1160,11 +1160,11 @@ bool RecursiveDirectoryIterator::finished() const
  namespace {
  void logError(path_t path,
                const boost::filesystem::filesystem_error& e,
@@ -312,7 +312,7 @@ index 772ad48..98930be 100644
  }
  
  void addErrorProperties(path_t path, Error* pError)
-@@ -1168,4 +1168,4 @@ void addErrorProperties(path_t path, Error* pError)
+@@ -1173,4 +1173,4 @@ void addErrorProperties(path_t path, Error* pError)
  }
  }
  
@@ -744,7 +744,7 @@ index 5247c38..45b471b 100644
 -} // namespace core
 +} // namespace rscore
 diff --git a/src/cpp/core/StringUtils.cpp b/src/cpp/core/StringUtils.cpp
-index b88964f..f5746a4 100644
+index 8b76a45..9ced3c0 100644
 --- a/src/cpp/core/StringUtils.cpp
 +++ b/src/cpp/core/StringUtils.cpp
 @@ -34,7 +34,7 @@
@@ -756,7 +756,7 @@ index b88964f..f5746a4 100644
  namespace string_utils {
  
  bool isSubsequence(std::string const& self,
-@@ -373,7 +373,7 @@ bool parseVersion(const std::string& str, uint64_t* pVersion)
+@@ -382,7 +382,7 @@ bool parseVersion(const std::string& str, uint64_t* pVersion)
  
     for (size_t i = 0; i < chunks.size() && i < 4; i++)
     {
@@ -765,7 +765,7 @@ index b88964f..f5746a4 100644
              chunks[i], std::numeric_limits<uint16_t>::max());
        if (value == std::numeric_limits<uint16_t>::max())
           return false;
-@@ -417,7 +417,7 @@ void stripQuotes(std::string* pStr)
+@@ -426,7 +426,7 @@ void stripQuotes(std::string* pStr)
  }
  
  } // namespace string_utils
@@ -920,7 +920,7 @@ index ed1c01a..db4f131 100644
  
  
 diff --git a/src/cpp/core/dev/Main.cpp b/src/cpp/core/dev/Main.cpp
-index b8f2bec..96e22b1 100644
+index 554b8c4..77932c3 100644
 --- a/src/cpp/core/dev/Main.cpp
 +++ b/src/cpp/core/dev/Main.cpp
 @@ -24,17 +24,17 @@
@@ -2236,7 +2236,7 @@ index 462c184..b365ab4 100644
  
  #endif // STDERR_LOG_WRITER_HPP
 diff --git a/src/cpp/core/include/core/StringUtils.hpp b/src/cpp/core/include/core/StringUtils.hpp
-index 80c01ed..00a0480 100644
+index b955b79..40d1dd3 100644
 --- a/src/cpp/core/include/core/StringUtils.hpp
 +++ b/src/cpp/core/include/core/StringUtils.hpp
 @@ -20,7 +20,7 @@
@@ -2248,7 +2248,7 @@ index 80c01ed..00a0480 100644
  namespace string_utils {
  
  enum LineEnding {
-@@ -183,7 +183,7 @@ void trimLeadingLines(int maxLines, std::string* pLines);
+@@ -185,7 +185,7 @@ void trimLeadingLines(int maxLines, std::string* pLines);
  void stripQuotes(std::string* pStr);
  
  } // namespace string_utils
@@ -3933,7 +3933,7 @@ index 5e2bab4..b4d4022 100644
  
  
 diff --git a/src/cpp/core/include/core/libclang/CodeCompleteResults.hpp b/src/cpp/core/include/core/libclang/CodeCompleteResults.hpp
-index 1fc9100..ca67891 100644
+index d318859..e70db8a 100644
 --- a/src/cpp/core/include/core/libclang/CodeCompleteResults.hpp
 +++ b/src/cpp/core/include/core/libclang/CodeCompleteResults.hpp
 @@ -22,7 +22,7 @@
@@ -3945,7 +3945,7 @@ index 1fc9100..ca67891 100644
  namespace libclang {
  
  class CodeCompleteResult
-@@ -72,7 +72,7 @@ private:
+@@ -75,7 +75,7 @@ private:
  };
  
  } // namespace libclang
@@ -5484,7 +5484,7 @@ index 1672d60..74fea12 100644
  
  
 diff --git a/src/cpp/core/libclang/CodeCompleteResults.cpp b/src/cpp/core/libclang/CodeCompleteResults.cpp
-index 38fc98d..fcec5a2 100644
+index 3437bb9..221bff6 100644
 --- a/src/cpp/core/libclang/CodeCompleteResults.cpp
 +++ b/src/cpp/core/libclang/CodeCompleteResults.cpp
 @@ -20,7 +20,7 @@
@@ -5495,8 +5495,8 @@ index 38fc98d..fcec5a2 100644
 +namespace rscore {
  namespace libclang {
  
- // NOTE: this is a toy version of inspecting completion chunks just
-@@ -87,6 +87,6 @@ unsigned long long CodeCompleteResults::getContexts() const
+ namespace  {
+@@ -171,6 +171,6 @@ unsigned long long CodeCompleteResults::getContexts() const
  
  
  } // namespace libclang
@@ -5592,7 +5592,7 @@ index f7edbe3..1414982 100644
 +} // namespace rscore
  
 diff --git a/src/cpp/core/libclang/SourceIndex.cpp b/src/cpp/core/libclang/SourceIndex.cpp
-index 5f29a2c..19f3492 100644
+index 9392db2..91a08f8 100644
 --- a/src/cpp/core/libclang/SourceIndex.cpp
 +++ b/src/cpp/core/libclang/SourceIndex.cpp
 @@ -25,7 +25,7 @@
@@ -6536,7 +6536,7 @@ index 73fbb9d..deb4bdd 100644
 -} // namespace core
 +} // namespace rscore
 diff --git a/src/cpp/core/system/PosixChildProcess.cpp b/src/cpp/core/system/PosixChildProcess.cpp
-index b592ff1..2996980 100644
+index 5ee9929..6496ba7 100644
 --- a/src/cpp/core/system/PosixChildProcess.cpp
 +++ b/src/cpp/core/system/PosixChildProcess.cpp
 @@ -43,7 +43,7 @@
@@ -7890,7 +7890,7 @@ index 7cb9085..e3fd6e3 100644
     PendingQuit pendingQuit_;
     bool sessionProcessActive_;
 diff --git a/src/cpp/desktop-mac/Utils.hpp b/src/cpp/desktop-mac/Utils.hpp
-index a97f777..58caad2 100644
+index ac0ea89..295e022 100644
 --- a/src/cpp/desktop-mac/Utils.hpp
 +++ b/src/cpp/desktop-mac/Utils.hpp
 @@ -21,7 +21,7 @@
@@ -9124,7 +9124,7 @@ index 4214cd8..748dc6f 100644
     std::string errMsg;
     if (isCodeExecutionError(error, &errMsg))
 diff --git a/src/cpp/r/RExec.cpp b/src/cpp/r/RExec.cpp
-index d091bde..75377c7 100644
+index 3de3aa6..2fbbb70 100644
 --- a/src/cpp/r/RExec.cpp
 +++ b/src/cpp/r/RExec.cpp
 @@ -33,7 +33,7 @@ LibExtern int R_interrupts_pending;
@@ -13475,19 +13475,10 @@ index 621e407..e6eac77 100644
  } // namespace addins
  } // namespace session
 diff --git a/src/cpp/session/SessionAsyncRProcess.cpp b/src/cpp/session/SessionAsyncRProcess.cpp
-index 8907ee4..5e4d373 100644
+index 7590bfd..ef55744 100644
 --- a/src/cpp/session/SessionAsyncRProcess.cpp
 +++ b/src/cpp/session/SessionAsyncRProcess.cpp
-@@ -22,7 +22,7 @@
- 
- #include <session/SessionAsyncRProcess.hpp>
- 
--using namespace core;
-+using namespace rscore;
- 
- namespace session {
- namespace async_r {
-@@ -34,12 +34,12 @@ AsyncRProcess::AsyncRProcess():
+@@ -31,12 +31,12 @@ AsyncRProcess::AsyncRProcess():
  }
  
  void AsyncRProcess::start(const char* rCommand, 
@@ -13503,16 +13494,7 @@ index 8907ee4..5e4d373 100644
     if (error)
     {
        LOG_ERROR(error);
-@@ -48,7 +48,7 @@ void AsyncRProcess::start(const char* rCommand,
-    }
- 
-    // program path and args
--   core::FilePath programPath;
-+   rscore::FilePath programPath;
-    std::vector<std::string> args;
- 
-    // call R through a login shell on OSX so that it can pickup
-@@ -70,7 +70,7 @@ void AsyncRProcess::start(const char* rCommand,
+@@ -53,7 +53,7 @@ void AsyncRProcess::start(const char* rCommand,
     args.push_back(rCommand);
  
     // options
@@ -13521,7 +13503,7 @@ index 8907ee4..5e4d373 100644
     options.terminateChildren = true;
     if (rOptions & R_PROCESS_REDIRECTSTDERR)
        options.redirectStdErrToStdOut = true;
-@@ -83,16 +83,16 @@ void AsyncRProcess::start(const char* rCommand,
+@@ -66,16 +66,16 @@ void AsyncRProcess::start(const char* rCommand,
  
     // forward R_LIBS so the child process has access to the same libraries
     // we do
@@ -14313,7 +14295,7 @@ index 698061a..da17fa0 100644
  namespace session {
  namespace overlay {
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index d7176c3..15451eb 100644
+index a13341d..a239872 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -72,7 +72,7 @@
@@ -14390,7 +14372,7 @@ index d7176c3..15451eb 100644
  
     // fire event
     events().onBackgroundProcessing(isIdle);
-@@ -869,14 +869,14 @@ bool isTextFile(const FilePath& targetPath)
+@@ -863,14 +863,14 @@ bool isTextFile(const FilePath& targetPath)
        return true;
  
  #ifndef _WIN32
@@ -14409,7 +14391,7 @@ index d7176c3..15451eb 100644
                                            &result);
     if (error)
     {
-@@ -898,7 +898,7 @@ bool isTextFile(const FilePath& targetPath)
+@@ -892,7 +892,7 @@ bool isTextFile(const FilePath& targetPath)
  
     // read contents of file
     std::string contents;
@@ -14418,7 +14400,7 @@ index d7176c3..15451eb 100644
     if (error)
     {
        LOG_ERROR(error);
-@@ -915,7 +915,7 @@ bool isTextFile(const FilePath& targetPath)
+@@ -909,7 +909,7 @@ bool isTextFile(const FilePath& targetPath)
  
  }
  
@@ -14427,7 +14409,7 @@ index d7176c3..15451eb 100644
  {
     std::string rHomeBin;
     r::exec::RFunction rHomeBinFunc("R.home", "bin");
-@@ -943,7 +943,7 @@ Error rScriptPath(FilePath* pRScriptPath)
+@@ -937,7 +937,7 @@ Error rScriptPath(FilePath* pRScriptPath)
     return Success();
  }
  
@@ -14436,7 +14418,7 @@ index d7176c3..15451eb 100644
  {
  #ifdef _WIN32
        return shell_utils::ShellCommand(rBinDir.childPath("Rcmd.exe"));
-@@ -1041,14 +1041,14 @@ Error installPackage(const std::string& pkgPath, const std::string& libPath)
+@@ -1035,14 +1035,14 @@ Error installPackage(const std::string& pkgPath, const std::string& libPath)
        return error;
  
     // setup options and command
@@ -14453,7 +14435,7 @@ index d7176c3..15451eb 100644
  
     // for packrat projects we execute the profile and set the working
     // directory to the project directory; for other contexts we just
-@@ -1060,11 +1060,11 @@ Error installPackage(const std::string& pkgPath, const std::string& libPath)
+@@ -1054,11 +1054,11 @@ Error installPackage(const std::string& pkgPath, const std::string& libPath)
     else
     {
        installCommand << "--vanilla";
@@ -14468,7 +14450,7 @@ index d7176c3..15451eb 100644
        options.environment = env;
     }
  
-@@ -1079,10 +1079,10 @@ Error installPackage(const std::string& pkgPath, const std::string& libPath)
+@@ -1073,10 +1073,10 @@ Error installPackage(const std::string& pkgPath, const std::string& libPath)
  
     // add pakage path
     installCommand << "\"" + pkgPath + "\"";
@@ -14481,7 +14463,7 @@ index d7176c3..15451eb 100644
                                      options,
                                      &result);
  
-@@ -1100,7 +1100,7 @@ Error installPackage(const std::string& pkgPath, const std::string& libPath)
+@@ -1094,7 +1094,7 @@ Error installPackage(const std::string& pkgPath, const std::string& libPath)
  }
  
  
@@ -14490,7 +14472,7 @@ index d7176c3..15451eb 100644
  {
     // check whether we are in a package
     FilePath sourceDir = sourceFilePath.parent();
-@@ -1184,7 +1184,7 @@ Error sourceModuleRFile(const std::string& rSourceFile)
+@@ -1178,7 +1178,7 @@ Error sourceModuleRFile(const std::string& rSourceFile)
  
  Error sourceModuleRFileWithResult(const std::string& rSourceFile,
                                    const FilePath& workingDir,
@@ -14499,7 +14481,7 @@ index d7176c3..15451eb 100644
  {
     // R binary
     FilePath rProgramPath;
-@@ -1203,27 +1203,27 @@ Error sourceModuleRFileWithResult(const std::string& rSourceFile,
+@@ -1197,27 +1197,27 @@ Error sourceModuleRFileWithResult(const std::string& rSourceFile,
     boost::format fmt("source('%1%')");
     FilePath modulesPath = session::options().modulesRSourcePath();
     FilePath srcFilePath = modulesPath.complete(rSourceFile);
@@ -14533,7 +14515,7 @@ index d7176c3..15451eb 100644
  }
  
        
-@@ -1254,10 +1254,10 @@ bool isRScriptInPackageBuildTarget(const FilePath &filePath)
+@@ -1248,10 +1248,10 @@ bool isRScriptInPackageBuildTarget(const FilePath &filePath)
     }
  }
  
@@ -14546,7 +14528,7 @@ index d7176c3..15451eb 100644
     std::string ext = filePath.extensionLowerCase();
     std::string name = filePath.filename();
     if (ext == ".rprofile" ||
-@@ -1287,7 +1287,7 @@ bool fileListingFilter(const core::FileInfo& fileInfo)
+@@ -1281,7 +1281,7 @@ bool fileListingFilter(const core::FileInfo& fileInfo)
  namespace {
  // enque file changed event
  void enqueFileChangedEvent(
@@ -14555,7 +14537,7 @@ index d7176c3..15451eb 100644
        boost::shared_ptr<modules::source_control::FileDecorationContext> pCtx)
  {
     // create file change object
-@@ -1306,7 +1306,7 @@ void enqueFileChangedEvent(
+@@ -1300,7 +1300,7 @@ void enqueFileChangedEvent(
  }
  } // namespace
  
@@ -14564,7 +14546,7 @@ index d7176c3..15451eb 100644
  {
     FilePath filePath = FilePath(event.fileInfo().absolutePath());
  
-@@ -1317,8 +1317,8 @@ void enqueFileChangedEvent(const core::system::FileChangeEvent &event)
+@@ -1311,8 +1311,8 @@ void enqueFileChangedEvent(const core::system::FileChangeEvent &event)
     enqueFileChangedEvent(event, pCtx);
  }
  
@@ -14575,7 +14557,7 @@ index d7176c3..15451eb 100644
  {
     using namespace modules::source_control;
  
-@@ -1327,7 +1327,7 @@ void enqueFileChangedEvents(const core::FilePath& vcsStatusRoot,
+@@ -1321,7 +1321,7 @@ void enqueFileChangedEvents(const core::FilePath& vcsStatusRoot,
  
     // try to find the common parent of the events
     FilePath commonParentPath = FilePath(events.front().fileInfo().absolutePath()).parent();
@@ -14584,7 +14566,7 @@ index d7176c3..15451eb 100644
     {
        // if not within the common parent then revert to the vcs status root
        if (!FilePath(event.fileInfo().absolutePath()).isWithin(commonParentPath))
-@@ -1342,7 +1342,7 @@ void enqueFileChangedEvents(const core::FilePath& vcsStatusRoot,
+@@ -1336,7 +1336,7 @@ void enqueFileChangedEvents(const core::FilePath& vcsStatusRoot,
                                    fileDecorationContext(commonParentPath);
  
     // fire client events as necessary
@@ -14593,7 +14575,7 @@ index d7176c3..15451eb 100644
     {
        enqueFileChangedEvent(event, pCtx);
     }
-@@ -1432,7 +1432,7 @@ void showFile(const FilePath& filePath, const std::string& window)
+@@ -1426,7 +1426,7 @@ void showFile(const FilePath& filePath, const std::string& window)
     }
  }
  
@@ -14602,7 +14584,7 @@ index d7176c3..15451eb 100644
  {
      // determine url based on whether this is in ~ or not
      std::string url ;
-@@ -1451,7 +1451,7 @@ std::string createFileUrl(const core::FilePath& filePath)
+@@ -1445,7 +1445,7 @@ std::string createFileUrl(const core::FilePath& filePath)
  }
  
  
@@ -14611,7 +14593,7 @@ index d7176c3..15451eb 100644
  {
     // first provision a content url
     std::string contentUrl = content_urls::provision(title, filePath);
-@@ -1559,9 +1559,9 @@ Events& events()
+@@ -1553,9 +1553,9 @@ Events& events()
  }
  
  
@@ -14623,7 +14605,7 @@ index d7176c3..15451eb 100644
     return instance;
  }
  
-@@ -1611,7 +1611,7 @@ void beginRpcHandler(json::JsonRpcFunction function,
+@@ -1605,7 +1605,7 @@ void beginRpcHandler(json::JsonRpcFunction function,
  }
  } // anonymous namespace
  
@@ -14632,7 +14614,7 @@ index d7176c3..15451eb 100644
                           const json::JsonRpcRequest& request,
                           json::JsonRpcResponse* pResponse)
  {
-@@ -1619,8 +1619,8 @@ core::Error executeAsync(const json::JsonRpcFunction& function,
+@@ -1613,8 +1613,8 @@ core::Error executeAsync(const json::JsonRpcFunction& function,
     // identifies this invocation. In the meantime, kick off the actual
     // operation on a new thread.
  
@@ -14643,7 +14625,7 @@ index d7176c3..15451eb 100644
                                         function,
                                         request,
                                         handle));
-@@ -1628,7 +1628,7 @@ core::Error executeAsync(const json::JsonRpcFunction& function,
+@@ -1622,7 +1622,7 @@ core::Error executeAsync(const json::JsonRpcFunction& function,
     return Success();
  }
  
@@ -14652,7 +14634,7 @@ index d7176c3..15451eb 100644
  {
     json::Object compileOutputJson;
     compileOutputJson["type"] = compileOutput.type;
-@@ -1645,7 +1645,7 @@ std::string CRANReposURL()
+@@ -1639,7 +1639,7 @@ std::string CRANReposURL()
     return url;
  }
  
@@ -14661,7 +14643,7 @@ index d7176c3..15451eb 100644
  {
  #if defined(_WIN32)
     shell_utils::ShellCommand rCmd(rBinDir.childPath("Rcmd.exe"));
-@@ -1656,8 +1656,8 @@ shell_utils::ShellCommand RCommand::buildRCmd(const core::FilePath& rBinDir)
+@@ -1650,8 +1650,8 @@ shell_utils::ShellCommand RCommand::buildRCmd(const core::FilePath& rBinDir)
     return rCmd;
  }
  
@@ -14710,7 +14692,7 @@ index 1a0e68d..384630e 100644
  } // namespace module_context
  } // namespace session
 diff --git a/src/cpp/session/SessionOptions.cpp b/src/cpp/session/SessionOptions.cpp
-index 68799a4..093de71 100644
+index 558b388..e90a0dd 100644
 --- a/src/cpp/session/SessionOptions.cpp
 +++ b/src/cpp/session/SessionOptions.cpp
 @@ -37,7 +37,7 @@
@@ -17558,7 +17540,7 @@ index f3d192b..ff23eb6 100644
  } // namespace authoring
  } // namespace modules
 diff --git a/src/cpp/session/modules/SessionBreakpoints.cpp b/src/cpp/session/modules/SessionBreakpoints.cpp
-index 93555f9..5bcd3fe 100644
+index 951bdab..c7d6836 100644
 --- a/src/cpp/session/modules/SessionBreakpoints.cpp
 +++ b/src/cpp/session/modules/SessionBreakpoints.cpp
 @@ -41,7 +41,7 @@
@@ -17610,7 +17592,7 @@ index ff6e21b..618ac1a 100644
  bool haveAdvancedStepCommands();
  
 diff --git a/src/cpp/session/modules/SessionCodeSearch.cpp b/src/cpp/session/modules/SessionCodeSearch.cpp
-index e184063..2725409 100644
+index 3f5e609..97b87eb 100644
 --- a/src/cpp/session/modules/SessionCodeSearch.cpp
 +++ b/src/cpp/session/modules/SessionCodeSearch.cpp
 @@ -46,7 +46,7 @@
@@ -17691,7 +17673,7 @@ index e184063..2725409 100644
              {
                 error.addProperty("src-file", filePath.absolutePath());
                 LOG_ERROR(error);
-@@ -467,7 +467,7 @@ private:
+@@ -468,7 +468,7 @@ private:
  
     // indexing queue
     bool indexing_;
@@ -17700,7 +17682,7 @@ index e184063..2725409 100644
  };
  
  // global source file index
-@@ -1585,12 +1585,12 @@ Error findFunctionInSearchPath(const json::JsonRpcRequest& request,
+@@ -1601,12 +1601,12 @@ Error findFunctionInSearchPath(const json::JsonRpcRequest& request,
     return Success();
  }
  
@@ -19930,7 +19912,7 @@ index c6acc68..cb3b034 100644
  } // namespace rpubs
  } // namepace handlers
 diff --git a/src/cpp/session/modules/SessionSVN.cpp b/src/cpp/session/modules/SessionSVN.cpp
-index 4faa5a2..4eb108e 100644
+index b5dada6..462276e 100644
 --- a/src/cpp/session/modules/SessionSVN.cpp
 +++ b/src/cpp/session/modules/SessionSVN.cpp
 @@ -50,8 +50,8 @@
@@ -20013,7 +19995,7 @@ index 4faa5a2..4eb108e 100644
  {
     return procOptions(s_isSvnSshRepository);
  }
-@@ -175,13 +175,13 @@ ShellCommand svn()
+@@ -188,13 +188,13 @@ ShellCommand svn()
  Error runSvn(const ShellArgs& args,
               const FilePath& workingDir,
               bool redirectStdErrToStdOut,
@@ -20030,7 +20012,7 @@ index 4faa5a2..4eb108e 100644
                                            options,
                                            pResult);
     return error;
-@@ -189,7 +189,7 @@ Error runSvn(const ShellArgs& args,
+@@ -202,7 +202,7 @@ Error runSvn(const ShellArgs& args,
  
  Error runSvn(const ShellArgs& args,
               bool redirectStdErrToStdOut,
@@ -20039,7 +20021,7 @@ index 4faa5a2..4eb108e 100644
  {
     FilePath workingDir;
     if (!s_workingDir.empty())
-@@ -203,7 +203,7 @@ Error runSvn(const ShellArgs& args,
+@@ -216,7 +216,7 @@ Error runSvn(const ShellArgs& args,
               std::string* pStdErr=NULL,
               int* pExitCode=NULL)
  {
@@ -20048,7 +20030,7 @@ index 4faa5a2..4eb108e 100644
     Error error = runSvn(args, false, &result);
     if (error)
        return error;
-@@ -225,7 +225,7 @@ std::vector<std::string> globalArgs()
+@@ -238,7 +238,7 @@ std::vector<std::string> globalArgs()
  }
  
  
@@ -20057,7 +20039,7 @@ index 4faa5a2..4eb108e 100644
                                const FilePath& outputFile,
                                const boost::optional<FilePath>& workingDir,
                                const std::string& caption,
-@@ -234,7 +234,7 @@ core::Error createConsoleProc(const ShellArgs& args,
+@@ -247,7 +247,7 @@ core::Error createConsoleProc(const ShellArgs& args,
                                bool enqueueRefreshOnExit,
                                boost::shared_ptr<ConsoleProcess>* ppCP)
  {
@@ -20066,7 +20048,7 @@ index 4faa5a2..4eb108e 100644
     if (!workingDir)
        options.workingDir = s_workingDir;
     else if (!workingDir.get().empty())
-@@ -268,7 +268,7 @@ core::Error createConsoleProc(const ShellArgs& args,
+@@ -281,7 +281,7 @@ core::Error createConsoleProc(const ShellArgs& args,
     return Success();
  }
  
@@ -20075,7 +20057,7 @@ index 4faa5a2..4eb108e 100644
                                const std::string& caption,
                                bool requiresSsh,
                                bool dialog,
-@@ -285,8 +285,8 @@ core::Error createConsoleProc(const ShellArgs& args,
+@@ -298,8 +298,8 @@ core::Error createConsoleProc(const ShellArgs& args,
                              ppCP);
  }
  
@@ -20086,7 +20068,7 @@ index 4faa5a2..4eb108e 100644
                                                              ProcResultCallback;
  
  void onAsyncSvnExit(int exitCode,
-@@ -297,14 +297,14 @@ void onAsyncSvnExit(int exitCode,
+@@ -310,14 +310,14 @@ void onAsyncSvnExit(int exitCode,
     {
        // read the file
        std::string contents;
@@ -20104,7 +20086,7 @@ index 4faa5a2..4eb108e 100644
        result.exitStatus = exitCode;
        result.stdOut = contents;
        completionCallback(Success(), result);
-@@ -314,7 +314,7 @@ void onAsyncSvnExit(int exitCode,
+@@ -327,7 +327,7 @@ void onAsyncSvnExit(int exitCode,
        completionCallback(
          systemError(boost::system::errc::operation_canceled,
                      ERROR_LOCATION),
@@ -20113,7 +20095,7 @@ index 4faa5a2..4eb108e 100644
     }
  }
  
-@@ -338,7 +338,7 @@ void runSvnAsync(const ShellArgs& args,
+@@ -351,7 +351,7 @@ void runSvnAsync(const ShellArgs& args,
                                     enqueueRefreshOnExit,
                                     &pCP);
     if (error)
@@ -20122,7 +20104,7 @@ index 4faa5a2..4eb108e 100644
  
     // set showOnOutput
     pCP->setShowOnOutput(true);
-@@ -448,12 +448,12 @@ struct SvnInfo
+@@ -461,12 +461,12 @@ struct SvnInfo
  };
  
  
@@ -20137,7 +20119,7 @@ index 4faa5a2..4eb108e 100644
     Error error = runSvn(ShellArgs() << "info" << "--xml",
                          workingDir,
                          true,
-@@ -492,7 +492,7 @@ Error runSvnInfo(const core::FilePath& workingDir, SvnInfo* pSvnInfo)
+@@ -505,7 +505,7 @@ Error runSvnInfo(const core::FilePath& workingDir, SvnInfo* pSvnInfo)
     return Success();
  }
  
@@ -20146,7 +20128,7 @@ index 4faa5a2..4eb108e 100644
  {
     return !repositoryRoot(workingDir).empty();
  }
-@@ -669,7 +669,7 @@ Error svnAdd(const json::JsonRpcRequest& request,
+@@ -682,7 +682,7 @@ Error svnAdd(const json::JsonRpcRequest& request,
     std::transform(files.begin(), files.end(), std::back_inserter(paths),
                    &resolveAliasedJsonPath);
  
@@ -20155,7 +20137,7 @@ index 4faa5a2..4eb108e 100644
     error = runSvn(ShellArgs() << "add" << globalArgs() << "-q" << "--" << paths,
                    true, &result);
     if (error)
-@@ -694,7 +694,7 @@ Error svnDelete(const json::JsonRpcRequest& request,
+@@ -707,7 +707,7 @@ Error svnDelete(const json::JsonRpcRequest& request,
     std::transform(files.begin(), files.end(), std::back_inserter(paths),
                    &resolveAliasedJsonPath);
  
@@ -20164,7 +20146,7 @@ index 4faa5a2..4eb108e 100644
     error = runSvn(ShellArgs() << "delete" << globalArgs() << "-q" << "--" << paths,
                    true, &result);
     if (error)
-@@ -719,7 +719,7 @@ Error svnRevert(const json::JsonRpcRequest& request,
+@@ -732,7 +732,7 @@ Error svnRevert(const json::JsonRpcRequest& request,
     std::transform(files.begin(), files.end(), std::back_inserter(paths),
                    &resolveAliasedJsonPath);
  
@@ -20173,7 +20155,7 @@ index 4faa5a2..4eb108e 100644
     error = runSvn(ShellArgs() << "revert" << globalArgs() << "-q" <<
                    "--depth" << "infinity" <<
                    "--" << paths,
-@@ -747,7 +747,7 @@ Error svnResolve(const json::JsonRpcRequest& request,
+@@ -760,7 +760,7 @@ Error svnResolve(const json::JsonRpcRequest& request,
      std::transform(files.begin(), files.end(), std::back_inserter(paths),
                     &resolveAliasedJsonPath);
  
@@ -20182,7 +20164,7 @@ index 4faa5a2..4eb108e 100644
      error = runSvn(ShellArgs() << "resolve" << globalArgs() << "-q" <<
                     "--accept" << accept <<
                     "--" << paths,
-@@ -760,9 +760,9 @@ Error svnResolve(const json::JsonRpcRequest& request,
+@@ -773,9 +773,9 @@ Error svnResolve(const json::JsonRpcRequest& request,
      return Success();
   }
  
@@ -20194,7 +20176,7 @@ index 4faa5a2..4eb108e 100644
  {
     json::Object& obj = *pObject;
     obj["status"] = status.status();
-@@ -936,7 +936,7 @@ Error svnCleanup(const json::JsonRpcRequest& request,
+@@ -949,7 +949,7 @@ Error svnCleanup(const json::JsonRpcRequest& request,
  {
     RefreshOnExit refreshOnExit;
  
@@ -20203,7 +20185,7 @@ index 4faa5a2..4eb108e 100644
     Error error = runSvn(ShellArgs() << "cleanup" << globalArgs(),
                          true,
                          &result);
-@@ -1098,10 +1098,10 @@ Error svnApplyPatch(const json::JsonRpcRequest& request,
+@@ -1111,10 +1111,10 @@ Error svnApplyPatch(const json::JsonRpcRequest& request,
     cmd << "-i" << tempFile;
     cmd << filePath;
  
@@ -20217,7 +20199,7 @@ index 4faa5a2..4eb108e 100644
                                      options,
                                      &result);
     if (error)
-@@ -1230,7 +1230,7 @@ Error parseHistoryXml(int skip,
+@@ -1243,7 +1243,7 @@ Error parseHistoryXml(int skip,
  
  void historyEnd(boost::function<void(Error, const std::string&)> callback,
                  const Error& error,
@@ -20226,7 +20208,7 @@ index 4faa5a2..4eb108e 100644
  {
     if (!error && result.exitStatus != EXIT_SUCCESS && !result.stdErr.empty())
        LOG_ERROR_MESSAGE(result.stdErr);
-@@ -1459,7 +1459,7 @@ void svnHistory(const json::JsonRpcRequest& request,
+@@ -1472,7 +1472,7 @@ void svnHistory(const json::JsonRpcRequest& request,
  void svnShowEnd(bool noSizeWarning,
                  const json::JsonRpcFunctionContinuation& cont,
                  Error error,
@@ -20235,7 +20217,7 @@ index 4faa5a2..4eb108e 100644
  {
     json::JsonRpcResponse response;
  
-@@ -1512,7 +1512,7 @@ void svnShow(const json::JsonRpcRequest& request,
+@@ -1525,7 +1525,7 @@ void svnShow(const json::JsonRpcRequest& request,
  
  void svnShowFileEnd(const json::JsonRpcFunctionContinuation& cont,
                      Error error,
@@ -20244,7 +20226,7 @@ index 4faa5a2..4eb108e 100644
  {
     json::JsonRpcResponse response;
  
-@@ -1550,7 +1550,7 @@ void svnShowFile(const json::JsonRpcRequest& request,
+@@ -1563,7 +1563,7 @@ void svnShowFile(const json::JsonRpcRequest& request,
  }
  
  Error getIgnores(const FilePath& filePath,
@@ -20253,7 +20235,7 @@ index 4faa5a2..4eb108e 100644
  {
     return runSvn(ShellArgs() << "propget" << "svn:ignore"
                                << filePath << globalArgs(),
-@@ -1569,7 +1569,7 @@ Error svnGetIgnores(const json::JsonRpcRequest& request,
+@@ -1582,7 +1582,7 @@ Error svnGetIgnores(const json::JsonRpcRequest& request,
     // resolve path
     FilePath filePath = module_context::resolveAliasedPath(path);
  
@@ -20262,7 +20244,7 @@ index 4faa5a2..4eb108e 100644
     error = getIgnores(filePath, &result);
     if (error)
        return error;
-@@ -1581,11 +1581,11 @@ Error svnGetIgnores(const json::JsonRpcRequest& request,
+@@ -1594,11 +1594,11 @@ Error svnGetIgnores(const json::JsonRpcRequest& request,
  
  Error setIgnores(const FilePath& filePath,
                   const std::string& ignores,
@@ -20276,7 +20258,7 @@ index 4faa5a2..4eb108e 100644
     if (error)
        return error;
  
-@@ -1619,7 +1619,7 @@ Error svnSetIgnores(const json::JsonRpcRequest& request,
+@@ -1632,7 +1632,7 @@ Error svnSetIgnores(const json::JsonRpcRequest& request,
     // resolve path
     FilePath filePath = module_context::resolveAliasedPath(path);
  
@@ -20285,7 +20267,7 @@ index 4faa5a2..4eb108e 100644
     error = setIgnores(filePath, ignores, &result);
     if (error)
        return error;
-@@ -1632,7 +1632,7 @@ Error svnSetIgnores(const json::JsonRpcRequest& request,
+@@ -1645,7 +1645,7 @@ Error svnSetIgnores(const json::JsonRpcRequest& request,
  Error checkout(const std::string& url,
                 const std::string& username,
                 const std::string dirName,
@@ -20294,7 +20276,7 @@ index 4faa5a2..4eb108e 100644
                 boost::shared_ptr<console_process::ConsoleProcess>* ppCP)
  {
     // optional username arg
-@@ -1700,7 +1700,7 @@ bool promptForPassword(const std::string& prompt,
+@@ -1713,7 +1713,7 @@ bool promptForPassword(const std::string& prompt,
  }
  
  SvnFileDecorationContext::SvnFileDecorationContext(
@@ -20303,7 +20285,7 @@ index 4faa5a2..4eb108e 100644
  {
     using namespace source_control;
  
-@@ -1716,8 +1716,8 @@ SvnFileDecorationContext::~SvnFileDecorationContext()
+@@ -1729,8 +1729,8 @@ SvnFileDecorationContext::~SvnFileDecorationContext()
  {
  }
  
@@ -20314,7 +20296,7 @@ index 4faa5a2..4eb108e 100644
  {
     using namespace source_control;
  
-@@ -1737,7 +1737,7 @@ void SvnFileDecorationContext::decorateFile(const core::FilePath& filePath,
+@@ -1750,7 +1750,7 @@ void SvnFileDecorationContext::decorateFile(const core::FilePath& filePath,
  Error augmentSvnIgnore()
  {
     // check for existing svn:ignore
@@ -20323,7 +20305,7 @@ index 4faa5a2..4eb108e 100644
     Error error = getIgnores(s_workingDir, &result);
     if (error)
        return error;
-@@ -1771,7 +1771,7 @@ Error augmentSvnIgnore()
+@@ -1784,7 +1784,7 @@ Error augmentSvnIgnore()
     }
  
     // write back svn:ignore
@@ -20332,7 +20314,7 @@ index 4faa5a2..4eb108e 100644
     error = setIgnores(s_workingDir, svnIgnore, &setResult);
     if (error)
        return error;
-@@ -1820,7 +1820,7 @@ Error initialize()
+@@ -1835,7 +1835,7 @@ Error initialize()
     return Success();
  }
  
@@ -21730,7 +21712,7 @@ index a036386..5455c8a 100644
  } // namespace source_cpp
  } // namespace build
 diff --git a/src/cpp/session/modules/clang/CodeCompletion.cpp b/src/cpp/session/modules/clang/CodeCompletion.cpp
-index 3a15864..5bea028 100644
+index faa9e17..f38a6a3 100644
 --- a/src/cpp/session/modules/clang/CodeCompletion.cpp
 +++ b/src/cpp/session/modules/clang/CodeCompletion.cpp
 @@ -24,8 +24,8 @@
@@ -21752,8 +21734,8 @@ index 3a15864..5bea028 100644
 +rscore::json::Object toJson(const CodeCompleteResult& result)
  {
     json::Object resultJson;
-    resultJson["text"] = result.getText();
-@@ -44,8 +44,8 @@ core::json::Object toJson(const CodeCompleteResult& result)
+    resultJson["kind"] = result.getKind();
+@@ -48,8 +48,8 @@ core::json::Object toJson(const CodeCompleteResult& result)
  } // anonymous namespace
  
  
@@ -22293,7 +22275,7 @@ index 5e80ae3..a210b34 100644
  } // namespace environment
  } // namespace modules
 diff --git a/src/cpp/session/modules/environment/SessionEnvironment.cpp b/src/cpp/session/modules/environment/SessionEnvironment.cpp
-index b3804fe..03061ca 100644
+index 736c097..558c075 100644
 --- a/src/cpp/session/modules/environment/SessionEnvironment.cpp
 +++ b/src/cpp/session/modules/environment/SessionEnvironment.cpp
 @@ -36,7 +36,7 @@
@@ -23838,7 +23820,7 @@ index 123038e..4638881 100644
  
  } // namespace rnw_concordance
 diff --git a/src/cpp/session/modules/tex/SessionRnwWeave.cpp b/src/cpp/session/modules/tex/SessionRnwWeave.cpp
-index d8b4741..5130ed7 100644
+index f257a6f..4b707f7 100644
 --- a/src/cpp/session/modules/tex/SessionRnwWeave.cpp
 +++ b/src/cpp/session/modules/tex/SessionRnwWeave.cpp
 @@ -38,7 +38,7 @@
@@ -24027,16 +24009,16 @@ index d8b4741..5130ed7 100644
                const boost::function<void(const std::string&)>& onOutput,
                const CompletedFunction& onCompleted)
  {
-@@ -527,7 +527,7 @@ void runWeave(const core::FilePath& rnwPath,
+@@ -515,7 +515,7 @@ void runWeave(const core::FilePath& rnwPath,
        Error error = compile_pdf_supervisor::runProgram(
-                programPath,
+                rBinPath,
                 args,
 -               core::system::Options(),
 +               rscore::system::Options(),
                 rnwPath.parent(),
                 onOutput,
                 boost::bind(onWeaveProcessExit,
-@@ -546,17 +546,17 @@ void runWeave(const core::FilePath& rnwPath,
+@@ -534,17 +534,17 @@ void runWeave(const core::FilePath& rnwPath,
     }
  }
  

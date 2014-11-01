@@ -22,7 +22,7 @@ source=('rstudio.desktop'
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         'fde9868e37a46620cd0684b84b9e8697')
+         'a06dc31195a13aaeab723734bbf89d01')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -81,11 +81,9 @@ prepare() {
   ln -s /opt/junit/junit-4.93b.jar $srcdir/$_gitname/src/gwt/lib
   
   msg "Pandoc"
-  cd $srcdir/../$_gitname/dependencies/common/
   cd $srcdir/$_gitname/dependencies/common/
-  ln -s $srcdir/../$_gitname/dependencies/common/pandoc .
-  mkdir pandoc
-  ln -s /usr/bin/pandoc .
+  rm -rf "pandoc/" && mkdir pandoc && cd pandoc
+  ln -s "/usr/bin/pandoc" .
   
   msg "rmarkdown"
   # Copy rmarkdown.tar.gz (folder is empty and not needed, cmake checks for it. These packages are not included.)
