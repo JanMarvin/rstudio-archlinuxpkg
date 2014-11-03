@@ -22,7 +22,7 @@ source=('rstudio.desktop'
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         'a06dc31195a13aaeab723734bbf89d01')
+         'b34916e14823611644020e7b678df2c2')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -104,9 +104,10 @@ prepare() {
   mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/3.5"
   ln -s "/usr/lib/libclang.so" "$srcdir/$_gitname/dependencies/common/libclang/3.5"
 
+  mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/3.5"
+  ln -s /usr/lib/clang/3.5.0/include/* "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/3.5"
   mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/libc++/3.5"
-  ln -s "/usr/lib/clang/3.5.0/include/*" "$srcdir/$_gitname/dependencies/common/builtin-headers"
-  ln -s "/usr/include/c++/v1/*" "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/libc++/3.5"
+  ln -s /usr/include/c++/v1/* "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/libc++/3.5"
 
   # Desktop, Release and  PATH=/opt/rstudio
   cd "$srcdir/$_gitname"
