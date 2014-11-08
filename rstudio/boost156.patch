@@ -3933,7 +3933,7 @@ index 5e2bab4..b4d4022 100644
  
  
 diff --git a/src/cpp/core/include/core/libclang/CodeCompleteResults.hpp b/src/cpp/core/include/core/libclang/CodeCompleteResults.hpp
-index d318859..e70db8a 100644
+index 253d40d..f9d729a 100644
 --- a/src/cpp/core/include/core/libclang/CodeCompleteResults.hpp
 +++ b/src/cpp/core/include/core/libclang/CodeCompleteResults.hpp
 @@ -22,7 +22,7 @@
@@ -3945,7 +3945,7 @@ index d318859..e70db8a 100644
  namespace libclang {
  
  class CodeCompleteResult
-@@ -75,7 +75,7 @@ private:
+@@ -81,7 +81,7 @@ private:
  };
  
  } // namespace libclang
@@ -3955,7 +3955,7 @@ index d318859..e70db8a 100644
  
  #endif // CORE_LIBCLANG_HPP
 diff --git a/src/cpp/core/include/core/libclang/Cursor.hpp b/src/cpp/core/include/core/libclang/Cursor.hpp
-index 6391277..5454c94 100644
+index 32a4058..849403a 100644
 --- a/src/cpp/core/include/core/libclang/Cursor.hpp
 +++ b/src/cpp/core/include/core/libclang/Cursor.hpp
 @@ -22,7 +22,7 @@
@@ -3967,7 +3967,7 @@ index 6391277..5454c94 100644
  namespace libclang {
  
  class Cursor
-@@ -58,6 +58,6 @@ private:
+@@ -66,6 +66,6 @@ private:
  };
  
  } // namespace libclang
@@ -4037,7 +4037,7 @@ index 3d31534..37156b5 100644
  
  #endif // CORE_LIBCLANG_LIBCLANG_HPP
 diff --git a/src/cpp/core/include/core/libclang/SourceIndex.hpp b/src/cpp/core/include/core/libclang/SourceIndex.hpp
-index ebbf3da..7de3467 100644
+index 2270e26..928d5c0 100644
 --- a/src/cpp/core/include/core/libclang/SourceIndex.hpp
 +++ b/src/cpp/core/include/core/libclang/SourceIndex.hpp
 @@ -27,7 +27,7 @@
@@ -4046,10 +4046,22 @@ index ebbf3da..7de3467 100644
  
 -namespace core {
 +namespace rscore {
- namespace libclang {
  
- struct CompilationDatabase
-@@ -101,6 +101,6 @@ private:
+ class FilePath;
+ 
+@@ -44,9 +44,9 @@ class SourceIndex : boost::noncopyable
+ {   
+ public:
+    static bool isSourceFile(const std::string& filename);
+-   static bool isSourceFile(const core::FilePath& filePath);
++   static bool isSourceFile(const rscore::FilePath& filePath);
+    static bool isTranslationUnit(const std::string& filename);
+-   static bool isTranslationUnit(const core::FilePath& filePath);
++   static bool isTranslationUnit(const rscore::FilePath& filePath);
+ 
+ public:
+    explicit SourceIndex(
+@@ -106,6 +106,6 @@ private:
  };
  
  } // namespace libclang
@@ -5484,7 +5496,7 @@ index 1672d60..74fea12 100644
  
  
 diff --git a/src/cpp/core/libclang/CodeCompleteResults.cpp b/src/cpp/core/libclang/CodeCompleteResults.cpp
-index 3437bb9..221bff6 100644
+index d26cbd2..8a71c18 100644
 --- a/src/cpp/core/libclang/CodeCompleteResults.cpp
 +++ b/src/cpp/core/libclang/CodeCompleteResults.cpp
 @@ -20,7 +20,7 @@
@@ -5496,7 +5508,7 @@ index 3437bb9..221bff6 100644
  namespace libclang {
  
  namespace  {
-@@ -171,6 +171,6 @@ unsigned long long CodeCompleteResults::getContexts() const
+@@ -174,6 +174,6 @@ unsigned long long CodeCompleteResults::getContexts() const
  
  
  } // namespace libclang
@@ -5505,7 +5517,7 @@ index 3437bb9..221bff6 100644
  
  
 diff --git a/src/cpp/core/libclang/Cursor.cpp b/src/cpp/core/libclang/Cursor.cpp
-index 9600518..27c1fa5 100644
+index 61b664d..8abc0b9 100644
 --- a/src/cpp/core/libclang/Cursor.cpp
 +++ b/src/cpp/core/libclang/Cursor.cpp
 @@ -18,7 +18,7 @@
@@ -5517,7 +5529,7 @@ index 9600518..27c1fa5 100644
  namespace libclang {
  
  Cursor::~Cursor()
-@@ -62,5 +62,5 @@ bool Cursor::isNull() const
+@@ -81,5 +81,5 @@ bool Cursor::isNull() const
  }
  
  } // namespace libclang
@@ -5545,7 +5557,7 @@ index d010168..da5842f 100644
 +} // namespace rscore
  
 diff --git a/src/cpp/core/libclang/LibClang.cpp b/src/cpp/core/libclang/LibClang.cpp
-index f7edbe3..1414982 100644
+index fe000b8..befd38a 100644
 --- a/src/cpp/core/libclang/LibClang.cpp
 +++ b/src/cpp/core/libclang/LibClang.cpp
 @@ -28,7 +28,7 @@
@@ -5592,7 +5604,7 @@ index f7edbe3..1414982 100644
 +} // namespace rscore
  
 diff --git a/src/cpp/core/libclang/SourceIndex.cpp b/src/cpp/core/libclang/SourceIndex.cpp
-index 9392db2..91a08f8 100644
+index 4d066ce..cf99599 100644
 --- a/src/cpp/core/libclang/SourceIndex.cpp
 +++ b/src/cpp/core/libclang/SourceIndex.cpp
 @@ -25,7 +25,7 @@
@@ -5603,8 +5615,8 @@ index 9392db2..91a08f8 100644
 +namespace rscore {
  namespace libclang {
  
- bool SourceIndex::isSourceFile(const std::string& filename)
-@@ -132,11 +132,11 @@ TranslationUnit SourceIndex::getTranslationUnit(const std::string& filename,
+ 
+@@ -144,11 +144,11 @@ TranslationUnit SourceIndex::getTranslationUnit(const std::string& filename,
  
     FilePath filePath(filename);
  
@@ -5618,7 +5630,7 @@ index 9392db2..91a08f8 100644
     }
  
     // get the arguments and last write time for this file
-@@ -205,7 +205,7 @@ TranslationUnit SourceIndex::getTranslationUnit(const std::string& filename,
+@@ -217,7 +217,7 @@ TranslationUnit SourceIndex::getTranslationUnit(const std::string& filename,
       args.push_back("-v");
  
     // get the args in the fashion libclang expects (char**)
@@ -5627,7 +5639,7 @@ index 9392db2..91a08f8 100644
  
     if (verbose_ > 0)
        std::cerr << "  (Creating new index)" << std::endl;
-@@ -279,6 +279,6 @@ TranslationUnit SourceIndex::getHeaderTranslationUnit(
+@@ -291,6 +291,6 @@ TranslationUnit SourceIndex::getHeaderTranslationUnit(
  }
  
  } // namespace libclang
@@ -13864,10 +13876,10 @@ index 3f356bb..0a41712 100644
        {
           for (std::string::iterator pos = contents.begin(); pos != contents.end(); )
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index b4454f8..0641089 100644
+index e62e9d8..ea20859 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
-@@ -150,7 +150,7 @@ extern "C" const char *locale2charset(const char *);
+@@ -151,7 +151,7 @@ extern "C" const char *locale2charset(const char *);
  
  #include "session-config.h"
  
@@ -13876,7 +13888,7 @@ index b4454f8..0641089 100644
  using namespace session;
  using namespace session::client_events;
  
-@@ -168,7 +168,7 @@ http::UriHandlers s_uriHandlers;
+@@ -169,7 +169,7 @@ http::UriHandlers s_uriHandlers;
  http::UriHandlerFunction s_defaultUriHandler;
  
  // json rpc methods
@@ -13885,7 +13897,7 @@ index b4454f8..0641089 100644
     
  // R browseUrl handlers
  std::vector<module_context::RBrowseUrlHandler> s_rBrowseUrlHandlers;
-@@ -424,7 +424,7 @@ void handleClientInit(const boost::function<void()>& initFunction,
+@@ -425,7 +425,7 @@ void handleClientInit(const boost::function<void()>& initFunction,
     if (options.programMode() == kSessionProgramModeServer)
     {
        std::string referer = ptrConnection->request().headerValue("referer");
@@ -13894,7 +13906,7 @@ index b4454f8..0641089 100644
     }
  
     // prepare session info 
-@@ -600,10 +600,10 @@ void handleClientInit(const boost::function<void()>& initFunction,
+@@ -601,10 +601,10 @@ void handleClientInit(const boost::function<void()>& initFunction,
                                r::session::consoleHistory().capacity();
  
     sessionInfo["disable_packages"] =
@@ -13907,7 +13919,7 @@ index b4454f8..0641089 100644
  
     sessionInfo["allow_vcs_exe_edit"] = options.allowVcsExecutableEdit();
     sessionInfo["allow_cran_repos_edit"] = options.allowCRANReposEdit();
-@@ -657,7 +657,7 @@ enum ConnectionType
+@@ -658,7 +658,7 @@ enum ConnectionType
  
  void endHandleRpcRequestDirect(boost::shared_ptr<HttpConnection> ptrConnection,
                           boost::posix_time::ptime executeStartTime,
@@ -13916,7 +13928,7 @@ index b4454f8..0641089 100644
                           json::JsonRpcResponse* pJsonRpcResponse)
  {
     // return error or result then continue waiting for requests
-@@ -694,7 +694,7 @@ void endHandleRpcRequestDirect(boost::shared_ptr<HttpConnection> ptrConnection,
+@@ -695,7 +695,7 @@ void endHandleRpcRequestDirect(boost::shared_ptr<HttpConnection> ptrConnection,
  
  void endHandleRpcRequestIndirect(
        const std::string& asyncHandle,
@@ -13925,7 +13937,7 @@ index b4454f8..0641089 100644
        json::JsonRpcResponse* pJsonRpcResponse)
  {
     json::JsonRpcResponse temp;
-@@ -713,7 +713,7 @@ void endHandleRpcRequestIndirect(
+@@ -714,7 +714,7 @@ void endHandleRpcRequestIndirect(
     module_context::enqueClientEvent(evt);
  }
  
@@ -13934,7 +13946,7 @@ index b4454f8..0641089 100644
                        boost::shared_ptr<HttpConnection> ptrConnection,
                        ConnectionType connectionType)
  {
-@@ -743,7 +743,7 @@ void handleRpcRequest(const core::json::JsonRpcRequest& request,
+@@ -744,7 +744,7 @@ void handleRpcRequest(const core::json::JsonRpcRequest& request,
        else
        {
           // indirect return (asyncHandle style)
@@ -13943,7 +13955,7 @@ index b4454f8..0641089 100644
           json::JsonRpcResponse response;
           response.setAsyncHandle(handle);
           response.setField(kEventsPending, "false");
-@@ -1213,7 +1213,7 @@ void processDesktopGuiEvents()
+@@ -1214,7 +1214,7 @@ void processDesktopGuiEvents()
  bool waitForMethod(const std::string& method,
                     const boost::function<void()>& initFunction,
                     const boost::function<bool()>& allowSuspend,
@@ -13952,7 +13964,7 @@ index b4454f8..0641089 100644
  {
     if (s_wasForked)
     {
-@@ -1326,7 +1326,7 @@ bool waitForMethod(const std::string& method,
+@@ -1327,7 +1327,7 @@ bool waitForMethod(const std::string& method,
  bool waitForMethod(const std::string& method,
                     const ClientEvent& initEvent,
                     const boost::function<bool()>& allowSuspend,
@@ -13961,7 +13973,7 @@ index b4454f8..0641089 100644
  {
     return waitForMethod(method,
                          boost::bind(module_context::enqueClientEvent,
-@@ -1397,7 +1397,7 @@ Error extractConsoleInput(const json::JsonRpcRequest& request)
+@@ -1398,7 +1398,7 @@ Error extractConsoleInput(const json::JsonRpcRequest& request)
  // allow console_input requests to come in when we aren't explicitly waiting
  // on them (i.e. waitForMethod("console_input")). place them into into a buffer
  // which is then checked by rConsoleRead prior to it calling waitForMethod
@@ -13970,7 +13982,7 @@ index b4454f8..0641089 100644
                           json::JsonRpcResponse* pResponse)
  {
     // extract the input
-@@ -1412,7 +1412,7 @@ void doSuspendForRestart(const r::session::RSuspendOptions& options)
+@@ -1413,7 +1413,7 @@ void doSuspendForRestart(const r::session::RSuspendOptions& options)
     r::session::suspendForRestart(options);
  }
  
@@ -13979,7 +13991,7 @@ index b4454f8..0641089 100644
                          json::JsonRpcResponse* pResponse)
  {
     r::session::RSuspendOptions options;
-@@ -1429,7 +1429,7 @@ Error suspendForRestart(const core::json::JsonRpcRequest& request,
+@@ -1430,7 +1430,7 @@ Error suspendForRestart(const core::json::JsonRpcRequest& request,
  }
  
  
@@ -13988,7 +14000,7 @@ index b4454f8..0641089 100644
             json::JsonRpcResponse* pResponse)
  {
     return Success();
-@@ -1474,7 +1474,7 @@ void registerGwtHandlers()
+@@ -1475,7 +1475,7 @@ void registerGwtHandlers()
  Error registerSignalHandlers()
  {
     using boost::bind;
@@ -13997,7 +14009,7 @@ index b4454f8..0641089 100644
  
     // USR1 and USR2: perform suspend in server mode
     if (session::options().programMode() == kSessionProgramModeServer)
-@@ -1513,9 +1513,9 @@ Error runPreflightScript()
+@@ -1514,9 +1514,9 @@ Error runPreflightScript()
              // run the script (ignore errors and continue no matter what
              // the outcome of the script is)
              std::string script = preflightScriptPath.absolutePath();
@@ -14009,7 +14021,7 @@ index b4454f8..0641089 100644
                                       &result);
              if (error)
              {
-@@ -1549,7 +1549,7 @@ Error rInit(const r::session::RInitInfo& rInitInfo)
+@@ -1550,7 +1550,7 @@ Error rInit(const r::session::RInitInfo& rInitInfo)
  
     // execute core initialization functions
     using boost::bind;
@@ -14018,7 +14030,7 @@ index b4454f8..0641089 100644
     using namespace session::module_context;
     ExecBlock initialize ;
     initialize.addFunctions()
-@@ -1842,7 +1842,7 @@ int rEditFile(const std::string& file)
+@@ -1845,7 +1845,7 @@ int rEditFile(const std::string& file)
     // read file contents
     FilePath filePath(file);
     std::string fileContents;
@@ -14027,7 +14039,7 @@ index b4454f8..0641089 100644
     if (readError)
     {
        LOG_ERROR(readError);
-@@ -1883,7 +1883,7 @@ int rEditFile(const std::string& file)
+@@ -1886,7 +1886,7 @@ int rEditFile(const std::string& file)
        
        // write the content back to the file (append newline expected by R) 
        editedFileContents += "\n";
@@ -14036,7 +14048,7 @@ index b4454f8..0641089 100644
        if (writeError)
        {
           LOG_ERROR(writeError);
-@@ -2070,7 +2070,7 @@ void rBrowseURL(const std::string& url)
+@@ -2073,7 +2073,7 @@ void rBrowseURL(const std::string& url)
     session::clientEventQueue().add(browseUrlEvent(url));
  }
     
@@ -14045,7 +14057,7 @@ index b4454f8..0641089 100644
  {
     // see if any of our handlers want to take it
     for (std::vector<module_context::RBrowseFileHandler>::const_iterator 
-@@ -2189,7 +2189,7 @@ void rSuicide(const std::string& message)
+@@ -2192,7 +2192,7 @@ void rSuicide(const std::string& message)
  
  // terminate all children of the provided process supervisor
  // and then wait a brief period to attempt to reap the child
@@ -14054,7 +14066,7 @@ index b4454f8..0641089 100644
                            const ErrorLocation& location)
  {
     // send kill signal
-@@ -2199,7 +2199,7 @@ void terminateAllChildren(core::system::ProcessSupervisor* pSupervisor,
+@@ -2202,7 +2202,7 @@ void terminateAllChildren(core::system::ProcessSupervisor* pSupervisor,
     if (!pSupervisor->wait(boost::posix_time::milliseconds(10),
                            boost::posix_time::milliseconds(1000)))
     {
@@ -14063,7 +14075,7 @@ index b4454f8..0641089 100644
              "Process supervisor did not terminate within 1 second",
              location);
     }
-@@ -2339,7 +2339,7 @@ void ensurePublicFolder()
+@@ -2342,7 +2342,7 @@ void ensurePublicFolder()
     }
  }
  
@@ -14072,7 +14084,7 @@ index b4454f8..0641089 100644
                       const std::string& rLibsUser)
  {
     FilePath rLibsUserPath = FilePath::resolveAliasedPath(rLibsUser,
-@@ -2376,7 +2376,7 @@ void detectParentTermination()
+@@ -2379,7 +2379,7 @@ void detectParentTermination()
     if (result == ParentTerminationAbnormal)
     {
        LOG_ERROR_MESSAGE("Parent terminated");
@@ -14081,7 +14093,7 @@ index b4454f8..0641089 100644
     }
     else if (result == ParentTerminationNormal)
     {
-@@ -2571,7 +2571,7 @@ Error registerLocalUriHandler(const std::string& name,
+@@ -2574,7 +2574,7 @@ Error registerLocalUriHandler(const std::string& name,
  
  
  Error registerAsyncRpcMethod(const std::string& name,
@@ -14090,7 +14102,7 @@ index b4454f8..0641089 100644
  {
     s_jsonRpcMethods.insert(
           std::make_pair(name, std::make_pair(false, function)));
-@@ -2579,7 +2579,7 @@ Error registerAsyncRpcMethod(const std::string& name,
+@@ -2582,7 +2582,7 @@ Error registerAsyncRpcMethod(const std::string& name,
  }
  
  Error registerRpcMethod(const std::string& name,
@@ -14099,7 +14111,7 @@ index b4454f8..0641089 100644
  {
     s_jsonRpcMethods.insert(
           std::make_pair(name,
-@@ -2678,7 +2678,7 @@ namespace {
+@@ -2681,7 +2681,7 @@ namespace {
  
  bool registeredWaitForMethod(const std::string& method,
                               const ClientEvent& event,
@@ -14108,7 +14120,7 @@ index b4454f8..0641089 100644
  {
     // enque the event which notifies the client we want input
     module_context::enqueClientEvent(event);
-@@ -2704,22 +2704,22 @@ WaitForMethodFunction registerWaitForMethod(const std::string& methodName)
+@@ -2707,22 +2707,22 @@ WaitForMethodFunction registerWaitForMethod(const std::string& methodName)
  
  namespace {
  
@@ -14137,7 +14149,7 @@ index b4454f8..0641089 100644
        return "LANG";
     return "LC_CTYPE";
  }
-@@ -2745,7 +2745,7 @@ bool ensureUtf8Charset()
+@@ -2748,7 +2748,7 @@ bool ensureUtf8Charset()
     return true;
  #else
     std::string name = ctypeEnvName();
@@ -14146,7 +14158,7 @@ index b4454f8..0641089 100644
  
     if (boost::regex_search(ctype, boost::regex("UTF-8$")))
        return true;
-@@ -2777,7 +2777,7 @@ bool ensureUtf8Charset()
+@@ -2780,7 +2780,7 @@ bool ensureUtf8Charset()
     {
        if (setlocale(LC_CTYPE, newCType.c_str()))
        {
@@ -14155,7 +14167,7 @@ index b4454f8..0641089 100644
           setlocale(LC_CTYPE, "");
           return true;
        }
-@@ -2799,11 +2799,11 @@ int main (int argc, char * const argv[])
+@@ -2802,11 +2802,11 @@ int main (int argc, char * const argv[])
        // initialize log so we capture all errors including ones which occur
        // reading the config file (if we are in desktop mode then the log
        // will get re-initialized below)
@@ -14170,7 +14182,7 @@ index b4454f8..0641089 100644
        if (error)
           LOG_ERROR(error);
  
-@@ -2821,7 +2821,7 @@ int main (int argc, char * const argv[])
+@@ -2824,7 +2824,7 @@ int main (int argc, char * const argv[])
           return status.exitCode() ;
  
        // reflect stderr logging
@@ -14179,7 +14191,7 @@ index b4454f8..0641089 100644
  
        // initialize monitor
        monitor::initializeMonitorClient(kMonitorSocketPath,
-@@ -2830,7 +2830,7 @@ int main (int argc, char * const argv[])
+@@ -2833,7 +2833,7 @@ int main (int argc, char * const argv[])
        // register monitor log writer (but not in standalone mode)
        if (!options.standalone())
        {
@@ -14188,7 +14200,7 @@ index b4454f8..0641089 100644
                                                  options.programIdentity()));
        }
  
-@@ -2844,12 +2844,12 @@ int main (int argc, char * const argv[])
+@@ -2847,12 +2847,12 @@ int main (int argc, char * const argv[])
           if (options.verifyInstallation())
           {
              initializeStderrLog(options.programIdentity(),
@@ -14203,7 +14215,7 @@ index b4454f8..0641089 100644
                            options.userLogPath());
           }
        }
-@@ -2864,27 +2864,27 @@ int main (int argc, char * const argv[])
+@@ -2867,27 +2867,27 @@ int main (int argc, char * const argv[])
  
        // set the rstudio environment variable so code can check for
        // whether rstudio is running
@@ -14236,7 +14248,7 @@ index b4454f8..0641089 100644
        {
           Error error = systemError(boost::system::errc::permission_denied,
                                     ERROR_LOCATION);
-@@ -2894,14 +2894,14 @@ int main (int argc, char * const argv[])
+@@ -2897,14 +2897,14 @@ int main (int argc, char * const argv[])
  #ifdef RSTUDIO_SERVER
        if (serverMode)
        {
@@ -14253,7 +14265,7 @@ index b4454f8..0641089 100644
  
        // initialize client event queue. this must be done very early
        // in main so that any other code which needs to enque an event
-@@ -2910,13 +2910,13 @@ int main (int argc, char * const argv[])
+@@ -2913,13 +2913,13 @@ int main (int argc, char * const argv[])
  
        // detect parent termination
        if (desktopMode)
@@ -14269,7 +14281,7 @@ index b4454f8..0641089 100644
              "RS_RPOSTBACK_PATH",
              string_utils::utf8ToSystem(rpostback.absolutePath()));
  
-@@ -2978,9 +2978,9 @@ int main (int argc, char * const argv[])
+@@ -2981,9 +2981,9 @@ int main (int argc, char * const argv[])
  
        // install home and doc dir overrides if requested (for debugger mode)
        if (!options.rHomeDirOverride().empty())
@@ -19803,6 +19815,41 @@ index ef41b8e..dccaa4a 100644
                         
  } // namespace profiler
  } // namespace modules
+diff --git a/src/cpp/session/modules/SessionRCompletions.cpp b/src/cpp/session/modules/SessionRCompletions.cpp
+index 1743b14..fb22438 100644
+--- a/src/cpp/session/modules/SessionRCompletions.cpp
++++ b/src/cpp/session/modules/SessionRCompletions.cpp
+@@ -27,7 +27,7 @@
+ 
+ #include <session/SessionModuleContext.hpp>
+ 
+-using namespace core;
++using namespace rscore;
+ 
+ namespace session {
+ namespace modules {
+diff --git a/src/cpp/session/modules/SessionRCompletions.hpp b/src/cpp/session/modules/SessionRCompletions.hpp
+index 8dc81f2..3e188c6 100644
+--- a/src/cpp/session/modules/SessionRCompletions.hpp
++++ b/src/cpp/session/modules/SessionRCompletions.hpp
+@@ -16,7 +16,7 @@
+ #ifndef SESSION_R_COMPLETIONS_HPP
+ #define SESSION_R_COMPLETIONS_HPP
+ 
+-namespace core {
++namespace rscore {
+ class Error;
+ }
+ 
+@@ -24,7 +24,7 @@ namespace session {
+ namespace modules {
+ namespace r_completions {
+ 
+-core::Error initialize();
++rscore::Error initialize();
+ 
+ } // namespace r_completions
+ } // namespace modules
 diff --git a/src/cpp/session/modules/SessionRHooks.cpp b/src/cpp/session/modules/SessionRHooks.cpp
 index 7e5c51c..85c44da 100644
 --- a/src/cpp/session/modules/SessionRHooks.cpp
@@ -21712,7 +21759,7 @@ index a036386..5455c8a 100644
  } // namespace source_cpp
  } // namespace build
 diff --git a/src/cpp/session/modules/clang/CodeCompletion.cpp b/src/cpp/session/modules/clang/CodeCompletion.cpp
-index faa9e17..f38a6a3 100644
+index 388286d..bf1d626 100644
 --- a/src/cpp/session/modules/clang/CodeCompletion.cpp
 +++ b/src/cpp/session/modules/clang/CodeCompletion.cpp
 @@ -24,8 +24,8 @@
@@ -21726,16 +21773,16 @@ index faa9e17..f38a6a3 100644
  
  namespace session {
  namespace modules { 
-@@ -33,7 +33,7 @@ namespace clang {
- 
- namespace {
+@@ -44,7 +44,7 @@ std::string friendlyCompletionText(std::string text)
+    return text;
+ }
  
 -core::json::Object toJson(const CodeCompleteResult& result)
 +rscore::json::Object toJson(const CodeCompleteResult& result)
  {
     json::Object resultJson;
     resultJson["kind"] = result.getKind();
-@@ -48,8 +48,8 @@ core::json::Object toJson(const CodeCompleteResult& result)
+@@ -59,8 +59,8 @@ core::json::Object toJson(const CodeCompleteResult& result)
  } // anonymous namespace
  
  
@@ -21745,7 +21792,7 @@ index faa9e17..f38a6a3 100644
 +                        rscore::json::JsonRpcResponse* pResponse)
  {
     // get params
-    std::string docPath;
+    std::string docPath, userText;
 diff --git a/src/cpp/session/modules/clang/CodeCompletion.hpp b/src/cpp/session/modules/clang/CodeCompletion.hpp
 index 107f1e2..1b630aa 100644
 --- a/src/cpp/session/modules/clang/CodeCompletion.hpp
@@ -21761,6 +21808,62 @@ index 107f1e2..1b630aa 100644
     
  } // namespace clang
  } // namepace handlers
+diff --git a/src/cpp/session/modules/clang/Definitions.cpp b/src/cpp/session/modules/clang/Definitions.cpp
+index 6e55319..e49337e 100644
+--- a/src/cpp/session/modules/clang/Definitions.cpp
++++ b/src/cpp/session/modules/clang/Definitions.cpp
+@@ -24,8 +24,8 @@
+ 
+ #include "RCompilationDatabase.hpp"
+ 
+-using namespace core;
+-using namespace core::libclang;
++using namespace rscore;
++using namespace rscore::libclang;
+ 
+ namespace session {
+ namespace modules { 
+@@ -120,15 +120,15 @@ CXChildVisitResult cursorVisitor(CXCursor cxCursor,
+ }
+ 
+ 
+-void fileChangeHandler(const core::system::FileChangeEvent& event)
++void fileChangeHandler(const rscore::system::FileChangeEvent& event)
+ {
+    // always remove existing definitions
+    std::string file = event.fileInfo().absolutePath();
+    s_definitionsByFile.erase(file);
+ 
+    // if this is an add or an update then re-index
+-   if (event.type() == core::system::FileChangeEvent::FileAdded ||
+-       event.type() == core::system::FileChangeEvent::FileModified)
++   if (event.type() == rscore::system::FileChangeEvent::FileAdded ||
++       event.type() == rscore::system::FileChangeEvent::FileModified)
+    {
+       // get the compilation arguments for this file and use them to
+       // create a translation unit
+@@ -146,7 +146,7 @@ void fileChangeHandler(const core::system::FileChangeEvent& event)
+                                              0 /* No diagnostics */);
+ 
+          // get args in form clang expects
+-         core::system::ProcessArgs argsArray(compileArgs);
++         rscore::system::ProcessArgs argsArray(compileArgs);
+ 
+          // parse the translation unit
+          CXTranslationUnit tu = libclang::clang().parseTranslationUnit(
+diff --git a/src/cpp/session/modules/clang/Definitions.hpp b/src/cpp/session/modules/clang/Definitions.hpp
+index 5e6689c..8911eae 100644
+--- a/src/cpp/session/modules/clang/Definitions.hpp
++++ b/src/cpp/session/modules/clang/Definitions.hpp
+@@ -23,7 +23,7 @@ namespace modules {
+ namespace clang {
+ namespace definitions {
+ 
+-core::Error initialize();
++rscore::Error initialize();
+ 
+ }
+ } // namespace clang
 diff --git a/src/cpp/session/modules/clang/GoToDefinition.cpp b/src/cpp/session/modules/clang/GoToDefinition.cpp
 index 5edf566..55c8a19 100644
 --- a/src/cpp/session/modules/clang/GoToDefinition.cpp
@@ -21792,7 +21895,7 @@ index 77aaa96..7891cd9 100644
  } // namespace clang
  } // namepace modules
 diff --git a/src/cpp/session/modules/clang/RCompilationDatabase.cpp b/src/cpp/session/modules/clang/RCompilationDatabase.cpp
-index 2d07a75..5ccad84 100644
+index 693709e..93f4ed8 100644
 --- a/src/cpp/session/modules/clang/RCompilationDatabase.cpp
 +++ b/src/cpp/session/modules/clang/RCompilationDatabase.cpp
 @@ -40,8 +40,8 @@
@@ -21842,8 +21945,8 @@ index 2d07a75..5ccad84 100644
     // Run R CMD SHLIB
     FilePath srcDir = pkgPath.childPath("src");
     FilePath tempSrcFile = srcDir.childPath(
--                                 core::system::generateUuid() + ".cpp");
-+                                 rscore::system::generateUuid() + ".cpp");
+-          kCompilationDbPrefix + core::system::generateUuid() + ".cpp");
++          kCompilationDbPrefix + rscore::system::generateUuid() + ".cpp");
     std::vector<std::string> compileArgs = argsForRCmdSHLIB(env, tempSrcFile);
  
     if (!compileArgs.empty())
@@ -21944,7 +22047,7 @@ index 2d07a75..5ccad84 100644
  }
  
  
-@@ -531,8 +531,8 @@ RCompilationDatabase::CompilationConfig
+@@ -534,8 +534,8 @@ RCompilationDatabase::CompilationConfig
     std::vector<std::string> args = baseCompilationArgs(true);
  
     // execute sourceCpp
@@ -21955,7 +22058,7 @@ index 2d07a75..5ccad84 100644
     Error error = executeSourceCpp(env, rcppPkg, srcFile, &result);
     if (error)
     {
-@@ -556,10 +556,10 @@ RCompilationDatabase::CompilationConfig
+@@ -559,10 +559,10 @@ RCompilationDatabase::CompilationConfig
  }
  
  std::vector<std::string> RCompilationDatabase::argsForRCmdSHLIB(
@@ -21968,7 +22071,7 @@ index 2d07a75..5ccad84 100644
     if (error)
     {
        LOG_ERROR(error);
-@@ -567,7 +567,7 @@ std::vector<std::string> RCompilationDatabase::argsForRCmdSHLIB(
+@@ -570,7 +570,7 @@ std::vector<std::string> RCompilationDatabase::argsForRCmdSHLIB(
     }
  
     // execute R CMD SHLIB
@@ -21977,7 +22080,7 @@ index 2d07a75..5ccad84 100644
     error = executeRCmdSHLIB(env, tempSrcFile, &result);
  
     // remove the temporary source file
-@@ -615,8 +615,8 @@ std::vector<std::string> RCompilationDatabase::rToolsArgs() const
+@@ -618,8 +618,8 @@ std::vector<std::string> RCompilationDatabase::rToolsArgs() const
     if (rToolsArgs_.empty())
     {
        // scan for Rtools
@@ -21988,7 +22091,7 @@ index 2d07a75..5ccad84 100644
        if (error)
           LOG_ERROR(error);
  
-@@ -651,11 +651,11 @@ std::vector<std::string> RCompilationDatabase::rToolsArgs() const
+@@ -654,11 +654,11 @@ std::vector<std::string> RCompilationDatabase::rToolsArgs() const
     return rToolsArgs_;
  }
  
@@ -22003,7 +22106,7 @@ index 2d07a75..5ccad84 100644
  #if defined(_WIN32)
     std::string warning;
     module_context::addRtoolsToPathIfNecessary(&env, &warning);
-@@ -684,7 +684,7 @@ std::vector<std::string> RCompilationDatabase::precompiledHeaderArgs(
+@@ -687,7 +687,7 @@ std::vector<std::string> RCompilationDatabase::precompiledHeaderArgs(
        LOG_ERROR(error);
        return std::vector<std::string>();
     }
@@ -22012,7 +22115,7 @@ index 2d07a75..5ccad84 100644
     precompiledDir = precompiledDir.childPath(pkgPath);
  
     // platform/rcpp version specific directory name
-@@ -731,7 +731,7 @@ std::vector<std::string> RCompilationDatabase::precompiledHeaderArgs(
+@@ -734,7 +734,7 @@ std::vector<std::string> RCompilationDatabase::precompiledHeaderArgs(
        std::string contents;
        boost::format fmt("#include <%1%.h>\n");
        contents.append(boost::str(fmt % pkgName));
@@ -22021,7 +22124,7 @@ index 2d07a75..5ccad84 100644
        if (error)
        {
           LOG_ERROR(error);
-@@ -746,7 +746,7 @@ std::vector<std::string> RCompilationDatabase::precompiledHeaderArgs(
+@@ -749,7 +749,7 @@ std::vector<std::string> RCompilationDatabase::precompiledHeaderArgs(
           args.push_back(stdArg);
  
        // run R CMD SHLIB
@@ -22030,7 +22133,7 @@ index 2d07a75..5ccad84 100644
        FilePath tempSrcFile = module_context::tempFile("clang", "cpp");
        std::vector<std::string> cArgs = argsForRCmdSHLIB(env, tempSrcFile);
        std::copy(cArgs.begin(), cArgs.end(), std::back_inserter(args));
-@@ -756,7 +756,7 @@ std::vector<std::string> RCompilationDatabase::precompiledHeaderArgs(
+@@ -759,7 +759,7 @@ std::vector<std::string> RCompilationDatabase::precompiledHeaderArgs(
        std::copy(pkgArgs.begin(), pkgArgs.end(), std::back_inserter(args));
  
        // create args array
@@ -22039,11 +22142,20 @@ index 2d07a75..5ccad84 100644
  
        CXIndex index = clang().createIndex(0,0);
  
+@@ -809,7 +809,7 @@ std::vector<std::string> RCompilationDatabase::precompiledHeaderArgs(
+    return args;
+ }
+ 
+-core::libclang::CompilationDatabase rCompilationDatabase()
++rscore::libclang::CompilationDatabase rCompilationDatabase()
+ {
+    static RCompilationDatabase instance;
+ 
 diff --git a/src/cpp/session/modules/clang/RCompilationDatabase.hpp b/src/cpp/session/modules/clang/RCompilationDatabase.hpp
-index 6b58efe..ea2a23e 100644
+index 7acb9c3..cf3e28d 100644
 --- a/src/cpp/session/modules/clang/RCompilationDatabase.hpp
 +++ b/src/cpp/session/modules/clang/RCompilationDatabase.hpp
-@@ -44,17 +44,17 @@ public:
+@@ -48,17 +48,17 @@ public:
  
  private:
  
@@ -22068,7 +22180,7 @@ index 6b58efe..ea2a23e 100644
  
     // struct used to represent compilation settings
     struct CompilationConfig
-@@ -64,14 +64,14 @@ private:
+@@ -68,14 +68,14 @@ private:
        std::string PCH;
     };
     CompilationConfig configForSourceCpp(const std::string& rcppPkg,
@@ -22087,8 +22199,17 @@ index 6b58efe..ea2a23e 100644
     std::vector<std::string> precompiledHeaderArgs(const std::string& pkgName,
                                                    const std::string& stdArg);
  
+@@ -100,7 +100,7 @@ private:
+    bool usePrecompiledHeaders_;
+ };
+ 
+-core::libclang::CompilationDatabase rCompilationDatabase();
++rscore::libclang::CompilationDatabase rCompilationDatabase();
+ 
+ 
+ } // namespace clang
 diff --git a/src/cpp/session/modules/clang/RSourceIndex.cpp b/src/cpp/session/modules/clang/RSourceIndex.cpp
-index e030984..45b8cf2 100644
+index 4c27853..12bfe80 100644
 --- a/src/cpp/session/modules/clang/RSourceIndex.cpp
 +++ b/src/cpp/session/modules/clang/RSourceIndex.cpp
 @@ -23,8 +23,8 @@
@@ -22102,15 +22223,6 @@ index e030984..45b8cf2 100644
  
  namespace session {
  namespace modules { 
-@@ -32,7 +32,7 @@ namespace clang {
- 
- namespace {
- 
--core::libclang::CompilationDatabase rCompilationDatabase()
-+rscore::libclang::CompilationDatabase rCompilationDatabase()
- {
-    static RCompilationDatabase instance;
- 
 diff --git a/src/cpp/session/modules/clang/RSourceIndex.hpp b/src/cpp/session/modules/clang/RSourceIndex.hpp
 index 77f31ed..aee4b61 100644
 --- a/src/cpp/session/modules/clang/RSourceIndex.hpp
@@ -22125,10 +22237,10 @@ index 77f31ed..aee4b61 100644
  } // namespace clang
  } // namepace handlers
 diff --git a/src/cpp/session/modules/clang/SessionClang.cpp b/src/cpp/session/modules/clang/SessionClang.cpp
-index 53388ed..26916b1 100644
+index abcae00..8271df1 100644
 --- a/src/cpp/session/modules/clang/SessionClang.cpp
 +++ b/src/cpp/session/modules/clang/SessionClang.cpp
-@@ -35,8 +35,8 @@
+@@ -36,8 +36,8 @@
  #include "CodeCompletion.hpp"
  #include "RSourceIndex.hpp"
  
