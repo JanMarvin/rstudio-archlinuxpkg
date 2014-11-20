@@ -24,7 +24,7 @@ source=('rstudio.desktop'
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
          'd8f8a5332e58f3163c6d86832f1c260a'
-         '75ec1a5ed921a79fdf5a95a9785b1db7')
+         '170c299b880778272d18a09c3fb9da59')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
