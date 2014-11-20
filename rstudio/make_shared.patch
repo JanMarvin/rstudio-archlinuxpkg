@@ -1,0 +1,36 @@
+diff --git a/src/cpp/session/modules/SessionErrors.cpp b/src/cpp/session/modules/SessionErrors.cpp
+index 5d8db71..4c72415 100644
+--- a/src/cpp/session/modules/SessionErrors.cpp
++++ b/src/cpp/session/modules/SessionErrors.cpp
+@@ -23,6 +23,7 @@
+ #include <r/ROptions.hpp>
+ 
+ #include <boost/bind.hpp>
++#include <boost/make_shared.hpp>
+ #include <session/SessionModuleContext.hpp>
+ #include <session/SessionUserSettings.hpp>
+ #include "SessionErrors.hpp"
+diff --git a/src/cpp/session/modules/SessionShinyViewer.cpp b/src/cpp/session/modules/SessionShinyViewer.cpp
+index 84b58d6..d38952f 100644
+--- a/src/cpp/session/modules/SessionShinyViewer.cpp
++++ b/src/cpp/session/modules/SessionShinyViewer.cpp
+@@ -17,6 +17,7 @@
+ 
+ #include <boost/format.hpp>
+ #include <boost/algorithm/string/predicate.hpp>
++#include <boost/make_shared.hpp>
+ 
+ #include <core/Error.hpp>
+ #include <core/Exec.hpp>
+diff --git a/src/cpp/session/modules/SessionBreakpoints.cpp b/src/cpp/session/modules/SessionBreakpoints.cpp
+index 951bdab..df2fe10 100644
+--- a/src/cpp/session/modules/SessionBreakpoints.cpp
++++ b/src/cpp/session/modules/SessionBreakpoints.cpp
+@@ -21,6 +21,7 @@
+ #include <boost/format.hpp>
+ #include <boost/utility.hpp>
+ #include <boost/foreach.hpp>
++#include <boost/make_shared.hpp>
+ 
+ #include <core/Error.hpp>
+ #include <core/Log.hpp>
