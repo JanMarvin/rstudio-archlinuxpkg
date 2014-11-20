@@ -18,11 +18,13 @@ conflicts=('rstudio-desktop')
 install=rstudio.install
 source=('rstudio.desktop'
         'rstudio.png'
+        'make_shared.patch'
         'boost156.patch')
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         'e54626e3776dd4fe56924fa5434a4271')
+         'd8f8a5332e58f3163c6d86832f1c260a'
+         '75ec1a5ed921a79fdf5a95a9785b1db7')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -52,6 +54,8 @@ prepare() {
   git clone ../$_gitname
   cd $_gitname
   git apply --whitespace=fix ../boost156.patch
+  git apply ../make_shared.patch
+
   cd ..
 
   # get version information from git
@@ -122,7 +126,7 @@ prepare() {
   msg "Starting cmake …"
   #-DQT_QMAKE_EXECUTABLE=/usr/lib/qt/qmake \
   cmake -DRSTUDIO_TARGET=Desktop \
-        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_BUILD_TYPE=Debug \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio \
         ..
 }
