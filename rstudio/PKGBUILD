@@ -20,13 +20,13 @@ source=('rstudio.desktop'
         'rstudio.png'
         'make_shared.patch'
         'boostsignals.patch'
-        'boost156.patch')
+        'prefs.patch')
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
          '4ca3b9754432ffe794ddb0137b8fc528'
-         '99d232064ba25dc5bf9e832e50a97283'
-         '1996e860448fb5e1bd93f08dc14fd618')
+         'e1fb5c4f3a69e2e68ed6805279940f50'
+         '4092cb00318781b8e9a421535952648e')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -55,9 +55,25 @@ prepare() {
   rm -rf rstudio
   git clone ../$_gitname
   cd $_gitname
-  git apply --whitespace=fix ../boost156.patch
+
   git apply --whitespace=fix ../boostsignals.patch
   git apply ../make_shared.patch
+
+  # Gentoo fixes
+  # http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/sci-mathematics/rstudio/
+  git apply ../prefs.patch
+
+  # make sure icons and mime stuff are with prefix
+  sed -i \
+    -e "s:/usr:$pkgdir/usr:g" \
+    CMakeGlobals.txt src/cpp/desktop/CMakeLists.txt || die
+	
+  # specify that namespace core the is in the global namespace and not
+  # relative to some other namespace (like its ::core not ::boost::core)
+  find . \( -name *.cpp -or -name *.hpp \) -exec sed \
+    -e 's@<core::@< ::core::@g' -e 's@\([^:]\)core::@\1::core::@g' -i {} \;
+  
+
 
   cd ..
 
@@ -99,22 +115,26 @@ prepare() {
   # Copy packrat
   mkdir -p "$srcdir/$_gitname/dependencies/common/packrat"
   cp "$srcdir/../$_gitname/dependencies/common/"packrat_*.tar.gz "$srcdir/$_gitname/dependencies/common"
+  # Copy rsconnect
+  mkdir -p "$srcdir/$_gitname/dependencies/common/rsconnect"
+  cp "$srcdir/../$_gitname/dependencies/common/"rsconnect_*.tar.gz "$srcdir/$_gitname/dependencies/common"
+
   ## Copy shiny
   mkdir -p "$srcdir/$_gitname/dependencies/common/shinyapps"
   cp "$srcdir/../$_gitname/dependencies/common/"shinyapps_*.tar.gz "$srcdir/$_gitname/dependencies/common"
 
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
   mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-23"
-  ln -s /opt/mathjax/* "$srcdir/$_gitname/dependencies/common/mathjax-23"
+  ln -s "/opt/mathjax/"* "$srcdir/$_gitname/dependencies/common/mathjax-23"
 
   # Clang
   mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/3.5"
   ln -s "/usr/lib/libclang.so" "$srcdir/$_gitname/dependencies/common/libclang/3.5"
 
   mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/3.5"
-  ln -s /usr/lib/clang/3.5.0/include/* "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/3.5"
+  ln -s "/usr/lib/clang/3.5.0/include/"* "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/3.5"
   mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/libc++/3.5"
-  ln -s /usr/include/c++/v1/* "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/libc++/3.5"
+  ln -s "/usr/include/c++/v1/"* "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/libc++/3.5"
 
   # Desktop, Release and  PATH=/opt/rstudio
   cd "$srcdir/$_gitname"
@@ -126,25 +146,35 @@ prepare() {
              s/CPACK_PACKAGE_VERSION_PATCH \"9\"/CPACK_PACKAGE_VERSION_PATCH \"$patch\"/g" \
              "$srcdir/$_gitname/CMakeGlobals.txt"
 
-  msg "Starting cmake …"
-  #-DQT_QMAKE_EXECUTABLE=/usr/lib/qt/qmake \
-  cmake -DRSTUDIO_TARGET=Desktop \
-        -DCMAKE_BUILD_TYPE=Debug \
-        -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio \
-        ..
 }
 
 build(){
   LANG=POSIX
 
   cd "$srcdir/$_gitname/build/"
+
+  msg "Starting cmake …"
+  cmake -DRSTUDIO_TARGET=Desktop \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio \
+        ..
+
   msg "Starting make"
 
   make -j4
 }
 
 package() {
+    
+  LANG=POSIX
   cd "$srcdir/$_gitname/build/"
+
+  # mkdir -p "$pkgdir/etc/.java/.systemPrefs"
+  # mkdir -p "$pkgdir/etc/.java/.userPrefs"
+  # chmod -R 777 "$pkgdir/etc/.java"
+  # chown -R root:root "$pkgdir/etc/.java"
+  #
+  # export JVM_ARGS=${JVM_ARGS}-Djava.util.prefs.systemRoot="$pkgdir/etc/.java/systemPrefs"-Djava.util.prefs.userRoot="$pkgdir/etc/.java/.userPrefs"
 
   msg "Starting install"
   make DESTDIR="$pkgdir/" install
@@ -154,13 +184,13 @@ package() {
   install -Dm644 "$srcdir/rstudio.desktop" "$pkgdir/usr/share/applications/rstudio.desktop"
   install -Dm644 "$srcdir/rstudio.png" "$pkgdir/usr/share/pixmaps/rstudio.png"
   
-  msg "Cleaning Sources …"
-  rm -rf "$srcdir/$_gitname/build"
-  rm "$srcdir/$_gitname/src/gwt/lib/gwt"
-  rm "$srcdir/$_gitname/src/gwt/lib/gin"
-  rm $srcdir/$_gitname/src/gwt/lib/junit-4.93b.jar
-  rm -r "$srcdir/$_gitname/src/gwt/lib"
-  rm -r "$srcdir/$_gitname/dependencies/common/dictionaries/"
-  rm -r "$srcdir/$_gitname/dependencies/common/mathjax-23"
+  # msg "Cleaning Sources …"
+  # rm -rf "$srcdir/$_gitname/build"
+  # rm "$srcdir/$_gitname/src/gwt/lib/gwt"
+  # rm "$srcdir/$_gitname/src/gwt/lib/gin"
+  # rm "$srcdir/$_gitname/src/gwt/lib/junit-4.93b.jar"
+  # rm -r "$srcdir/$_gitname/src/gwt/lib"
+  # rm -r "$srcdir/$_gitname/dependencies/common/dictionaries/"
+  # rm -r "$srcdir/$_gitname/dependencies/common/mathjax-23"
 
 }
