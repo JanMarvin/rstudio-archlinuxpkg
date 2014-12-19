@@ -157,6 +157,7 @@ build(){
   cmake -DRSTUDIO_TARGET=Desktop \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio \
+        -DQT_QMAKE_EXECUTABLE=/usr/lib/qt/bin/qmake \
         ..
 
   msg "Starting make"
