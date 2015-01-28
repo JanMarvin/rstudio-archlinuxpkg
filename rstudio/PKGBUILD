@@ -25,7 +25,7 @@ source=('rstudio.desktop'
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
          '9c5504ec85d0897845b8dfc105788b3f'
-         'add7ca49a983f1e58070e464f0f8b0a2'
+         'c72ea229419928f6b6663c3390a47b27'
          '4092cb00318781b8e9a421535952648e')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
@@ -45,22 +45,19 @@ prepare() {
     git clone "$_gitroot" "$_gitname"
   fi
   
-  # build rmarkdown outside of the build tree
+  # build additional packages outside of the build tree
   cd dependencies/common
   msg "Install additional packages (install-packages)"
   ./install-packages
 
-  # srcdir
   cd "$srcdir"
   rm -rf rstudio
   git clone ../$_gitname
   cd $_gitname
 
+  # boost fixes. boostsignals2 and includings for make_shared
   msg "Fixes for boost"
-  msg2 "Fix 1"
   git apply --whitespace=fix ../boostsignals.patch
-
-  msg2 "Fix 2"
   git apply --whitespace=fix ../make_shared.patch
 
 
@@ -74,13 +71,6 @@ prepare() {
     -e "s:/usr:$pkgdir/usr:g" \
     CMakeGlobals.txt src/cpp/desktop/CMakeLists.txt || die
 	
-  # specify that namespace core the is in the global namespace and not
-  # relative to some other namespace (like its ::core not ::boost::core)
-  find . \( -name *.cpp -or -name *.hpp \) -exec sed \
-    -e 's@<core::@< ::core::@g' -e 's@\([^:]\)core::@\1::core::@g' -i {} \;
-  
-
-
   cd ..
 
   # get version information from git
@@ -114,39 +104,38 @@ prepare() {
   rm -rf "pandoc/" && mkdir pandoc && cd pandoc
   ln -s "/usr/bin/pandoc" .
   
-  msg "rmarkdown"
-  # Copy rmarkdown.tar.gz (folder is empty and not needed, cmake checks for it. These packages are not included.)
-  mkdir -p "$srcdir/$_gitname/dependencies/common/rmarkdown"
-  cp "$srcdir/../$_gitname/dependencies/common/"rmarkdown_*.tar.gz "$srcdir/$_gitname/dependencies/common"
+  msg "create packages"
+  # folderis are empty and not needed, cmake checks for them.
+  # (These packages are not included!)
+
   # Copy packrat
   mkdir -p "$srcdir/$_gitname/dependencies/common/packrat"
   cp "$srcdir/../$_gitname/dependencies/common/"packrat_*.tar.gz "$srcdir/$_gitname/dependencies/common"
   # Copy rsconnect
   mkdir -p "$srcdir/$_gitname/dependencies/common/rsconnect"
   cp "$srcdir/../$_gitname/dependencies/common/"rsconnect_*.tar.gz "$srcdir/$_gitname/dependencies/common"
-
-  ## Copy shiny
+  # Copy shiny
   mkdir -p "$srcdir/$_gitname/dependencies/common/shinyapps"
   cp "$srcdir/../$_gitname/dependencies/common/"shinyapps_*.tar.gz "$srcdir/$_gitname/dependencies/common"
-
+  # Create empty dictionaries folder
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
+  # Add mathjax
   mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-23"
   ln -s "/opt/mathjax/"* "$srcdir/$_gitname/dependencies/common/mathjax-23"
-
-  # Clang
+  # libclang.so
   mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/3.5"
   ln -s "/usr/lib/libclang.so" "$srcdir/$_gitname/dependencies/common/libclang/3.5"
-
+  # Clang headers
   mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/3.5"
   ln -s "/usr/lib/clang/3.5.0/include/"* "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/3.5"
   mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/libc++/3.5"
   ln -s "/usr/include/c++/v1/"* "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/libc++/3.5"
 
-  # Desktop, Release and  PATH=/opt/rstudio
+  # Desktop, Release
   cd "$srcdir/$_gitname"
   mkdir build && cd build
 
-  # another sed hack for correct version information in rstudio
+  # version information in rstudio
   sed -i -e "s/CPACK_PACKAGE_VERSION_MAJOR \"99\"/CPACK_PACKAGE_VERSION_MAJOR \"$major\"/g; \
              s/CPACK_PACKAGE_VERSION_MINOR \"9\"/CPACK_PACKAGE_VERSION_MINOR \"$minor\"/g; \
              s/CPACK_PACKAGE_VERSION_PATCH \"9\"/CPACK_PACKAGE_VERSION_PATCH \"$patch\"/g" \
@@ -167,7 +156,6 @@ build(){
         ..
 
   msg "Starting make"
-
   make -j4
 }
 
@@ -175,13 +163,6 @@ package() {
     
   LANG=POSIX
   cd "$srcdir/$_gitname/build/"
-
-  # mkdir -p "$pkgdir/etc/.java/.systemPrefs"
-  # mkdir -p "$pkgdir/etc/.java/.userPrefs"
-  # chmod -R 777 "$pkgdir/etc/.java"
-  # chown -R root:root "$pkgdir/etc/.java"
-  #
-  # export JVM_ARGS=${JVM_ARGS}-Djava.util.prefs.systemRoot="$pkgdir/etc/.java/systemPrefs"-Djava.util.prefs.userRoot="$pkgdir/etc/.java/.userPrefs"
 
   msg "Starting install"
   make DESTDIR="$pkgdir/" install
