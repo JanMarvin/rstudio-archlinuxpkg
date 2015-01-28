@@ -1,0 +1,32 @@
+diff --git a/src/gwt/src/org/rstudio/core/client/theme/res/handCursor.png b/src/gwt/src/org/rstudio/core/client/theme/res/handCursor.png
+deleted file mode 100644
+index 6b0639c..0000000
+Binary files a/src/gwt/src/org/rstudio/core/client/theme/res/handCursor.png and /dev/null differ
+diff --git a/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css b/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css
+index 915fb2f..ebf01fe 100644
+--- a/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css
++++ b/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css
+@@ -107,8 +107,6 @@
+ @url PENDINGBREAKPOINT pendingBreakpoint;
+ @url EXECUTINGLINE executingLine;
+ 
+-@url HANDCURSOR handCursor;
+-
+ @url MACCHECK macCheck;
+ 
+ body.windows, body.macintosh, body.linux {}
+@@ -209,12 +207,12 @@ button {
+ 
+ @if rstudio.desktop true {
+ .linux button {
+-   cursor: HANDCURSOR 9 5, pointer;
++   cursor: hand 9 5, pointer;
+ }
+ 
+ .linux .handCursor {
+     
+-   cursor: HANDCURSOR 9 5, pointer;
++   cursor: hand 9 5, pointer;
+ }
+ }
+ 
