@@ -26,7 +26,7 @@ source=('rstudio.desktop'
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
          'c72ea229419928f6b6663c3390a47b27'
-         'f1cd7e3d88378c2fdf0bed9f30a92878'
+         'c2dff00bbc11793ccbdb943a44e0253d'
          '9c5504ec85d0897845b8dfc105788b3f'
          '4092cb00318781b8e9a421535952648e')
 
@@ -117,9 +117,6 @@ prepare() {
   # Copy rsconnect
   mkdir -p "$srcdir/$_gitname/dependencies/common/rsconnect"
   cp "$srcdir/../$_gitname/dependencies/common/"rsconnect_*.tar.gz "$srcdir/$_gitname/dependencies/common"
-  # Copy shiny
-  mkdir -p "$srcdir/$_gitname/dependencies/common/shinyapps"
-  cp "$srcdir/../$_gitname/dependencies/common/"shinyapps_*.tar.gz "$srcdir/$_gitname/dependencies/common"
   # Create empty dictionaries folder
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
   # Add mathjax
