@@ -1,17 +1,6 @@
 cd rstudio
 git checkout -b sed
 
-# find . \( -name *.cpp -or -name *.cpp.in -or -name *.hpp \) -exec sed \
-#         -e 's/<core::/<rscore::/g' \
-#         -e 's/namespace core/namespace rscore/g' \
-#         -e 's/core::/rscore::/g' \
-#         -e 's/rsrscore/rscore/g' \
-#         -i {} \;
-# 
-# git add *
-# git commit -m "boost fix"
-# git diff HEAD^ HEAD > ../boost156.patch
-
 find . \( -name *.cpp -or -name *.cpp.in -or -name *.hpp \) -exec sed \
         -e 's/boost::signals::/boost::signals2::/g' \
         -e 's/signals.hpp/signals2.hpp/g' \
