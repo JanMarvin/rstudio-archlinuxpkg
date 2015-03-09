@@ -1,5 +1,5 @@
 diff --git a/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css b/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css
-index 915fb2f..ebf01fe 100644
+index 644f7d9..7954c13 100644
 --- a/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css
 +++ b/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css
 @@ -107,8 +107,6 @@
@@ -9,9 +9,9 @@ index 915fb2f..ebf01fe 100644
 -@url HANDCURSOR handCursor;
 -
  @url MACCHECK macCheck;
+ @url RADIOBUTTONON radioButtonOn;
  
- body.windows, body.macintosh, body.linux {}
-@@ -209,12 +207,12 @@ button {
+@@ -216,12 +214,12 @@ button {
  
  @if rstudio.desktop true {
  .linux button {
