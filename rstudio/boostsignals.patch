@@ -159,7 +159,7 @@ index 1d4bf31..bfabcf9 100644
  #include <core/Thread.hpp>
  
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index a0c54a7..ad0a262 100644
+index b7483d7..27cc0cb 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -32,7 +32,7 @@
@@ -172,7 +172,7 @@ index a0c54a7..ad0a262 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index 5e917fa..e53e9d2 100644
+index c3830a3..efe53a6 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -184,7 +184,7 @@ index 5e917fa..e53e9d2 100644
  #include <boost/format.hpp>
  #include <boost/numeric/conversion/cast.hpp>
  
-@@ -471,13 +471,13 @@ private:
+@@ -473,13 +473,13 @@ private:
     
     int nextGroup_; 
     
@@ -234,7 +234,7 @@ index 5f1d5c0..581e34d 100644
  
     // regex for prompt detection
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index 4a42fef..3530ce6 100644
+index f00ab4b..4a7f477 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
 @@ -20,7 +20,7 @@
@@ -245,8 +245,8 @@ index 4a42fef..3530ce6 100644
 +#include <boost/signals2.hpp>
  #include <boost/shared_ptr.hpp>
  
- #include <core/system/System.hpp>
-@@ -285,24 +285,24 @@ struct firstNonEmpty
+ #include <core/HtmlUtils.hpp>
+@@ -289,24 +289,24 @@ struct firstNonEmpty
  // session events
  struct Events : boost::noncopyable
  {
@@ -287,7 +287,7 @@ index 4a42fef..3530ce6 100644
  };
  
 diff --git a/src/cpp/session/include/session/SessionSourceDatabase.hpp b/src/cpp/session/include/session/SessionSourceDatabase.hpp
-index 611e79b..cf813e2 100644
+index 2edd467..0ce4a28 100644
 --- a/src/cpp/session/include/session/SessionSourceDatabase.hpp
 +++ b/src/cpp/session/include/session/SessionSourceDatabase.hpp
 @@ -21,7 +21,7 @@
@@ -299,7 +299,7 @@ index 611e79b..cf813e2 100644
  
  #include <core/FilePath.hpp>
  #include <core/json/Json.hpp>
-@@ -167,9 +167,9 @@ core::Error removeAll();
+@@ -177,9 +177,9 @@ core::Error removeAll();
  // source database events
  struct Events : boost::noncopyable
  {
@@ -313,7 +313,7 @@ index 611e79b..cf813e2 100644
  
  Events& events();
 diff --git a/src/cpp/session/include/session/SessionUserSettings.hpp b/src/cpp/session/include/session/SessionUserSettings.hpp
-index 67ee4ee..1e3d6d2 100644
+index a7243ef..524c071 100644
 --- a/src/cpp/session/include/session/SessionUserSettings.hpp
 +++ b/src/cpp/session/include/session/SessionUserSettings.hpp
 @@ -20,7 +20,7 @@
@@ -335,7 +335,7 @@ index 67ee4ee..1e3d6d2 100644
  public:
     // COPYING: boost::noncopyable
 diff --git a/src/cpp/session/include/session/projects/SessionProjects.hpp b/src/cpp/session/include/session/projects/SessionProjects.hpp
-index 776885f..02e3c2b 100644
+index a73ab97..a38c492 100644
 --- a/src/cpp/session/include/session/projects/SessionProjects.hpp
 +++ b/src/cpp/session/include/session/projects/SessionProjects.hpp
 @@ -22,7 +22,7 @@
@@ -347,7 +347,7 @@ index 776885f..02e3c2b 100644
  
  #include <core/FileInfo.hpp>
  #include <core/FilePath.hpp>
-@@ -207,10 +207,10 @@ private:
+@@ -206,10 +206,10 @@ private:
  
     bool hasFileMonitor_;
     std::vector<std::string> monitorSubscribers_;

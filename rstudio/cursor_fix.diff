@@ -1,17 +1,17 @@
 diff --git a/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css b/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css
-index 644f7d9..7954c13 100644
+index 859ca83..d9df1af 100644
 --- a/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css
 +++ b/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css
-@@ -107,8 +107,6 @@
- @url PENDINGBREAKPOINT pendingBreakpoint;
- @url EXECUTINGLINE executingLine;
+@@ -117,8 +117,6 @@
+ @url WARNINGDARK syntaxWarningDark;
+ @url ERRORDARK syntaxErrorDark;
  
 -@url HANDCURSOR handCursor;
 -
  @url MACCHECK macCheck;
  @url RADIOBUTTONON radioButtonOn;
  
-@@ -216,12 +214,12 @@ button {
+@@ -226,12 +224,12 @@ button {
  
  @if rstudio.desktop true {
  .linux button {
