@@ -48,10 +48,10 @@ build() {
 package() { 
   cd "${pkgdir}"
   install -d "${pkgdir}/usr/bin"
-  cd "${pkgdir}/usr/bin"
+  cd "${pkgdir}"
 
   msg2 "Installing pandoc..."
-  cp -r "${srcdir}/${_pkgname}-${pkgver}/usr/bin" .
+  cp -r "${srcdir}/${_pkgname}-${pkgver}/usr/bin" "${pkgdir}/usr" 
 
 
   msg2 "Installing man pages..."
