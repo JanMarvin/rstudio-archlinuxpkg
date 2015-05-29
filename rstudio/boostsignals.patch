@@ -146,7 +146,7 @@ index 8657959..7241522 100644
     // unit conversion function
     UnitConversionFunctions convert_;
 diff --git a/src/cpp/server/include/server/ServerSessionManager.hpp b/src/cpp/server/include/server/ServerSessionManager.hpp
-index 1d4bf31..bfabcf9 100644
+index 5f279c0..1bd9f5b 100644
 --- a/src/cpp/server/include/server/ServerSessionManager.hpp
 +++ b/src/cpp/server/include/server/ServerSessionManager.hpp
 @@ -20,7 +20,7 @@
@@ -159,7 +159,7 @@ index 1d4bf31..bfabcf9 100644
  #include <core/Thread.hpp>
  
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index b7483d7..27cc0cb 100644
+index 470b8bc..c0d2bed 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -32,7 +32,7 @@
@@ -172,7 +172,7 @@ index b7483d7..27cc0cb 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index c3830a3..efe53a6 100644
+index c60f785..fe7de9a 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -234,7 +234,7 @@ index 5f1d5c0..581e34d 100644
  
     // regex for prompt detection
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index f00ab4b..4a7f477 100644
+index 274af11..e2675ee 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
 @@ -20,7 +20,7 @@
@@ -246,7 +246,7 @@ index f00ab4b..4a7f477 100644
  #include <boost/shared_ptr.hpp>
  
  #include <core/HtmlUtils.hpp>
-@@ -289,24 +289,24 @@ struct firstNonEmpty
+@@ -289,25 +289,25 @@ struct firstNonEmpty
  // session events
  struct Events : boost::noncopyable
  {
@@ -263,6 +263,7 @@ index f00ab4b..4a7f477 100644
                                               onConsoleOutput;
 -   boost::signal<void (ChangeSource)>        onDetectChanges;
 -   boost::signal<void (core::FilePath)>      onSourceEditorFileSaved;
+-   boost::signal<void (core::FilePath)>      onOpenDocument;
 -   boost::signal<void(bool)>                 onDeferredInit;
 -   boost::signal<void(bool)>                 afterSessionInitHook;
 -   boost::signal<void(bool)>                 onBackgroundProcessing;
@@ -272,6 +273,7 @@ index f00ab4b..4a7f477 100644
 -   boost::signal<void ()>                    onPackageLibraryMutated;
 +   boost::signals2::signal<void (ChangeSource)>        onDetectChanges;
 +   boost::signals2::signal<void (core::FilePath)>      onSourceEditorFileSaved;
++   boost::signals2::signal<void (core::FilePath)>      onOpenDocument;
 +   boost::signals2::signal<void(bool)>                 onDeferredInit;
 +   boost::signals2::signal<void(bool)>                 afterSessionInitHook;
 +   boost::signals2::signal<void(bool)>                 onBackgroundProcessing;
@@ -313,7 +315,7 @@ index 2edd467..0ce4a28 100644
  
  Events& events();
 diff --git a/src/cpp/session/include/session/SessionUserSettings.hpp b/src/cpp/session/include/session/SessionUserSettings.hpp
-index a7243ef..524c071 100644
+index f7803fe..5259fbb 100644
 --- a/src/cpp/session/include/session/SessionUserSettings.hpp
 +++ b/src/cpp/session/include/session/SessionUserSettings.hpp
 @@ -20,7 +20,7 @@
@@ -335,7 +337,7 @@ index a7243ef..524c071 100644
  public:
     // COPYING: boost::noncopyable
 diff --git a/src/cpp/session/include/session/projects/SessionProjects.hpp b/src/cpp/session/include/session/projects/SessionProjects.hpp
-index a73ab97..a38c492 100644
+index 3e697e8..fd99e8b 100644
 --- a/src/cpp/session/include/session/projects/SessionProjects.hpp
 +++ b/src/cpp/session/include/session/projects/SessionProjects.hpp
 @@ -22,7 +22,7 @@
@@ -347,7 +349,7 @@ index a73ab97..a38c492 100644
  
  #include <core/FileInfo.hpp>
  #include <core/FilePath.hpp>
-@@ -206,10 +206,10 @@ private:
+@@ -199,10 +199,10 @@ private:
  
     bool hasFileMonitor_;
     std::vector<std::string> monitorSubscribers_;
