@@ -1,7 +1,7 @@
 # Maintainer: Jan Marvin Garbuszus <jan[dot]garbuszus[at]ruhr-uni-bochum[dot]de>
 pkgname=pandoc-deb
 _pkgname=pandoc
-pkgver=1.13.2
+pkgver=1.14.0.1
 pkgrel=1
 pkgdesc="general markup converter
  Pandoc is a Haskell library for converting from one markup
@@ -27,7 +27,7 @@ replaces=()
 backup=()
 install=''
 source=("https://github.com/jgm/pandoc/releases/download/${pkgver}/${_pkgname}-${pkgver}-${pkgrel}-amd64.deb")
-md5sums=('90e22cf8291d7444fb34d0a41c49dcf6')
+md5sums=('7aa15b073893300595030aa7817e2c2d')
 
 build() {
   cd "${srcdir}"
@@ -42,7 +42,6 @@ build() {
   gunzip *.gz
   cd "../man5"
   gunzip *.gz
-
 }
 
 package() { 
@@ -53,7 +52,6 @@ package() {
   msg2 "Installing pandoc..."
   cp -r "${srcdir}/${_pkgname}-${pkgver}/usr/bin" "${pkgdir}/usr" 
 
-
   msg2 "Installing man pages..."
   cd "${srcdir}/${_pkgname}-${pkgver}/usr/share"
   install -Dm644 {,"$pkgdir"/usr/share/}man/man1/pandoc.1
@@ -63,9 +61,6 @@ package() {
   msg2 "Installing licenses..."
   install -d "${pkgdir}/usr/share/licenses/${pkgname}"
   cp -r     "${srcdir}/${_pkgname}-${pkgver}/usr/share/doc"/*/* "${pkgdir}"/usr/share/licenses/${pkgname}
-
-  # cleaning
-  rm -rf "${srcdir}/${_pkgname}-${pkgver}"
 }
 
 # vim:set ts=2 sw=2 et:
