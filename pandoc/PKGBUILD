@@ -1,7 +1,7 @@
 # Maintainer: Jan Marvin Garbuszus <jan[dot]garbuszus[at]ruhr-uni-bochum[dot]de>
 pkgname=pandoc-deb
 _pkgname=pandoc
-pkgver=1.14.1
+pkgver=1.15
 pkgrel=1
 pkgdesc="general markup converter
  Pandoc is a Haskell library for converting from one markup
@@ -27,7 +27,7 @@ replaces=()
 backup=()
 install=''
 source=("https://github.com/jgm/pandoc/releases/download/${pkgver}/${_pkgname}-${pkgver}-${pkgrel}-amd64.deb")
-md5sums=('88bb52a61f59c8efa890d9ffbc9e5e07')
+md5sums=('d0b6fac4062968d46f942922daa680a4')
 
 build() {
   cd "${srcdir}"
@@ -39,8 +39,6 @@ build() {
   msg2 "Man files"
   cd "${srcdir}/${_pkgname}-${pkgver}"
   cd "usr/share/man/man1/"
-  gunzip *.gz
-  cd "../man5"
   gunzip *.gz
 }
 
@@ -56,7 +54,6 @@ package() {
   cd "${srcdir}/${_pkgname}-${pkgver}/usr/share"
   install -Dm644 {,"$pkgdir"/usr/share/}man/man1/pandoc.1
   install -Dm644 {,"$pkgdir"/usr/share/}man/man1/pandoc-citeproc.1
-  install -Dm644 {,"$pkgdir"/usr/share/}man/man5/pandoc_markdown.5
 
   msg2 "Installing licenses..."
   install -d "${pkgdir}/usr/share/licenses/${pkgname}"
