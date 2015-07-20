@@ -38,16 +38,16 @@ _gitname="rstudio"
 prepare() {
   cd $srcdir/..
 
-#  # Fetch Sources
-#  if [ -d "$_gitname" ] ; then
-#    msg "Updating repository from server …" 
+  # Fetch Sources
+  if [ -d "$_gitname" ] ; then
+    msg "Updating repository from server …" 
     cd "$_gitname"
-#    # git reset required for the sed-gin-hack
-#    git reset --hard && git pull
-#  else
-#    msg "Cloning from GIT server …"
-#    git clone "$_gitroot" "$_gitname"
-#  fi
+    # git reset required for the sed-gin-hack
+    git reset --hard && git pull
+  else
+    msg "Cloning from GIT server …"
+    git clone "$_gitroot" "$_gitname"
+  fi
   
   # build additional packages outside of the build tree
   cd dependencies/common
