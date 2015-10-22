@@ -17,7 +17,7 @@ index e7d2418..ae3a331 100644
 @@ -109,6 +110,7 @@
           </classpath>
           <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
-          <jvmarg value="-Xmx1024M"/>
+          <jvmarg value="-Xmx1536M"/>
 +         <jvmarg value="-Djava.util.prefs.userRoot=${env.T}"/>
           <arg value="-war"/>
           <arg value="www"/>
