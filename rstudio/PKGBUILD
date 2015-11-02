@@ -125,6 +125,9 @@ prepare() {
   # Copy rsconnect
   mkdir -p "$srcdir/$_gitname/dependencies/common/rsconnect"
   cp "$srcdir/../$_gitname/dependencies/common/"rsconnect_*.tar.gz "$srcdir/$_gitname/dependencies/common"
+  # Copy packrat
+  mkdir -p "$srcdir/$_gitname/dependencies/common/packrat"
+  cp "$srcdir/../$_gitname/dependencies/common/"packrat_*.tar.gz "$srcdir/$_gitname/dependencies/common"
   # Create empty dictionaries folder
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
   # Add mathjax
