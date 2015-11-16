@@ -1,0 +1,380 @@
+diff --git a/src/cpp/r/include/r/session/RConsoleHistory.hpp b/src/cpp/r/include/r/session/RConsoleHistory.hpp
+index ef16c68..7ccb23d 100644
+--- a/src/cpp/r/include/r/session/RConsoleHistory.hpp
++++ b/src/cpp/r/include/r/session/RConsoleHistory.hpp
+@@ -20,7 +20,7 @@
+ 
+ #include <boost/utility.hpp>
+ #include <boost/circular_buffer.hpp>
+-#include <boost/signal.hpp>
++#include <boost/signals2/signal.hpp>
+ 
+ #include <core/json/Json.hpp>
+ 
+@@ -44,7 +44,7 @@ class ConsoleHistory : boost::noncopyable
+ public:
+    typedef boost::circular_buffer<std::string>::value_type value_type;
+    typedef boost::circular_buffer<std::string>::const_iterator const_iterator;
+-   typedef boost::signal<void (const std::string&)> AddSignal;
++   typedef boost::signals2::signal<void (const std::string&)> AddSignal;
+ 
+ private:
+    ConsoleHistory();
+@@ -86,7 +86,7 @@ public:
+    core::Error loadFromFile(const core::FilePath& filePath, bool verifyFile);
+    core::Error saveToFile(const core::FilePath& filePath) const;
+    
+-   boost::signals::connection connectOnAdd(
++   boost::signals2::connection connectOnAdd(
+                                  const AddSignal::slot_function_type& slot)
+    {
+       return onAdd_.connect(slot);
+diff --git a/src/cpp/r/include/r/session/RGraphics.hpp b/src/cpp/r/include/r/session/RGraphics.hpp
+index ed40e8a..77a2e3d 100644
+--- a/src/cpp/r/include/r/session/RGraphics.hpp
++++ b/src/cpp/r/include/r/session/RGraphics.hpp
+@@ -56,7 +56,7 @@ struct is_error_code_enum<rstudio::r::session::graphics::errc::errc_t>
+ #include <vector>
+ 
+ #include <boost/function.hpp>
+-#include <boost/signal.hpp>
++#include <boost/signals2/signal.hpp>
+ 
+ #include <core/Error.hpp>
+ #include <core/json/Json.hpp>
+@@ -150,7 +150,7 @@ public:
+    virtual void clear() = 0;
+ 
+    // subscribe to showManipulator event
+-   virtual boost::signal<void ()>& onShowManipulator() = 0;
++   virtual boost::signals2::signal<void ()>& onShowManipulator() = 0;
+ 
+    // set manipulator values
+    virtual void setPlotManipulatorValues(const core::json::Object& values) = 0;
+diff --git a/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp b/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
+index 17714bf..f8c1d59 100644
+--- a/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
++++ b/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
+@@ -531,7 +531,7 @@ void PlotManager::clear()
+ 
+ 
+ 
+-boost::signal<void ()>& PlotManager::onShowManipulator()
++boost::signals2::signal<void ()>& PlotManager::onShowManipulator()
+ {
+    return plotManipulatorManager().onShowManipulator();
+ }
+diff --git a/src/cpp/r/session/graphics/RGraphicsPlotManager.hpp b/src/cpp/r/session/graphics/RGraphicsPlotManager.hpp
+index 64bf949..df10962 100644
+--- a/src/cpp/r/session/graphics/RGraphicsPlotManager.hpp
++++ b/src/cpp/r/session/graphics/RGraphicsPlotManager.hpp
+@@ -22,7 +22,7 @@
+ #include <boost/utility.hpp>
+ #include <boost/shared_ptr.hpp>
+ #include <boost/function.hpp>
+-#include <boost/signal.hpp>
++#include <boost/signals2/signal.hpp>
+ #include <boost/regex.hpp>
+ #include <boost/circular_buffer.hpp>
+ 
+@@ -45,10 +45,10 @@ PlotManager& plotManager();
+ 
+ struct GraphicsDeviceEvents
+ {
+-   boost::signal<void (SEXP)> onNewPage; 
+-   boost::signal<void ()> onDrawing;
+-   boost::signal<void ()> onResized;
+-   boost::signal<void ()> onClosed;
++   boost::signals2::signal<void (SEXP)> onNewPage; 
++   boost::signals2::signal<void ()> onDrawing;
++   boost::signals2::signal<void ()> onResized;
++   boost::signals2::signal<void ()> onClosed;
+ };
+ 
+ class PlotManipulatorManager;
+@@ -104,7 +104,7 @@ public:
+    
+    virtual void clear();
+ 
+-   virtual boost::signal<void ()>& onShowManipulator() ;
++   virtual boost::signals2::signal<void ()>& onShowManipulator() ;
+    virtual void setPlotManipulatorValues(const core::json::Object& values);
+    virtual void manipulatorPlotClicked(int x, int y);
+ 
+diff --git a/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.cpp b/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.cpp
+index fdc3bf1..5870879 100644
+--- a/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.cpp
++++ b/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.cpp
+@@ -184,7 +184,7 @@ Error PlotManipulatorManager::initialize(
+ }
+ 
+ 
+-boost::signal<void ()>& PlotManipulatorManager::onShowManipulator()
++boost::signals2::signal<void ()>& PlotManipulatorManager::onShowManipulator()
+ {
+    return onShowManipulator_;
+ }
+diff --git a/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.hpp b/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.hpp
+index 8657959..7241522 100644
+--- a/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.hpp
++++ b/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.hpp
+@@ -16,7 +16,7 @@
+ #ifndef R_SESSION_GRAPHICS_PLOT_MANIPULATOR_MANAGER_HPP
+ #define R_SESSION_GRAPHICS_PLOT_MANIPULATOR_MANAGER_HPP
+ 
+-#include <boost/signal.hpp>
++#include <boost/signals2/signal.hpp>
+ 
+ #include <core/Error.hpp>
+ #include <core/json/Json.hpp>
+@@ -53,7 +53,7 @@ public:
+ public:
+    core::Error initialize(const UnitConversionFunctions& convert);
+ 
+-   boost::signal<void ()>& onShowManipulator() ;
++   boost::signals2::signal<void ()>& onShowManipulator() ;
+    void setPlotManipulatorValues(const core::json::Object& values);
+    void manipulatorPlotClicked(int x, int y);
+    
+@@ -85,7 +85,7 @@ private:
+    bool replayingManipulator_;
+ 
+    // manipulator event hook
+-   boost::signal<void ()> onShowManipulator_;
++   boost::signals2::signal<void ()> onShowManipulator_;
+ 
+    // unit conversion function
+    UnitConversionFunctions convert_;
+diff --git a/src/cpp/server/include/server/ServerSessionManager.hpp b/src/cpp/server/include/server/ServerSessionManager.hpp
+index 87342b1..8a92ac2 100644
+--- a/src/cpp/server/include/server/ServerSessionManager.hpp
++++ b/src/cpp/server/include/server/ServerSessionManager.hpp
+@@ -20,7 +20,7 @@
+ #include <vector>
+ #include <map>
+ 
+-#include <boost/signals.hpp>
++#include <boost/signals2.hpp>
+ 
+ #include <core/Thread.hpp>
+ 
+diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
+index a770221..42aff61 100644
+--- a/src/cpp/session/SessionMain.cpp
++++ b/src/cpp/session/SessionMain.cpp
+@@ -32,7 +32,7 @@
+ #include <boost/lexical_cast.hpp>
+ #include <boost/format.hpp>
+ 
+-#include <boost/signals.hpp>
++#include <boost/signals2.hpp>
+ #include <boost/date_time/posix_time/posix_time.hpp>
+ #include <boost/algorithm/string/predicate.hpp>
+ #include <boost/algorithm/string/join.hpp>
+diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
+index 6594e46..4fa64f1 100644
+--- a/src/cpp/session/SessionModuleContext.cpp
++++ b/src/cpp/session/SessionModuleContext.cpp
+@@ -19,7 +19,7 @@
+ 
+ #include <boost/assert.hpp>
+ #include <boost/utility.hpp>
+-#include <boost/signal.hpp>
++#include <boost/signals2/signal.hpp>
+ #include <boost/format.hpp>
+ #include <boost/numeric/conversion/cast.hpp>
+ 
+@@ -493,13 +493,13 @@ private:
+    
+    int nextGroup_; 
+    
+-   boost::signal<void(const r::session::RSuspendOptions&,Settings*),
+-                 boost::last_value<void>,
++   boost::signals2::signal<void(const r::session::RSuspendOptions&,Settings*),
++                 boost::signals2::last_value<void>,
+                  int,
+                  std::less<int> > suspendSignal_;
+                   
+-   boost::signal<void(const Settings&),
+-                 boost::last_value<void>,
++   boost::signals2::signal<void(const Settings&),
++                 boost::signals2::last_value<void>,
+                  int,
+                  std::greater<int> > resumeSignal_;
+ };
+diff --git a/src/cpp/session/include/session/SessionConsoleProcess.hpp b/src/cpp/session/include/session/SessionConsoleProcess.hpp
+index 5f1d5c0..581e34d 100644
+--- a/src/cpp/session/include/session/SessionConsoleProcess.hpp
++++ b/src/cpp/session/include/session/SessionConsoleProcess.hpp
+@@ -18,7 +18,7 @@
+ #include <queue>
+ 
+ #include <boost/regex.hpp>
+-#include <boost/signals.hpp>
++#include <boost/signals2.hpp>
+ #include <boost/circular_buffer.hpp>
+ #include <boost/enable_shared_from_this.hpp>
+ 
+@@ -122,7 +122,7 @@ public:
+    void setPromptHandler(
+          const boost::function<bool(const std::string&, Input*)>& onPrompt);
+ 
+-   boost::signal<void(int)>& onExit() { return onExit_; }
++   boost::signals2::signal<void(int)>& onExit() { return onExit_; }
+ 
+    std::string handle() const { return handle_; }
+    InteractionMode interactionMode() const { return interactionMode_; }
+@@ -184,7 +184,7 @@ private:
+    boost::optional<int> exitCode_;
+ 
+    boost::function<bool(const std::string&, Input*)> onPrompt_;
+-   boost::signal<void(int)> onExit_;
++   boost::signals2::signal<void(int)> onExit_;
+ 
+ 
+    // regex for prompt detection
+diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
+index f7be673..32a42e9 100644
+--- a/src/cpp/session/include/session/SessionModuleContext.hpp
++++ b/src/cpp/session/include/session/SessionModuleContext.hpp
+@@ -20,7 +20,7 @@
+ 
+ #include <boost/utility.hpp>
+ #include <boost/function.hpp>
+-#include <boost/signals.hpp>
++#include <boost/signals2.hpp>
+ #include <boost/shared_ptr.hpp>
+ 
+ #include <core/HtmlUtils.hpp>
+@@ -300,26 +300,26 @@ struct firstNonEmpty
+ // session events
+ struct Events : boost::noncopyable
+ {
+-   boost::signal<void (core::json::Object*)> onSessionInfo;
+-   boost::signal<void ()>                    onClientInit;
+-   boost::signal<void ()>                    onBeforeExecute;
+-   boost::signal<void(const std::string&)>   onConsolePrompt;
+-   boost::signal<void(const std::string&)>   onConsoleInput;
+-   boost::signal<void (ConsoleOutputType, const std::string&)>
++   boost::signals2::signal<void (core::json::Object*)> onSessionInfo;
++   boost::signals2::signal<void ()>                    onClientInit;
++   boost::signals2::signal<void ()>                    onBeforeExecute;
++   boost::signals2::signal<void(const std::string&)>   onConsolePrompt;
++   boost::signals2::signal<void(const std::string&)>   onConsoleInput;
++   boost::signals2::signal<void (ConsoleOutputType, const std::string&)>
+                                              onConsoleOutput;
+-   boost::signal<void (ChangeSource)>        onDetectChanges;
+-   boost::signal<void (core::FilePath)>      onSourceEditorFileSaved;
+-   boost::signal<void(bool)>                 onDeferredInit;
+-   boost::signal<void(bool)>                 afterSessionInitHook;
+-   boost::signal<void(bool)>                 onBackgroundProcessing;
+-   boost::signal<void(bool)>                 onShutdown;
+-   boost::signal<void ()>                    onQuit;
+-   boost::signal<void (const std::string&)>  onPackageLoaded;
+-   boost::signal<void ()>                    onPackageLibraryMutated;
+-   boost::signal<void ()>                    onPreferencesSaved;
++   boost::signals2::signal<void (ChangeSource)>        onDetectChanges;
++   boost::signals2::signal<void (core::FilePath)>      onSourceEditorFileSaved;
++   boost::signals2::signal<void(bool)>                 onDeferredInit;
++   boost::signals2::signal<void(bool)>                 afterSessionInitHook;
++   boost::signals2::signal<void(bool)>                 onBackgroundProcessing;
++   boost::signals2::signal<void(bool)>                 onShutdown;
++   boost::signals2::signal<void ()>                    onQuit;
++   boost::signals2::signal<void (const std::string&)>  onPackageLoaded;
++   boost::signals2::signal<void ()>                    onPackageLibraryMutated;
++   boost::signals2::signal<void ()>                    onPreferencesSaved;
+ 
+    // signal for detecting extended type of documents
+-   boost::signal<std::string(boost::shared_ptr<source_database::SourceDocument>),
++   boost::signals2::signal<std::string(boost::shared_ptr<source_database::SourceDocument>),
+                  firstNonEmpty<std::string> > onDetectSourceExtendedType;
+ };
+ 
+diff --git a/src/cpp/session/include/session/SessionSourceDatabase.hpp b/src/cpp/session/include/session/SessionSourceDatabase.hpp
+index 32bc390..189cafb 100644
+--- a/src/cpp/session/include/session/SessionSourceDatabase.hpp
++++ b/src/cpp/session/include/session/SessionSourceDatabase.hpp
+@@ -21,7 +21,7 @@
+ 
+ #include <boost/utility.hpp>
+ #include <boost/shared_ptr.hpp>
+-#include <boost/signals.hpp>
++#include <boost/signals2.hpp>
+ 
+ #include <core/FilePath.hpp>
+ #include <core/json/Json.hpp>
+@@ -187,9 +187,9 @@ core::Error removeAll();
+ // source database events
+ struct Events : boost::noncopyable
+ {
+-   boost::signal<void(boost::shared_ptr<SourceDocument>)> onDocUpdated;
+-   boost::signal<void(const std::string&)>                onDocRemoved;
+-   boost::signal<void()>                                  onRemoveAll;
++   boost::signals2::signal<void(boost::shared_ptr<SourceDocument>)> onDocUpdated;
++   boost::signals2::signal<void(const std::string&)>                onDocRemoved;
++   boost::signals2::signal<void()>                                  onRemoveAll;
+ };
+ 
+ Events& events();
+diff --git a/src/cpp/session/include/session/SessionUserSettings.hpp b/src/cpp/session/include/session/SessionUserSettings.hpp
+index 989d67f..a5a9f89 100644
+--- a/src/cpp/session/include/session/SessionUserSettings.hpp
++++ b/src/cpp/session/include/session/SessionUserSettings.hpp
+@@ -20,7 +20,7 @@
+ 
+ #include <boost/utility.hpp>
+ #include <boost/scoped_ptr.hpp>
+-#include <boost/signal.hpp>
++#include <boost/signals2/signal.hpp>
+ 
+ #include <core/Settings.hpp>
+ #include <core/FilePath.hpp>
+@@ -58,7 +58,7 @@ private:
+    friend UserSettings& userSettings();
+ 
+ public:
+-   boost::signal<void()> onChanged;
++   boost::signals2::signal<void()> onChanged;
+ 
+ public:
+    // COPYING: boost::noncopyable
+diff --git a/src/cpp/session/include/session/projects/SessionProjects.hpp b/src/cpp/session/include/session/projects/SessionProjects.hpp
+index e46260c..e3202ff 100644
+--- a/src/cpp/session/include/session/projects/SessionProjects.hpp
++++ b/src/cpp/session/include/session/projects/SessionProjects.hpp
+@@ -22,7 +22,7 @@
+ #include <boost/utility.hpp>
+ #include <boost/shared_ptr.hpp>
+ #include <boost/foreach.hpp>
+-#include <boost/signals.hpp>
++#include <boost/signals2.hpp>
+ 
+ #include <core/FileInfo.hpp>
+ #include <core/FilePath.hpp>
+@@ -210,10 +210,10 @@ private:
+ 
+    bool hasFileMonitor_;
+    std::vector<std::string> monitorSubscribers_;
+-   boost::signal<void(const tree<core::FileInfo>&)> onMonitoringEnabled_;
+-   boost::signal<void(const std::vector<core::system::FileChangeEvent>&)>
++   boost::signals2::signal<void(const tree<core::FileInfo>&)> onMonitoringEnabled_;
++   boost::signals2::signal<void(const std::vector<core::system::FileChangeEvent>&)>
+                                                             onFilesChanged_;
+-   boost::signal<void()> onMonitoringDisabled_;
++   boost::signals2::signal<void()> onMonitoringDisabled_;
+ };
+ 
+ ProjectContext& projectContext();
+diff --git a/src/cpp/session/modules/build/SessionSourceCpp.cpp b/src/cpp/session/modules/build/SessionSourceCpp.cpp
+index a1c4919..e324588 100644
+--- a/src/cpp/session/modules/build/SessionSourceCpp.cpp
++++ b/src/cpp/session/modules/build/SessionSourceCpp.cpp
+@@ -15,7 +15,7 @@
+ 
+ #include "SessionSourceCpp.hpp"
+ 
+-#include <boost/signal.hpp>
++#include <boost/signals2/signal.hpp>
+ #include <boost/algorithm/string/trim.hpp>
+ #include <boost/algorithm/string/predicate.hpp>
+ #include <boost/algorithm/string/join.hpp>
