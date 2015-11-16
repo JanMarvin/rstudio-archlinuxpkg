@@ -1,0 +1,13 @@
+[Unit]
+Description=RStudio Server
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/lib/rstudio-server/bin/rserver
+ExecStop=/usr/bin/killall -TERM rserver
+KillMode=none
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
