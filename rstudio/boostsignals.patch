@@ -159,7 +159,7 @@ index 87342b1..8a92ac2 100644
  #include <core/Thread.hpp>
  
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index a770221..42aff61 100644
+index ce4ab64..d73d2bb 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -32,7 +32,7 @@
@@ -234,7 +234,7 @@ index 5f1d5c0..581e34d 100644
  
     // regex for prompt detection
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index f7be673..32a42e9 100644
+index 695883d..248148e 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
 @@ -20,7 +20,7 @@
@@ -246,7 +246,7 @@ index f7be673..32a42e9 100644
  #include <boost/shared_ptr.hpp>
  
  #include <core/HtmlUtils.hpp>
-@@ -300,26 +300,26 @@ struct firstNonEmpty
+@@ -303,28 +303,28 @@ struct firstNonEmpty
  // session events
  struct Events : boost::noncopyable
  {
@@ -273,6 +273,7 @@ index f7be673..32a42e9 100644
 -   boost::signal<void (const std::string&)>  onPackageLoaded;
 -   boost::signal<void ()>                    onPackageLibraryMutated;
 -   boost::signal<void ()>                    onPreferencesSaved;
+-   boost::signal<void (const DistributedEvent&)>
 +   boost::signals2::signal<void (ChangeSource)>        onDetectChanges;
 +   boost::signals2::signal<void (core::FilePath)>      onSourceEditorFileSaved;
 +   boost::signals2::signal<void(bool)>                 onDeferredInit;
@@ -283,6 +284,8 @@ index f7be673..32a42e9 100644
 +   boost::signals2::signal<void (const std::string&)>  onPackageLoaded;
 +   boost::signals2::signal<void ()>                    onPackageLibraryMutated;
 +   boost::signals2::signal<void ()>                    onPreferencesSaved;
++   boost::signals2::signal<void (const DistributedEvent&)>
+                                              onDistributedEvent;
  
     // signal for detecting extended type of documents
 -   boost::signal<std::string(boost::shared_ptr<source_database::SourceDocument>),
