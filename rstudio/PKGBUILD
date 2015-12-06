@@ -21,16 +21,14 @@ source=('rstudio.desktop'
         'boostsignals.patch'
         'cursor_fix.diff'
         'make_shared.patch'
-        'prefs.patch'
-        'qt55.patch')
+        'prefs.patch')
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         'e24f437e8269b674f6abddf7c9f15669'
+         '7c0ce12fb601140935f5633457b46162'
          'de85436b79f298c33b5353bdeecba065'
          '9c5504ec85d0897845b8dfc105788b3f'
-         '43f0ff6044f0d35123abdf2fe2283861'
-         'ccfdcc971f88d21c002d9a4bc704274c')
+         '43f0ff6044f0d35123abdf2fe2283861')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -67,9 +65,6 @@ prepare() {
   #git apply --whitespace=fix ../make_shared.patch
   msg2 "3"
   git apply --whitespace=fix ../cursor_fix.diff
-  msg2 "4"
-  git apply --whitespace=fix ../qt55.patch
-
 
 
   # Gentoo fixes
@@ -125,9 +120,9 @@ prepare() {
   # Copy rsconnect
   mkdir -p "$srcdir/$_gitname/dependencies/common/rsconnect"
   cp "$srcdir/../$_gitname/dependencies/common/"rsconnect_*.tar.gz "$srcdir/$_gitname/dependencies/common"
-  # Copy packrat
-  mkdir -p "$srcdir/$_gitname/dependencies/common/packrat"
-  cp "$srcdir/../$_gitname/dependencies/common/"packrat_*.tar.gz "$srcdir/$_gitname/dependencies/common"
+  # # Copy packrat
+  # mkdir -p "$srcdir/$_gitname/dependencies/common/packrat"
+  # cp "$srcdir/../$_gitname/dependencies/common/"packrat_*.tar.gz "$srcdir/$_gitname/dependencies/common"
   # Create empty dictionaries folder
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
   # Add mathjax
