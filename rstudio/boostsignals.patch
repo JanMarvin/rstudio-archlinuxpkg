@@ -159,10 +159,10 @@ index 87342b1..8a92ac2 100644
  #include <core/Thread.hpp>
  
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index ce4ab64..d73d2bb 100644
+index 1f95580..b3dfa3d 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
-@@ -32,7 +32,7 @@
+@@ -33,7 +33,7 @@
  #include <boost/lexical_cast.hpp>
  #include <boost/format.hpp>
  
@@ -172,7 +172,7 @@ index ce4ab64..d73d2bb 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index 6594e46..4fa64f1 100644
+index f60b86a..df107dd 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -184,7 +184,7 @@ index 6594e46..4fa64f1 100644
  #include <boost/format.hpp>
  #include <boost/numeric/conversion/cast.hpp>
  
-@@ -493,13 +493,13 @@ private:
+@@ -499,13 +499,13 @@ private:
     
     int nextGroup_; 
     
@@ -234,7 +234,7 @@ index 5f1d5c0..581e34d 100644
  
     // regex for prompt detection
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index 695883d..248148e 100644
+index e32778d..fba6258 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
 @@ -20,7 +20,7 @@
@@ -246,7 +246,7 @@ index 695883d..248148e 100644
  #include <boost/shared_ptr.hpp>
  
  #include <core/HtmlUtils.hpp>
-@@ -303,28 +303,28 @@ struct firstNonEmpty
+@@ -309,29 +309,29 @@ struct firstNonEmpty
  // session events
  struct Events : boost::noncopyable
  {
@@ -286,6 +286,8 @@ index 695883d..248148e 100644
 +   boost::signals2::signal<void ()>                    onPreferencesSaved;
 +   boost::signals2::signal<void (const DistributedEvent&)>
                                               onDistributedEvent;
+-   boost::signal<void (core::FilePath)>      onPermissionsChanged;
++   boost::signals2::signal<void (core::FilePath)>      onPermissionsChanged;
  
     // signal for detecting extended type of documents
 -   boost::signal<std::string(boost::shared_ptr<source_database::SourceDocument>),
@@ -294,7 +296,7 @@ index 695883d..248148e 100644
  };
  
 diff --git a/src/cpp/session/include/session/SessionSourceDatabase.hpp b/src/cpp/session/include/session/SessionSourceDatabase.hpp
-index 32bc390..189cafb 100644
+index b930518..674c05a 100644
 --- a/src/cpp/session/include/session/SessionSourceDatabase.hpp
 +++ b/src/cpp/session/include/session/SessionSourceDatabase.hpp
 @@ -21,7 +21,7 @@
@@ -306,7 +308,7 @@ index 32bc390..189cafb 100644
  
  #include <core/FilePath.hpp>
  #include <core/json/Json.hpp>
-@@ -187,9 +187,9 @@ core::Error removeAll();
+@@ -192,9 +192,9 @@ core::Error removeAll();
  // source database events
  struct Events : boost::noncopyable
  {
@@ -320,7 +322,7 @@ index 32bc390..189cafb 100644
  
  Events& events();
 diff --git a/src/cpp/session/include/session/SessionUserSettings.hpp b/src/cpp/session/include/session/SessionUserSettings.hpp
-index 989d67f..a5a9f89 100644
+index 2ee4c89..5909faa 100644
 --- a/src/cpp/session/include/session/SessionUserSettings.hpp
 +++ b/src/cpp/session/include/session/SessionUserSettings.hpp
 @@ -20,7 +20,7 @@
