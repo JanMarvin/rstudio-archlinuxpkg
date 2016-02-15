@@ -159,7 +159,7 @@ index 87342b1..8a92ac2 100644
  #include <core/Thread.hpp>
  
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index 1f95580..b3dfa3d 100644
+index 158abe6..a352f94 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -33,7 +33,7 @@
@@ -172,7 +172,7 @@ index 1f95580..b3dfa3d 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index f60b86a..df107dd 100644
+index 356d9c5..d449405 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -234,7 +234,7 @@ index 5f1d5c0..581e34d 100644
  
     // regex for prompt detection
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index e32778d..fba6258 100644
+index 15225fd..dbd0061 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
 @@ -20,7 +20,7 @@
@@ -246,7 +246,7 @@ index e32778d..fba6258 100644
  #include <boost/shared_ptr.hpp>
  
  #include <core/HtmlUtils.hpp>
-@@ -309,29 +309,29 @@ struct firstNonEmpty
+@@ -309,31 +309,31 @@ struct firstNonEmpty
  // session events
  struct Events : boost::noncopyable
  {
@@ -255,12 +255,15 @@ index e32778d..fba6258 100644
 -   boost::signal<void ()>                    onBeforeExecute;
 -   boost::signal<void(const std::string&)>   onConsolePrompt;
 -   boost::signal<void(const std::string&)>   onConsoleInput;
--   boost::signal<void (ConsoleOutputType, const std::string&)>
+-   boost::signal<void(const std::string&, const std::string&)>  
 +   boost::signals2::signal<void (core::json::Object*)> onSessionInfo;
 +   boost::signals2::signal<void ()>                    onClientInit;
 +   boost::signals2::signal<void ()>                    onBeforeExecute;
 +   boost::signals2::signal<void(const std::string&)>   onConsolePrompt;
 +   boost::signals2::signal<void(const std::string&)>   onConsoleInput;
++   boost::signals2::signal<void(const std::string&, const std::string&)>  
+                                              onActiveConsoleChanged;
+-   boost::signal<void (ConsoleOutputType, const std::string&)>
 +   boost::signals2::signal<void (ConsoleOutputType, const std::string&)>
                                               onConsoleOutput;
 -   boost::signal<void (ChangeSource)>        onDetectChanges;
@@ -296,7 +299,7 @@ index e32778d..fba6258 100644
  };
  
 diff --git a/src/cpp/session/include/session/SessionSourceDatabase.hpp b/src/cpp/session/include/session/SessionSourceDatabase.hpp
-index b930518..674c05a 100644
+index 4ec60f4..6361d02 100644
 --- a/src/cpp/session/include/session/SessionSourceDatabase.hpp
 +++ b/src/cpp/session/include/session/SessionSourceDatabase.hpp
 @@ -21,7 +21,7 @@
@@ -308,16 +311,19 @@ index b930518..674c05a 100644
  
  #include <core/FilePath.hpp>
  #include <core/json/Json.hpp>
-@@ -192,9 +192,9 @@ core::Error removeAll();
+@@ -194,11 +194,11 @@ core::Error getPath(const std::string& id, core::FilePath* pPath);
  // source database events
  struct Events : boost::noncopyable
  {
--   boost::signal<void(boost::shared_ptr<SourceDocument>)> onDocUpdated;
--   boost::signal<void(const std::string&)>                onDocRemoved;
--   boost::signal<void()>                                  onRemoveAll;
-+   boost::signals2::signal<void(boost::shared_ptr<SourceDocument>)> onDocUpdated;
-+   boost::signals2::signal<void(const std::string&)>                onDocRemoved;
-+   boost::signals2::signal<void()>                                  onRemoveAll;
+-   boost::signal<void(boost::shared_ptr<SourceDocument>)>      onDocUpdated;
+-   boost::signal<void(const std::string&,
++   boost::signals2::signal<void(boost::shared_ptr<SourceDocument>)>      onDocUpdated;
++   boost::signals2::signal<void(const std::string&,
+                       boost::shared_ptr<SourceDocument>)>      onDocRenamed;
+-   boost::signal<void(const std::string&, const std::string&)> onDocRemoved;
+-   boost::signal<void()>                                       onRemoveAll;
++   boost::signals2::signal<void(const std::string&, const std::string&)> onDocRemoved;
++   boost::signals2::signal<void()>                                       onRemoveAll;
  };
  
  Events& events();
