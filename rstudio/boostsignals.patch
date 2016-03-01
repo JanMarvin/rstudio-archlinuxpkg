@@ -159,7 +159,7 @@ index 87342b1..8a92ac2 100644
  #include <core/Thread.hpp>
  
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index 158abe6..a352f94 100644
+index 2aeeeaa..c052664 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -33,7 +33,7 @@
@@ -172,7 +172,7 @@ index 158abe6..a352f94 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index 356d9c5..d449405 100644
+index b1e1453..9040f07 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -184,7 +184,7 @@ index 356d9c5..d449405 100644
  #include <boost/format.hpp>
  #include <boost/numeric/conversion/cast.hpp>
  
-@@ -499,13 +499,13 @@ private:
+@@ -513,13 +513,13 @@ private:
     
     int nextGroup_; 
     
@@ -299,7 +299,7 @@ index 15225fd..dbd0061 100644
  };
  
 diff --git a/src/cpp/session/include/session/SessionSourceDatabase.hpp b/src/cpp/session/include/session/SessionSourceDatabase.hpp
-index 4ec60f4..6361d02 100644
+index f52c2da..74b2ee4 100644
 --- a/src/cpp/session/include/session/SessionSourceDatabase.hpp
 +++ b/src/cpp/session/include/session/SessionSourceDatabase.hpp
 @@ -21,7 +21,7 @@
@@ -311,7 +311,7 @@ index 4ec60f4..6361d02 100644
  
  #include <core/FilePath.hpp>
  #include <core/json/Json.hpp>
-@@ -194,11 +194,11 @@ core::Error getPath(const std::string& id, core::FilePath* pPath);
+@@ -196,13 +196,13 @@ core::Error getId(const core::FilePath& path, std::string* pId);
  // source database events
  struct Events : boost::noncopyable
  {
@@ -320,8 +320,12 @@ index 4ec60f4..6361d02 100644
 +   boost::signals2::signal<void(boost::shared_ptr<SourceDocument>)>      onDocUpdated;
 +   boost::signals2::signal<void(const std::string&,
                        boost::shared_ptr<SourceDocument>)>      onDocRenamed;
+-   boost::signal<void(const std::string&)>                     onDocAdded;
+-   boost::signal<void(const std::string&)>                     onDocPendingRemove;
 -   boost::signal<void(const std::string&, const std::string&)> onDocRemoved;
 -   boost::signal<void()>                                       onRemoveAll;
++   boost::signals2::signal<void(const std::string&)>                     onDocAdded;
++   boost::signals2::signal<void(const std::string&)>                     onDocPendingRemove;
 +   boost::signals2::signal<void(const std::string&, const std::string&)> onDocRemoved;
 +   boost::signals2::signal<void()>                                       onRemoveAll;
  };
@@ -350,7 +354,7 @@ index 2ee4c89..5909faa 100644
  public:
     // COPYING: boost::noncopyable
 diff --git a/src/cpp/session/include/session/projects/SessionProjects.hpp b/src/cpp/session/include/session/projects/SessionProjects.hpp
-index e46260c..e3202ff 100644
+index 2834eae..ca72948 100644
 --- a/src/cpp/session/include/session/projects/SessionProjects.hpp
 +++ b/src/cpp/session/include/session/projects/SessionProjects.hpp
 @@ -22,7 +22,7 @@
@@ -389,3 +393,31 @@ index a1c4919..e324588 100644
  #include <boost/algorithm/string/trim.hpp>
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
+diff --git a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
+index 0592d83..9108281 100644
+--- a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
++++ b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
+@@ -18,7 +18,7 @@
+ #define SESSION_RMARKDOWN_NOTEBOOK_HPP
+ 
+ #include <ctime>
+-#include <boost/signals.hpp>
++#include <boost/signals2.hpp>
+ #include <core/json/Json.hpp>
+ 
+ #define kChunkLibDir "lib"
+@@ -54,12 +54,12 @@ core::Error extractTagAttrs(const std::string& tag,
+ struct Events : boost::noncopyable
+ {
+    // Document {0}, chunk {1} from context id {3} execution completed
+-   boost::signal<void(const std::string&, const std::string&,
++   boost::signals2::signal<void(const std::string&, const std::string&,
+                       const std::string&)> 
+                 onChunkExecCompleted;
+ 
+    // Document {0}, chunk {1} had console output of type {2} and text {3}
+-   boost::signal<void(const std::string&, const std::string&, int, 
++   boost::signals2::signal<void(const std::string&, const std::string&, int, 
+                 const std::string&)>
+                 onChunkConsoleOutput;
+ };

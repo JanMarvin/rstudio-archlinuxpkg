@@ -25,7 +25,7 @@ source=('rstudio.desktop'
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         'bd08aa41268813df3fe0ee022649eb44'
+         'a58374281993b283645f08d03d76d9c3'
          'de85436b79f298c33b5353bdeecba065'
          '9c5504ec85d0897845b8dfc105788b3f'
          '43f0ff6044f0d35123abdf2fe2283861')
@@ -120,6 +120,9 @@ prepare() {
   # Copy rsconnect
   mkdir -p "$srcdir/$_gitname/dependencies/common/rsconnect"
   cp "$srcdir/../$_gitname/dependencies/common/"rsconnect_*.tar.gz "$srcdir/$_gitname/dependencies/common"
+  # Copy profvis
+  mkdir -p "$srcdir/$_gitname/dependencies/common/profvis"
+  cp "$srcdir/../$_gitname/dependencies/common/"profvis_*.tar.gz "$srcdir/$_gitname/dependencies/common"
   # # Copy packrat
   # mkdir -p "$srcdir/$_gitname/dependencies/common/packrat"
   # cp "$srcdir/../$_gitname/dependencies/common/"packrat_*.tar.gz "$srcdir/$_gitname/dependencies/common"
