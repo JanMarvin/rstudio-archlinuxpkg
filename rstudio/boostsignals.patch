@@ -30,7 +30,7 @@ index ef16c68..7ccb23d 100644
     {
        return onAdd_.connect(slot);
 diff --git a/src/cpp/r/include/r/session/RGraphics.hpp b/src/cpp/r/include/r/session/RGraphics.hpp
-index ed40e8a..77a2e3d 100644
+index 62e3c33..de48296 100644
 --- a/src/cpp/r/include/r/session/RGraphics.hpp
 +++ b/src/cpp/r/include/r/session/RGraphics.hpp
 @@ -56,7 +56,7 @@ struct is_error_code_enum<rstudio::r::session::graphics::errc::errc_t>
@@ -172,7 +172,7 @@ index 2aeeeaa..c052664 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index b1e1453..9040f07 100644
+index 9b0133e..4196e9e 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -184,7 +184,7 @@ index b1e1453..9040f07 100644
  #include <boost/format.hpp>
  #include <boost/numeric/conversion/cast.hpp>
  
-@@ -513,13 +513,13 @@ private:
+@@ -515,13 +515,13 @@ private:
     
     int nextGroup_; 
     
@@ -393,8 +393,43 @@ index a1c4919..e324588 100644
  #include <boost/algorithm/string/trim.hpp>
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
+diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
+index 853a5f6..455f8df 100644
+--- a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
++++ b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
+@@ -197,7 +197,7 @@ void ChunkExecContext::onConsoleText(int type, const std::string& output,
+ void ChunkExecContext::disconnect()
+ {
+    // unhook all our event handlers
+-   BOOST_FOREACH(const boost::signals::connection connection, connections_) 
++   BOOST_FOREACH(const boost::signals2::connection connection, connections_) 
+    {
+       connection.disconnect();
+    }
+diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
+index 6fc1a5b..285b862 100644
+--- a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
++++ b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
+@@ -18,7 +18,7 @@
+ 
+ #include <session/SessionModuleContext.hpp>
+ 
+-#include <boost/signal.hpp>
++#include <boost/signals2/signal.hpp>
+ 
+ namespace rstudio {
+ namespace core {
+@@ -60,7 +60,7 @@ private:
+    std::string docId_;
+    std::string chunkId_;
+    bool connected_;
+-   std::vector<boost::signals::connection> connections_;
++   std::vector<boost::signals2::connection> connections_;
+ };
+ 
+ } // namespace notebook
 diff --git a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
-index 0592d83..9108281 100644
+index c587eb8..9fc799d 100644
 --- a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 +++ b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 @@ -18,7 +18,7 @@
@@ -406,7 +441,7 @@ index 0592d83..9108281 100644
  #include <core/json/Json.hpp>
  
  #define kChunkLibDir "lib"
-@@ -54,12 +54,12 @@ core::Error extractTagAttrs(const std::string& tag,
+@@ -41,17 +41,17 @@ core::Error initialize();
  struct Events : boost::noncopyable
  {
     // Document {0}, chunk {1} from context id {3} execution completed
@@ -420,4 +455,11 @@ index 0592d83..9108281 100644
 +   boost::signals2::signal<void(const std::string&, const std::string&, int, 
                  const std::string&)>
                  onChunkConsoleOutput;
+ 
+-   boost::signal<void(const core::FilePath&)> onPlotOutput;
+-   boost::signal<void(const core::FilePath&)> onHtmlOutput;
++   boost::signals2::signal<void(const core::FilePath&)> onPlotOutput;
++   boost::signals2::signal<void(const core::FilePath&)> onHtmlOutput;
  };
+ 
+ Events& events();
