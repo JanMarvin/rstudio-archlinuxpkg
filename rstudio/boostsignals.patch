@@ -159,7 +159,7 @@ index 87342b1..8a92ac2 100644
  #include <core/Thread.hpp>
  
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index 2aeeeaa..c052664 100644
+index 9da981c..44d67dd 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -33,7 +33,7 @@
@@ -172,7 +172,7 @@ index 2aeeeaa..c052664 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index 9b0133e..4196e9e 100644
+index 9f5adff..8e19163 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -184,7 +184,7 @@ index 9b0133e..4196e9e 100644
  #include <boost/format.hpp>
  #include <boost/numeric/conversion/cast.hpp>
  
-@@ -515,13 +515,13 @@ private:
+@@ -513,13 +513,13 @@ private:
     
     int nextGroup_; 
     
@@ -234,7 +234,7 @@ index 5f1d5c0..581e34d 100644
  
     // regex for prompt detection
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index 15225fd..dbd0061 100644
+index 437d9b8..e67cc11 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
 @@ -20,7 +20,7 @@
@@ -299,7 +299,7 @@ index 15225fd..dbd0061 100644
  };
  
 diff --git a/src/cpp/session/include/session/SessionSourceDatabase.hpp b/src/cpp/session/include/session/SessionSourceDatabase.hpp
-index f52c2da..74b2ee4 100644
+index 0cf26bb..619fd24 100644
 --- a/src/cpp/session/include/session/SessionSourceDatabase.hpp
 +++ b/src/cpp/session/include/session/SessionSourceDatabase.hpp
 @@ -21,7 +21,7 @@
@@ -311,7 +311,7 @@ index f52c2da..74b2ee4 100644
  
  #include <core/FilePath.hpp>
  #include <core/json/Json.hpp>
-@@ -196,13 +196,13 @@ core::Error getId(const core::FilePath& path, std::string* pId);
+@@ -196,14 +196,14 @@ core::Error getId(const core::FilePath& path, std::string* pId);
  // source database events
  struct Events : boost::noncopyable
  {
@@ -321,11 +321,12 @@ index f52c2da..74b2ee4 100644
 +   boost::signals2::signal<void(const std::string&,
                        boost::shared_ptr<SourceDocument>)>      onDocRenamed;
 -   boost::signal<void(const std::string&)>                     onDocAdded;
--   boost::signal<void(const std::string&)>                     onDocPendingRemove;
+-   boost::signal<void(
++   boost::signals2::signal<void(const std::string&)>                     onDocAdded;
++   boost::signals2::signal<void(
+       boost::shared_ptr<source_database::SourceDocument>)>     onDocPendingRemove;
 -   boost::signal<void(const std::string&, const std::string&)> onDocRemoved;
 -   boost::signal<void()>                                       onRemoveAll;
-+   boost::signals2::signal<void(const std::string&)>                     onDocAdded;
-+   boost::signals2::signal<void(const std::string&)>                     onDocPendingRemove;
 +   boost::signals2::signal<void(const std::string&, const std::string&)> onDocRemoved;
 +   boost::signals2::signal<void()>                                       onRemoveAll;
  };
@@ -354,7 +355,7 @@ index 2ee4c89..5909faa 100644
  public:
     // COPYING: boost::noncopyable
 diff --git a/src/cpp/session/include/session/projects/SessionProjects.hpp b/src/cpp/session/include/session/projects/SessionProjects.hpp
-index 2834eae..ca72948 100644
+index f98c604..f2b585f 100644
 --- a/src/cpp/session/include/session/projects/SessionProjects.hpp
 +++ b/src/cpp/session/include/session/projects/SessionProjects.hpp
 @@ -22,7 +22,7 @@
@@ -366,7 +367,7 @@ index 2834eae..ca72948 100644
  
  #include <core/FileInfo.hpp>
  #include <core/FilePath.hpp>
-@@ -210,10 +210,10 @@ private:
+@@ -219,10 +219,10 @@ private:
  
     bool hasFileMonitor_;
     std::vector<std::string> monitorSubscribers_;
@@ -380,6 +381,30 @@ index 2834eae..ca72948 100644
  };
  
  ProjectContext& projectContext();
+diff --git a/src/cpp/session/modules/SessionPlots.hpp b/src/cpp/session/modules/SessionPlots.hpp
+index fac9748..81ed1d4 100644
+--- a/src/cpp/session/modules/SessionPlots.hpp
++++ b/src/cpp/session/modules/SessionPlots.hpp
+@@ -16,7 +16,7 @@
+ #ifndef SESSION_PLOTS_HPP
+ #define SESSION_PLOTS_HPP
+ 
+-#include <boost/signals.hpp>
++#include <boost/signals2.hpp>
+ 
+ namespace rstudio {
+ namespace core {
+@@ -35,8 +35,8 @@ core::Error initialize();
+ 
+ struct Events : boost::noncopyable
+ {
+-   boost::signal<void()> onBeforeNewPlot;
+-   boost::signal<void()> onNewPlot;
++   boost::signals2::signal<void()> onBeforeNewPlot;
++   boost::signals2::signal<void()> onNewPlot;
+ };
+ 
+ Events& events();
 diff --git a/src/cpp/session/modules/build/SessionSourceCpp.cpp b/src/cpp/session/modules/build/SessionSourceCpp.cpp
 index a1c4919..e324588 100644
 --- a/src/cpp/session/modules/build/SessionSourceCpp.cpp
@@ -394,12 +419,12 @@ index a1c4919..e324588 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-index 853a5f6..455f8df 100644
+index 5b2f40b..5434489 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-@@ -197,7 +197,7 @@ void ChunkExecContext::onConsoleText(int type, const std::string& output,
- void ChunkExecContext::disconnect()
- {
+@@ -214,7 +214,7 @@ void ChunkExecContext::disconnect()
+    r::options::setOptionWidth(prevCharWidth_);
+ 
     // unhook all our event handlers
 -   BOOST_FOREACH(const boost::signals::connection connection, connections_) 
 +   BOOST_FOREACH(const boost::signals2::connection connection, connections_) 
@@ -407,7 +432,7 @@ index 853a5f6..455f8df 100644
        connection.disconnect();
     }
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
-index 6fc1a5b..285b862 100644
+index 6efc573..ac38a5e 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 @@ -18,7 +18,7 @@
@@ -419,9 +444,9 @@ index 6fc1a5b..285b862 100644
  
  namespace rstudio {
  namespace core {
-@@ -60,7 +60,7 @@ private:
-    std::string docId_;
-    std::string chunkId_;
+@@ -65,7 +65,7 @@ private:
+    int charWidth_;
+    int prevCharWidth_;
     bool connected_;
 -   std::vector<boost::signals::connection> connections_;
 +   std::vector<boost::signals2::connection> connections_;
@@ -429,7 +454,7 @@ index 6fc1a5b..285b862 100644
  
  } // namespace notebook
 diff --git a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
-index c587eb8..9fc799d 100644
+index 00e1b99..5f56887 100644
 --- a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 +++ b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 @@ -18,7 +18,7 @@
@@ -441,7 +466,7 @@ index c587eb8..9fc799d 100644
  #include <core/json/Json.hpp>
  
  #define kChunkLibDir "lib"
-@@ -41,17 +41,17 @@ core::Error initialize();
+@@ -43,17 +43,17 @@ std::string notebookCtxId();
  struct Events : boost::noncopyable
  {
     // Document {0}, chunk {1} from context id {3} execution completed
@@ -457,9 +482,9 @@ index c587eb8..9fc799d 100644
                  onChunkConsoleOutput;
  
 -   boost::signal<void(const core::FilePath&)> onPlotOutput;
--   boost::signal<void(const core::FilePath&)> onHtmlOutput;
+-   boost::signal<void(const core::FilePath&, const core::FilePath&)> onHtmlOutput;
 +   boost::signals2::signal<void(const core::FilePath&)> onPlotOutput;
-+   boost::signals2::signal<void(const core::FilePath&)> onHtmlOutput;
++   boost::signals2::signal<void(const core::FilePath&, const core::FilePath&)> onHtmlOutput;
  };
  
  Events& events();
