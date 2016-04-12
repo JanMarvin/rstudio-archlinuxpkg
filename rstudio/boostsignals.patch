@@ -30,7 +30,7 @@ index ef16c68..7ccb23d 100644
     {
        return onAdd_.connect(slot);
 diff --git a/src/cpp/r/include/r/session/RGraphics.hpp b/src/cpp/r/include/r/session/RGraphics.hpp
-index 62e3c33..de48296 100644
+index 8c98435..e6eab35 100644
 --- a/src/cpp/r/include/r/session/RGraphics.hpp
 +++ b/src/cpp/r/include/r/session/RGraphics.hpp
 @@ -56,7 +56,7 @@ struct is_error_code_enum<rstudio::r::session::graphics::errc::errc_t>
@@ -42,7 +42,7 @@ index 62e3c33..de48296 100644
  
  #include <core/Error.hpp>
  #include <core/json/Json.hpp>
-@@ -150,7 +150,7 @@ public:
+@@ -156,7 +156,7 @@ public:
     virtual void clear() = 0;
  
     // subscribe to showManipulator event
@@ -52,10 +52,10 @@ index 62e3c33..de48296 100644
     // set manipulator values
     virtual void setPlotManipulatorValues(const core::json::Object& values) = 0;
 diff --git a/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp b/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
-index 17714bf..f8c1d59 100644
+index 20d98ae..925a1d3 100644
 --- a/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
 +++ b/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
-@@ -531,7 +531,7 @@ void PlotManager::clear()
+@@ -539,7 +539,7 @@ void PlotManager::clear()
  
  
  
@@ -65,7 +65,7 @@ index 17714bf..f8c1d59 100644
     return plotManipulatorManager().onShowManipulator();
  }
 diff --git a/src/cpp/r/session/graphics/RGraphicsPlotManager.hpp b/src/cpp/r/session/graphics/RGraphicsPlotManager.hpp
-index 64bf949..df10962 100644
+index 40466d8..ca9b517 100644
 --- a/src/cpp/r/session/graphics/RGraphicsPlotManager.hpp
 +++ b/src/cpp/r/session/graphics/RGraphicsPlotManager.hpp
 @@ -22,7 +22,7 @@
@@ -92,7 +92,7 @@ index 64bf949..df10962 100644
  };
  
  class PlotManipulatorManager;
-@@ -104,7 +104,7 @@ public:
+@@ -110,7 +110,7 @@ public:
     
     virtual void clear();
  
@@ -172,7 +172,7 @@ index 9da981c..44d67dd 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index 9f5adff..8e19163 100644
+index 9f26641..dd60dcf 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -184,7 +184,7 @@ index 9f5adff..8e19163 100644
  #include <boost/format.hpp>
  #include <boost/numeric/conversion/cast.hpp>
  
-@@ -513,13 +513,13 @@ private:
+@@ -514,13 +514,13 @@ private:
     
     int nextGroup_; 
     
@@ -234,7 +234,7 @@ index 5f1d5c0..581e34d 100644
  
     // regex for prompt detection
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index 437d9b8..e67cc11 100644
+index 283d1f4..7de7ffc 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
 @@ -20,7 +20,7 @@
@@ -419,11 +419,11 @@ index a1c4919..e324588 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-index 5b2f40b..5434489 100644
+index a6be34d..9d80eec 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-@@ -214,7 +214,7 @@ void ChunkExecContext::disconnect()
-    r::options::setOptionWidth(prevCharWidth_);
+@@ -247,7 +247,7 @@ void ChunkExecContext::disconnect()
+    }
  
     // unhook all our event handlers
 -   BOOST_FOREACH(const boost::signals::connection connection, connections_) 
@@ -432,7 +432,7 @@ index 5b2f40b..5434489 100644
        connection.disconnect();
     }
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
-index 6efc573..ac38a5e 100644
+index d6f082b..2338bf5 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 @@ -18,7 +18,7 @@
@@ -444,17 +444,32 @@ index 6efc573..ac38a5e 100644
  
  namespace rstudio {
  namespace core {
-@@ -65,7 +65,7 @@ private:
-    int charWidth_;
-    int prevCharWidth_;
+@@ -69,7 +69,7 @@ private:
+ 
     bool connected_;
+ 
 -   std::vector<boost::signals::connection> connections_;
 +   std::vector<boost::signals2::connection> connections_;
  };
  
  } // namespace notebook
+diff --git a/src/cpp/session/modules/rmarkdown/NotebookPlots.cpp b/src/cpp/session/modules/rmarkdown/NotebookPlots.cpp
+index 818f2c3..9f8bbef 100644
+--- a/src/cpp/session/modules/rmarkdown/NotebookPlots.cpp
++++ b/src/cpp/session/modules/rmarkdown/NotebookPlots.cpp
+@@ -51,8 +51,8 @@ public:
+ 
+    bool hasPlots;
+    r::sexp::PreservedSEXP sexpMargins;
+-   boost::signals::connection onConsolePrompt;
+-   boost::signals::connection onNewPlot;
++   boost::signals2::connection onConsolePrompt;
++   boost::signals2::connection onNewPlot;
+ };
+ 
+ bool isPlotPath(const FilePath& path)
 diff --git a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
-index 00e1b99..5f56887 100644
+index 2bce30b..ee2e674 100644
 --- a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 +++ b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 @@ -18,7 +18,7 @@
@@ -466,7 +481,7 @@ index 00e1b99..5f56887 100644
  #include <core/json/Json.hpp>
  
  #define kChunkLibDir "lib"
-@@ -43,17 +43,17 @@ std::string notebookCtxId();
+@@ -43,18 +43,18 @@ std::string notebookCtxId();
  struct Events : boost::noncopyable
  {
     // Document {0}, chunk {1} from context id {3} execution completed
@@ -483,8 +498,10 @@ index 00e1b99..5f56887 100644
  
 -   boost::signal<void(const core::FilePath&)> onPlotOutput;
 -   boost::signal<void(const core::FilePath&, const core::FilePath&)> onHtmlOutput;
+-   boost::signal<void(const core::json::Object&)> onErrorOutput;
 +   boost::signals2::signal<void(const core::FilePath&)> onPlotOutput;
 +   boost::signals2::signal<void(const core::FilePath&, const core::FilePath&)> onHtmlOutput;
++   boost::signals2::signal<void(const core::json::Object&)> onErrorOutput;
  };
  
  Events& events();
