@@ -30,7 +30,7 @@ index ef16c68..7ccb23d 100644
     {
        return onAdd_.connect(slot);
 diff --git a/src/cpp/r/include/r/session/RGraphics.hpp b/src/cpp/r/include/r/session/RGraphics.hpp
-index 8c98435..e6eab35 100644
+index 7cd7483..595dcc1 100644
 --- a/src/cpp/r/include/r/session/RGraphics.hpp
 +++ b/src/cpp/r/include/r/session/RGraphics.hpp
 @@ -56,7 +56,7 @@ struct is_error_code_enum<rstudio::r::session::graphics::errc::errc_t>
@@ -42,7 +42,7 @@ index 8c98435..e6eab35 100644
  
  #include <core/Error.hpp>
  #include <core/json/Json.hpp>
-@@ -156,7 +156,7 @@ public:
+@@ -162,7 +162,7 @@ public:
     virtual void clear() = 0;
  
     // subscribe to showManipulator event
@@ -159,7 +159,7 @@ index 87342b1..8a92ac2 100644
  #include <core/Thread.hpp>
  
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index f7ad9c8..645e97d 100644
+index 1352d81..137f3a5 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -33,7 +33,7 @@
@@ -234,7 +234,7 @@ index 5f1d5c0..581e34d 100644
  
     // regex for prompt detection
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index 283d1f4..7de7ffc 100644
+index 59991d9..0485d8a 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
 @@ -20,7 +20,7 @@
@@ -246,7 +246,7 @@ index 283d1f4..7de7ffc 100644
  #include <boost/shared_ptr.hpp>
  
  #include <core/HtmlUtils.hpp>
-@@ -309,31 +309,31 @@ struct firstNonEmpty
+@@ -314,32 +314,32 @@ struct firstNonEmpty
  // session events
  struct Events : boost::noncopyable
  {
@@ -266,6 +266,7 @@ index 283d1f4..7de7ffc 100644
 -   boost::signal<void (ConsoleOutputType, const std::string&)>
 +   boost::signals2::signal<void (ConsoleOutputType, const std::string&)>
                                               onConsoleOutput;
+-   boost::signal<void()>                     onUserInterrupt;
 -   boost::signal<void (ChangeSource)>        onDetectChanges;
 -   boost::signal<void (core::FilePath)>      onSourceEditorFileSaved;
 -   boost::signal<void(bool)>                 onDeferredInit;
@@ -277,6 +278,7 @@ index 283d1f4..7de7ffc 100644
 -   boost::signal<void ()>                    onPackageLibraryMutated;
 -   boost::signal<void ()>                    onPreferencesSaved;
 -   boost::signal<void (const DistributedEvent&)>
++   boost::signals2::signal<void()>                     onUserInterrupt;
 +   boost::signals2::signal<void (ChangeSource)>        onDetectChanges;
 +   boost::signals2::signal<void (core::FilePath)>      onSourceEditorFileSaved;
 +   boost::signals2::signal<void(bool)>                 onDeferredInit;
@@ -382,7 +384,7 @@ index f98c604..f2b585f 100644
  
  ProjectContext& projectContext();
 diff --git a/src/cpp/session/modules/SessionPlots.hpp b/src/cpp/session/modules/SessionPlots.hpp
-index fac9748..81ed1d4 100644
+index f8ddfcc..d76c9cc 100644
 --- a/src/cpp/session/modules/SessionPlots.hpp
 +++ b/src/cpp/session/modules/SessionPlots.hpp
 @@ -16,7 +16,7 @@
@@ -394,13 +396,15 @@ index fac9748..81ed1d4 100644
  
  namespace rstudio {
  namespace core {
-@@ -35,8 +35,8 @@ core::Error initialize();
+@@ -35,9 +35,9 @@ core::Error initialize();
  
  struct Events : boost::noncopyable
  {
 -   boost::signal<void()> onBeforeNewPlot;
+-   boost::signal<void()> onBeforeNewGridPage;
 -   boost::signal<void()> onNewPlot;
 +   boost::signals2::signal<void()> onBeforeNewPlot;
++   boost::signals2::signal<void()> onBeforeNewGridPage;
 +   boost::signals2::signal<void()> onNewPlot;
  };
  
@@ -418,11 +422,33 @@ index a1c4919..e324588 100644
  #include <boost/algorithm/string/trim.hpp>
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
+diff --git a/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp b/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
+index ab95d6e..56b4dfd 100644
+--- a/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
++++ b/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
+@@ -140,7 +140,7 @@ Error executeRcppEngineChunk(const std::string& docId,
+       LOG_ERROR(error);
+    
+    // capture console output, error
+-   boost::signals::scoped_connection consoleHandler =
++   boost::signals2::scoped_connection consoleHandler =
+          module_context::events().onConsoleOutput.connect(
+             boost::bind(chunkConsoleOutputHandler,
+                         _1,
+@@ -216,7 +216,7 @@ Error executeStanEngineChunk(const std::string& docId,
+       LOG_ERROR(error);
+    
+    // capture console output, error
+-   boost::signals::scoped_connection consoleHandler =
++   boost::signals2::scoped_connection consoleHandler =
+          module_context::events().onConsoleOutput.connect(
+             boost::bind(chunkConsoleOutputHandler,
+                         _1,
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-index 294853b..718e03f 100644
+index b1e5dfd..0be83a4 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-@@ -289,7 +289,7 @@ void ChunkExecContext::disconnect()
+@@ -364,7 +364,7 @@ void ChunkExecContext::disconnect()
     }
  
     // unhook all our event handlers
@@ -432,7 +458,7 @@ index 294853b..718e03f 100644
        connection.disconnect();
     }
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
-index 6c82094..86ea1bc 100644
+index ee7d4e7..1ae2057 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 @@ -18,7 +18,7 @@
@@ -444,32 +470,56 @@ index 6c82094..86ea1bc 100644
  
  #include <core/json/Json.hpp>
  
-@@ -77,7 +77,7 @@ private:
+@@ -94,7 +94,7 @@ private:
+    bool hasErrors_;
  
-    bool connected_;
- 
+    std::vector<boost::shared_ptr<NotebookCapture> > captures_;
 -   std::vector<boost::signals::connection> connections_;
 +   std::vector<boost::signals2::connection> connections_;
  };
  
  } // namespace notebook
-diff --git a/src/cpp/session/modules/rmarkdown/NotebookPlots.cpp b/src/cpp/session/modules/rmarkdown/NotebookPlots.cpp
-index 818f2c3..9f8bbef 100644
---- a/src/cpp/session/modules/rmarkdown/NotebookPlots.cpp
-+++ b/src/cpp/session/modules/rmarkdown/NotebookPlots.cpp
-@@ -51,8 +51,8 @@ public:
- 
-    bool hasPlots;
-    r::sexp::PreservedSEXP sexpMargins;
--   boost::signals::connection onConsolePrompt;
--   boost::signals::connection onNewPlot;
-+   boost::signals2::connection onConsolePrompt;
-+   boost::signals2::connection onNewPlot;
+diff --git a/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp b/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp
+index 361a211..2235c3f 100644
+--- a/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp
++++ b/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp
+@@ -68,9 +68,9 @@ private:
+    PlotSizeBehavior sizeBehavior_;
+    core::FilePath snapshotFile_;
+    r::sexp::PreservedSEXP sexpMargins_;
+-   boost::signals::connection onBeforeNewPlot_;
+-   boost::signals::connection onBeforeNewGridPage_;
+-   boost::signals::connection onNewPlot_;
++   boost::signals2::connection onBeforeNewPlot_;
++   boost::signals2::connection onBeforeNewGridPage_;
++   boost::signals2::connection onNewPlot_;
+    double width_;
+    double height_;
  };
+diff --git a/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp b/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
+index 9efcc25..37ea3d9 100644
+--- a/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
++++ b/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
+@@ -75,7 +75,7 @@ public:
+       pInput_->enque(kThreadQuitCommand);
  
- bool isPlotPath(const FilePath& path)
+       // unregister handlers
+-      BOOST_FOREACH(boost::signals::connection connection, handlers_)
++      BOOST_FOREACH(boost::signals2::connection connection, handlers_)
+       {
+          connection.disconnect();
+       }
+@@ -450,7 +450,7 @@ private:
+    boost::shared_ptr<ChunkExecContext> execContext_;
+ 
+    // registered signal handlers
+-   std::vector<boost::signals::connection> handlers_;
++   std::vector<boost::signals2::connection> handlers_;
+ 
+    // the thread which submits console input, and the queue which feeds it
+    boost::thread console_;
 diff --git a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
-index 2bce30b..ee2e674 100644
+index b1863eb..9057a5a 100644
 --- a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 +++ b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 @@ -18,7 +18,7 @@
@@ -481,7 +531,7 @@ index 2bce30b..ee2e674 100644
  #include <core/json/Json.hpp>
  
  #define kChunkLibDir "lib"
-@@ -43,18 +43,18 @@ std::string notebookCtxId();
+@@ -68,18 +68,18 @@ std::string notebookCtxId();
  struct Events : boost::noncopyable
  {
     // Document {0}, chunk {1} from context id {3} execution completed
@@ -496,10 +546,10 @@ index 2bce30b..ee2e674 100644
                  const std::string&)>
                  onChunkConsoleOutput;
  
--   boost::signal<void(const core::FilePath&)> onPlotOutput;
+-   boost::signal<void(const core::FilePath&, const core::FilePath&)> onPlotOutput;
 -   boost::signal<void(const core::FilePath&, const core::FilePath&)> onHtmlOutput;
 -   boost::signal<void(const core::json::Object&)> onErrorOutput;
-+   boost::signals2::signal<void(const core::FilePath&)> onPlotOutput;
++   boost::signals2::signal<void(const core::FilePath&, const core::FilePath&)> onPlotOutput;
 +   boost::signals2::signal<void(const core::FilePath&, const core::FilePath&)> onHtmlOutput;
 +   boost::signals2::signal<void(const core::json::Object&)> onErrorOutput;
  };
