@@ -2,3 +2,8 @@
 *.deb
 *.tar.xz
 *.jar
+
+pkg/
+src/
+rstudio/rstudio/
+rstudio-server/rstudio/
