@@ -21,9 +21,9 @@ source=('rstudio-server.service'
         'boostsignals.patch'
         'prefs.patch')
 
-md5sums=('6622f79d2a871c74e879043202696412'
+md5sums=('440c8712486d98942eef6e1c22623423'
          '9c5504ec85d0897845b8dfc105788b3f'
-         'e24f437e8269b674f6abddf7c9f15669'
+         'SKIP'
          '43f0ff6044f0d35123abdf2fe2283861')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
@@ -43,11 +43,6 @@ prepare() {
     git clone "$_gitroot" "$_gitname"
   fi
   
-  # build rmarkdown outside of the build tree
-  cd $srcdir/../rstudio/dependencies/common
-  msg "Install additional packages (install-packages)"
-  ./install-packages
-
   # srcdir
   cd "$srcdir"
   rm -rf rstudio
@@ -99,19 +94,15 @@ prepare() {
   rm -rf "pandoc/" && mkdir pandoc && cd pandoc
   ln -s "/usr/bin/pandoc" .
   
-  msg "rmarkdown"
-  # Copy rmarkdown.tar.gz (folder is empty and not needed, cmake checks for it. These packages are not included.)
+  # Copy rmarkdown
   mkdir -p "$srcdir/$_gitname/dependencies/common/rmarkdown"
-  cp "$srcdir/../$_gitname/dependencies/common/"rmarkdown_*.tar.gz "$srcdir/$_gitname/dependencies/common"
-  # Copy packrat
-  mkdir -p "$srcdir/$_gitname/dependencies/common/packrat"
-  cp "$srcdir/../$_gitname/dependencies/common/"packrat_*.tar.gz "$srcdir/$_gitname/dependencies/common"
+  #cp "$srcdir/../$_gitname/dependencies/common/"rmarkdown_*.tar.gz "$srcdir/$_gitname/dependencies/common"
   # Copy rsconnect
-  mkdir -p "$srcdir/$_gitname/dependencies/common/rsconnect"
-  cp "$srcdir/../$_gitname/dependencies/common/"rsconnect_*.tar.gz "$srcdir/$_gitname/dependencies/common"
-  ## Copy shiny
-  mkdir -p "$srcdir/$_gitname/dependencies/common/shinyapps"
-  cp "$srcdir/../$_gitname/dependencies/common/"shinyapps_*.tar.gz "$srcdir/$_gitname/dependencies/common"
+  # mkdir -p "$srcdir/$_gitname/dependencies/common/rsconnect"
+  # cp "$srcdir/../$_gitname/dependencies/common/"rsconnect_*.tar.gz "$srcdir/$_gitname/dependencies/common"
+  # Copy profvis
+  mkdir -p "$srcdir/$_gitname/dependencies/common/profvis"
+  # cp "$srcdir/../$_gitname/dependencies/common/"profvis_*.tar.gz "$srcdir/$_gitname/dependencies/common"
 
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
   mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-23"
@@ -152,7 +143,7 @@ build(){
 
   msg "Starting make"
 
-  make -j4
+  make -j8
 }
 
 package() {

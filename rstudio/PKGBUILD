@@ -47,10 +47,6 @@ prepare() {
     git clone "$_gitroot" "$_gitname"
   fi
   
-  # build additional packages outside of the build tree
-  cd dependencies/common
-  msg "Install additional packages (install-packages)"
-  ./install-packages
 
   cd "$srcdir"
   rm -rf rstudio
@@ -61,9 +57,7 @@ prepare() {
   msg "Fixes for boost"
   msg2 "1"
   git apply --whitespace=fix ../boostsignals.patch
-  #msg2 "2"
-  #git apply --whitespace=fix ../make_shared.patch
-  msg2 "3"
+  msg2 "2"
   git apply --whitespace=fix ../cursor_fix.diff
 
 
@@ -116,16 +110,11 @@ prepare() {
 
   # Copy rmarkdown
   mkdir -p "$srcdir/$_gitname/dependencies/common/rmarkdown"
-  cp "$srcdir/../$_gitname/dependencies/common/"rmarkdown_*.tar.gz "$srcdir/$_gitname/dependencies/common"
   # Copy rsconnect
   mkdir -p "$srcdir/$_gitname/dependencies/common/rsconnect"
-  cp "$srcdir/../$_gitname/dependencies/common/"rsconnect_*.tar.gz "$srcdir/$_gitname/dependencies/common"
   # Copy profvis
   mkdir -p "$srcdir/$_gitname/dependencies/common/profvis"
-  cp "$srcdir/../$_gitname/dependencies/common/"profvis_*.tar.gz "$srcdir/$_gitname/dependencies/common"
-  # # Copy packrat
-  # mkdir -p "$srcdir/$_gitname/dependencies/common/packrat"
-  # cp "$srcdir/../$_gitname/dependencies/common/"packrat_*.tar.gz "$srcdir/$_gitname/dependencies/common"
+
   # Create empty dictionaries folder
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
   # Add mathjax
@@ -165,7 +154,7 @@ build(){
         ..
 
   msg "Starting make"
-  make -j4
+  make -j8
 }
 
 package() {
