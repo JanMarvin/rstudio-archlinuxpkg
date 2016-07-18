@@ -301,7 +301,7 @@ index 59991d9..0485d8a 100644
  };
  
 diff --git a/src/cpp/session/include/session/SessionSourceDatabase.hpp b/src/cpp/session/include/session/SessionSourceDatabase.hpp
-index 0cf26bb..619fd24 100644
+index fea89c7..3d8f87b 100644
 --- a/src/cpp/session/include/session/SessionSourceDatabase.hpp
 +++ b/src/cpp/session/include/session/SessionSourceDatabase.hpp
 @@ -21,7 +21,7 @@
@@ -313,7 +313,7 @@ index 0cf26bb..619fd24 100644
  
  #include <core/FilePath.hpp>
  #include <core/json/Json.hpp>
-@@ -196,14 +196,14 @@ core::Error getId(const core::FilePath& path, std::string* pId);
+@@ -197,14 +197,14 @@ core::Error getId(const core::FilePath& path, std::string* pId);
  // source database events
  struct Events : boost::noncopyable
  {
@@ -445,10 +445,10 @@ index e9695aa..ddbd4ce 100644
              boost::bind(chunkConsoleOutputHandler,
                          _1,
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-index 1aa6f75..263863e 100644
+index 5db56e0..a9b4e36 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-@@ -363,7 +363,7 @@ void ChunkExecContext::disconnect()
+@@ -372,7 +372,7 @@ void ChunkExecContext::disconnect()
     }
  
     // unhook all our event handlers
@@ -458,7 +458,7 @@ index 1aa6f75..263863e 100644
        connection.disconnect();
     }
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
-index 7891966..90feeb3 100644
+index 0aa53c6..cf9507e 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 @@ -18,7 +18,7 @@
@@ -497,10 +497,10 @@ index 2f30d75..d663781 100644
     double width_;
     double height_;
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp b/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
-index a1818d7..7a3db06 100644
+index edfde1c..f98b3ba 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
-@@ -81,7 +81,7 @@ public:
+@@ -83,7 +83,7 @@ public:
        pInput_->enque(kThreadQuitCommand);
  
        // unregister handlers
@@ -509,7 +509,7 @@ index a1818d7..7a3db06 100644
        {
           connection.disconnect();
        }
-@@ -462,7 +462,7 @@ private:
+@@ -487,7 +487,7 @@ private:
     boost::shared_ptr<ChunkExecContext> execContext_;
  
     // registered signal handlers
