@@ -105,8 +105,8 @@ prepare() {
   # cp "$srcdir/../$_gitname/dependencies/common/"profvis_*.tar.gz "$srcdir/$_gitname/dependencies/common"
 
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
-  mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-23"
-  ln -s "/opt/mathjax/"* "$srcdir/$_gitname/dependencies/common/mathjax-23"
+  mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-26"
+  ln -s "/opt/mathjax/"* "$srcdir/$_gitname/dependencies/common/mathjax-26"
 
   # Clang
   mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/3.5"
@@ -183,5 +183,5 @@ package() {
     rm $srcdir/$_gitname/src/gwt/lib/junit-4.93b.jar
     rm -r "$srcdir/$_gitname/src/gwt/lib"
     rm -r "$srcdir/$_gitname/dependencies/common/dictionaries/"
-    rm -r "$srcdir/$_gitname/dependencies/common/mathjax-23"
+    rm -r "$srcdir/$_gitname/dependencies/common/mathjax-26"
 }
