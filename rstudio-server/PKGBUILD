@@ -98,7 +98,7 @@ prepare() {
   mkdir -p "$srcdir/$_gitname/dependencies/common/rmarkdown"
   #cp "$srcdir/../$_gitname/dependencies/common/"rmarkdown_*.tar.gz "$srcdir/$_gitname/dependencies/common"
   # Copy rsconnect
-  # mkdir -p "$srcdir/$_gitname/dependencies/common/rsconnect"
+  mkdir -p "$srcdir/$_gitname/dependencies/common/rsconnect"
   # cp "$srcdir/../$_gitname/dependencies/common/"rsconnect_*.tar.gz "$srcdir/$_gitname/dependencies/common"
   # Copy profvis
   mkdir -p "$srcdir/$_gitname/dependencies/common/profvis"
