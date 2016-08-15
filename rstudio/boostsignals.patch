@@ -172,7 +172,7 @@ index 071db3d..9056058 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index 9f26641..dd60dcf 100644
+index 87e117d..10e9879 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -454,10 +454,10 @@ index 9e18319..afef244 100644
              boost::bind(chunkConsoleOutputHandler,
                          _1,
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-index ac5fec5..dc0cc85 100644
+index 2a4cb8b..854b8f9 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-@@ -393,7 +393,7 @@ void ChunkExecContext::disconnect()
+@@ -404,7 +404,7 @@ void ChunkExecContext::disconnect()
     }
  
     // unhook all our event handlers
@@ -467,7 +467,7 @@ index ac5fec5..dc0cc85 100644
        connection.disconnect();
     }
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
-index 24c24f7..ac3117b 100644
+index a397329..e3d170a 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 @@ -18,7 +18,7 @@
@@ -479,7 +479,7 @@ index 24c24f7..ac3117b 100644
  
  #include <core/json/Json.hpp>
  
-@@ -97,7 +97,7 @@ private:
+@@ -98,7 +98,7 @@ private:
     bool hasErrors_;
  
     std::vector<boost::shared_ptr<NotebookCapture> > captures_;
@@ -489,7 +489,7 @@ index 24c24f7..ac3117b 100644
  
  } // namespace notebook
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp b/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp
-index 2f30d75..d663781 100644
+index b357280..dd13788 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp
 @@ -80,9 +80,9 @@ private:
@@ -528,7 +528,7 @@ index 0a0a822..6083509 100644
     // the thread which submits console input, and the queue which feeds it
     boost::thread console_;
 diff --git a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
-index 2c9f887..74c78b6 100644
+index 39df613..8fccb7d 100644
 --- a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 +++ b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 @@ -18,7 +18,7 @@
@@ -540,7 +540,7 @@ index 2c9f887..74c78b6 100644
  #include <core/json/Json.hpp>
  
  #define kChunkLibDir "lib"
-@@ -68,20 +68,20 @@ std::string notebookCtxId();
+@@ -68,22 +68,22 @@ std::string notebookCtxId();
  struct Events : boost::noncopyable
  {
     // Document {0}, chunk {1} from context id {3} execution completed
@@ -557,13 +557,15 @@ index 2c9f887..74c78b6 100644
  
 -   boost::signal<void(const core::FilePath&, const core::FilePath&, 
 +   boost::signals2::signal<void(const core::FilePath&, const core::FilePath&, 
-                       unsigned ordinal)> onPlotOutput;
--   boost::signal<void(const core::FilePath&, const core::FilePath&)> onHtmlOutput;
+                       const core::json::Value& metadata, unsigned ordinal)> 
+                          onPlotOutput;
+-   boost::signal<void(const core::FilePath&, const core::FilePath&,
++   boost::signals2::signal<void(const core::FilePath&, const core::FilePath&,
+                       const core::json::Value& metadata)> onHtmlOutput;
 -   boost::signal<void(const core::json::Object&)> onErrorOutput;
--   boost::signal<void(const core::FilePath&, const core::FilePath&)> onDataOutput;
-+   boost::signals2::signal<void(const core::FilePath&, const core::FilePath&)> onHtmlOutput;
+-   boost::signal<void(const core::FilePath&, const core::FilePath&,
 +   boost::signals2::signal<void(const core::json::Object&)> onErrorOutput;
-+   boost::signals2::signal<void(const core::FilePath&, const core::FilePath&)> onDataOutput;
++   boost::signals2::signal<void(const core::FilePath&, const core::FilePath&,
+                       const core::json::Value& metadata)> onDataOutput;
  };
  
- Events& events();
