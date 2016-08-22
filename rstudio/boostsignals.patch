@@ -423,7 +423,7 @@ index a1c4919..e324588 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp b/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
-index 9e18319..afef244 100644
+index ed10a7d..5e50bb1 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
 @@ -141,7 +141,7 @@ Error executeRcppEngineChunk(const std::string& docId,
@@ -444,7 +444,7 @@ index 9e18319..afef244 100644
           module_context::events().onConsoleOutput.connect(
              boost::bind(chunkConsoleOutputHandler,
                          _1,
-@@ -356,7 +356,7 @@ Error executeSqlEngineChunk(const std::string& docId,
+@@ -357,7 +357,7 @@ Error executeSqlEngineChunk(const std::string& docId,
        LOG_ERROR(error);
     
     // capture console output, error
@@ -454,10 +454,10 @@ index 9e18319..afef244 100644
              boost::bind(chunkConsoleOutputHandler,
                          _1,
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-index 2a4cb8b..854b8f9 100644
+index e77b16f..7a5e46b 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-@@ -404,7 +404,7 @@ void ChunkExecContext::disconnect()
+@@ -433,7 +433,7 @@ void ChunkExecContext::disconnect()
     }
  
     // unhook all our event handlers
@@ -467,7 +467,7 @@ index 2a4cb8b..854b8f9 100644
        connection.disconnect();
     }
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
-index a397329..e3d170a 100644
+index 94ed97b..c0703c6 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 @@ -18,7 +18,7 @@
@@ -479,7 +479,7 @@ index a397329..e3d170a 100644
  
  #include <core/json/Json.hpp>
  
-@@ -98,7 +98,7 @@ private:
+@@ -99,7 +99,7 @@ private:
     bool hasErrors_;
  
     std::vector<boost::shared_ptr<NotebookCapture> > captures_;
@@ -489,7 +489,7 @@ index a397329..e3d170a 100644
  
  } // namespace notebook
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp b/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp
-index b357280..dd13788 100644
+index 7e857e8..823214a 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp
 @@ -80,9 +80,9 @@ private:
@@ -528,7 +528,7 @@ index 0a0a822..6083509 100644
     // the thread which submits console input, and the queue which feeds it
     boost::thread console_;
 diff --git a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
-index 39df613..8fccb7d 100644
+index 44125f7..50735d7 100644
 --- a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 +++ b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 @@ -18,7 +18,7 @@
@@ -540,7 +540,7 @@ index 39df613..8fccb7d 100644
  #include <core/json/Json.hpp>
  
  #define kChunkLibDir "lib"
-@@ -68,22 +68,22 @@ std::string notebookCtxId();
+@@ -74,24 +74,24 @@ std::string notebookCtxId();
  struct Events : boost::noncopyable
  {
     // Document {0}, chunk {1} from context id {3} execution completed
@@ -567,5 +567,8 @@ index 39df613..8fccb7d 100644
 +   boost::signals2::signal<void(const core::json::Object&)> onErrorOutput;
 +   boost::signals2::signal<void(const core::FilePath&, const core::FilePath&,
                        const core::json::Value& metadata)> onDataOutput;
+-   boost::signal<void(Condition condition, const std::string& message)> 
++   boost::signals2::signal<void(Condition condition, const std::string& message)> 
+                          onCondition;
  };
  
