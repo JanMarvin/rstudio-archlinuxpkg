@@ -18,12 +18,14 @@ conflicts=('rstudio-server')
 install=rstudio-server.install
 source=('rstudio-server.service'
         'make_shared.patch'
+	'make_shared_include.patch'
         'boostsignals.patch'
         'prefs.patch')
 
 md5sums=('440c8712486d98942eef6e1c22623423'
          '9c5504ec85d0897845b8dfc105788b3f'
-         'SKIP'
+         '5986dcde37a14d95cfb31f64ebf83923'
+         '7b6b1a75fccdff94bfb7bd60f5b060aa'
          '43f0ff6044f0d35123abdf2fe2283861')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
@@ -49,6 +51,8 @@ prepare() {
   git clone ../$_gitname
   cd $_gitname
   git apply --whitespace=fix ../boostsignals.patch
+
+  git apply --whitespace=fix ../make_shared_include.patch
 
   # Gentoo fixes
   msg "Gentoo fixes"

@@ -1,0 +1,12 @@
+diff --git a/src/cpp/session/modules/rmarkdown/NotebookCapture.cpp b/src/cpp/session/modules/rmarkdown/NotebookCapture.cpp
+index 44c4713..3c36d50 100644
+--- a/src/cpp/session/modules/rmarkdown/NotebookCapture.cpp
++++ b/src/cpp/session/modules/rmarkdown/NotebookCapture.cpp
+@@ -15,6 +15,7 @@
+ 
+ #include "SessionRmdNotebook.hpp"
+ #include "NotebookCapture.hpp"
++#include <boost/make_shared.hpp>
+ 
+ namespace rstudio {
+ namespace session {
