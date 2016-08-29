@@ -21,13 +21,15 @@ source=('rstudio.desktop'
         'boostsignals.patch'
         'cursor_fix.diff'
         'make_shared.patch'
+	'make_shared_include.patch'
         'prefs.patch')
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         'SKIP'
+         '7b6b1a75fccdff94bfb7bd60f5b060aa'
          'de85436b79f298c33b5353bdeecba065'
          '9c5504ec85d0897845b8dfc105788b3f'
+         '5986dcde37a14d95cfb31f64ebf83923'
          '43f0ff6044f0d35123abdf2fe2283861')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
@@ -59,6 +61,8 @@ prepare() {
   git apply --whitespace=fix ../boostsignals.patch
   msg2 "2"
   git apply --whitespace=fix ../cursor_fix.diff
+  msg2 "3"
+  git apply --whitespace=fix ../make_shared_include.patch
 
 
   # Gentoo fixes
