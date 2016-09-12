@@ -146,7 +146,7 @@ index 8657959..7241522 100644
     // unit conversion function
     UnitConversionFunctions convert_;
 diff --git a/src/cpp/server/include/server/ServerSessionManager.hpp b/src/cpp/server/include/server/ServerSessionManager.hpp
-index 87342b1..8a92ac2 100644
+index a83c5cf..1ad97bd 100644
 --- a/src/cpp/server/include/server/ServerSessionManager.hpp
 +++ b/src/cpp/server/include/server/ServerSessionManager.hpp
 @@ -20,7 +20,7 @@
@@ -155,11 +155,11 @@ index 87342b1..8a92ac2 100644
  
 -#include <boost/signals.hpp>
 +#include <boost/signals2.hpp>
+ #include <boost/asio/io_service.hpp>
  
  #include <core/Thread.hpp>
- 
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index 071db3d..9056058 100644
+index e790e74..a5d0ff5 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -33,7 +33,7 @@
@@ -454,10 +454,10 @@ index ed10a7d..5e50bb1 100644
              boost::bind(chunkConsoleOutputHandler,
                          _1,
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-index e77b16f..7a5e46b 100644
+index b186a4e..d724f68 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-@@ -433,7 +433,7 @@ void ChunkExecContext::disconnect()
+@@ -441,7 +441,7 @@ void ChunkExecContext::disconnect()
     }
  
     // unhook all our event handlers
@@ -506,7 +506,7 @@ index 7e857e8..823214a 100644
     double width_;
     double height_;
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp b/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
-index 0a0a822..6083509 100644
+index e0d879d..3e2e12b 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
 @@ -87,7 +87,7 @@ public:
@@ -518,7 +518,7 @@ index 0a0a822..6083509 100644
        {
           connection.disconnect();
        }
-@@ -555,7 +555,7 @@ private:
+@@ -601,7 +601,7 @@ private:
     boost::shared_ptr<ChunkExecContext> execContext_;
  
     // registered signal handlers
@@ -528,7 +528,7 @@ index 0a0a822..6083509 100644
     // the thread which submits console input, and the queue which feeds it
     boost::thread console_;
 diff --git a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
-index 44125f7..50735d7 100644
+index 16a2593..78ac86e 100644
 --- a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 +++ b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 @@ -18,7 +18,7 @@
@@ -540,7 +540,7 @@ index 44125f7..50735d7 100644
  #include <core/json/Json.hpp>
  
  #define kChunkLibDir "lib"
-@@ -74,24 +74,24 @@ std::string notebookCtxId();
+@@ -76,24 +76,24 @@ std::string notebookCtxId();
  struct Events : boost::noncopyable
  {
     // Document {0}, chunk {1} from context id {3} execution completed

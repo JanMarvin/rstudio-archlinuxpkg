@@ -25,7 +25,7 @@ source=('rstudio-server.service'
 md5sums=('440c8712486d98942eef6e1c22623423'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
-         '7b6b1a75fccdff94bfb7bd60f5b060aa'
+         'd9f3028489f340087a5f3423f3c14f23'
          '43f0ff6044f0d35123abdf2fe2283861')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
