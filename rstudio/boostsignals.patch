@@ -1,5 +1,5 @@
 diff --git a/src/cpp/r/include/r/session/RConsoleHistory.hpp b/src/cpp/r/include/r/session/RConsoleHistory.hpp
-index ef16c68..7ccb23d 100644
+index ef16c6867..7ccb23d85 100644
 --- a/src/cpp/r/include/r/session/RConsoleHistory.hpp
 +++ b/src/cpp/r/include/r/session/RConsoleHistory.hpp
 @@ -20,7 +20,7 @@
@@ -30,7 +30,7 @@ index ef16c68..7ccb23d 100644
     {
        return onAdd_.connect(slot);
 diff --git a/src/cpp/r/include/r/session/RGraphics.hpp b/src/cpp/r/include/r/session/RGraphics.hpp
-index 7cd7483..595dcc1 100644
+index 7cd7483d3..595dcc1ab 100644
 --- a/src/cpp/r/include/r/session/RGraphics.hpp
 +++ b/src/cpp/r/include/r/session/RGraphics.hpp
 @@ -56,7 +56,7 @@ struct is_error_code_enum<rstudio::r::session::graphics::errc::errc_t>
@@ -52,7 +52,7 @@ index 7cd7483..595dcc1 100644
     // set manipulator values
     virtual void setPlotManipulatorValues(const core::json::Object& values) = 0;
 diff --git a/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp b/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
-index 20d98ae..925a1d3 100644
+index 20d98aee8..925a1d34d 100644
 --- a/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
 +++ b/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
 @@ -539,7 +539,7 @@ void PlotManager::clear()
@@ -65,7 +65,7 @@ index 20d98ae..925a1d3 100644
     return plotManipulatorManager().onShowManipulator();
  }
 diff --git a/src/cpp/r/session/graphics/RGraphicsPlotManager.hpp b/src/cpp/r/session/graphics/RGraphicsPlotManager.hpp
-index 40466d8..ca9b517 100644
+index 40466d88a..ca9b51738 100644
 --- a/src/cpp/r/session/graphics/RGraphicsPlotManager.hpp
 +++ b/src/cpp/r/session/graphics/RGraphicsPlotManager.hpp
 @@ -22,7 +22,7 @@
@@ -102,7 +102,7 @@ index 40466d8..ca9b517 100644
     virtual void manipulatorPlotClicked(int x, int y);
  
 diff --git a/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.cpp b/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.cpp
-index fdc3bf1..5870879 100644
+index fdc3bf176..58708798a 100644
 --- a/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.cpp
 +++ b/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.cpp
 @@ -184,7 +184,7 @@ Error PlotManipulatorManager::initialize(
@@ -115,7 +115,7 @@ index fdc3bf1..5870879 100644
     return onShowManipulator_;
  }
 diff --git a/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.hpp b/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.hpp
-index 8657959..7241522 100644
+index 865795934..724152283 100644
 --- a/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.hpp
 +++ b/src/cpp/r/session/graphics/RGraphicsPlotManipulatorManager.hpp
 @@ -16,7 +16,7 @@
@@ -146,7 +146,7 @@ index 8657959..7241522 100644
     // unit conversion function
     UnitConversionFunctions convert_;
 diff --git a/src/cpp/server/include/server/ServerSessionManager.hpp b/src/cpp/server/include/server/ServerSessionManager.hpp
-index a83c5cf..1ad97bd 100644
+index a83c5cfba..1ad97bdd2 100644
 --- a/src/cpp/server/include/server/ServerSessionManager.hpp
 +++ b/src/cpp/server/include/server/ServerSessionManager.hpp
 @@ -20,7 +20,7 @@
@@ -159,7 +159,7 @@ index a83c5cf..1ad97bd 100644
  
  #include <core/Thread.hpp>
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index 64aa135..0eb1efa 100644
+index 6dc8a45e1..dc93b862c 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -33,7 +33,7 @@
@@ -172,7 +172,7 @@ index 64aa135..0eb1efa 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index fbe08bf..1103571 100644
+index bbe59d115..28cccc9ac 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -184,7 +184,7 @@ index fbe08bf..1103571 100644
  #include <boost/format.hpp>
  #include <boost/numeric/conversion/cast.hpp>
  
-@@ -538,13 +538,13 @@ private:
+@@ -571,13 +571,13 @@ private:
     
     int nextGroup_; 
     
@@ -203,10 +203,10 @@ index fbe08bf..1103571 100644
                   std::greater<int> > resumeSignal_;
  };
 diff --git a/src/cpp/session/include/session/SessionConsoleProcess.hpp b/src/cpp/session/include/session/SessionConsoleProcess.hpp
-index f52d005..38c5e36 100644
+index 6cb3d341b..d19cd9115 100644
 --- a/src/cpp/session/include/session/SessionConsoleProcess.hpp
 +++ b/src/cpp/session/include/session/SessionConsoleProcess.hpp
-@@ -18,7 +18,7 @@
+@@ -20,7 +20,7 @@
  #include <queue>
  
  #include <boost/regex.hpp>
@@ -215,17 +215,17 @@ index f52d005..38c5e36 100644
  #include <boost/circular_buffer.hpp>
  #include <boost/enable_shared_from_this.hpp>
  
-@@ -159,7 +159,7 @@ public:
+@@ -104,7 +104,7 @@ public:
     void setPromptHandler(
           const boost::function<bool(const std::string&, Input*)>& onPrompt);
  
 -   boost::signal<void(int)>& onExit() { return onExit_; }
 +   boost::signals2::signal<void(int)>& onExit() { return onExit_; }
  
-    std::string handle() const { return handle_; }
-    InteractionMode interactionMode() const { return interactionMode_; }
-@@ -239,7 +239,7 @@ private:
-    boost::optional<int> exitCode_;
+    std::string handle() const { return procInfo_->getHandle(); }
+    InteractionMode interactionMode() const { return procInfo_->getInteractionMode(); }
+@@ -164,7 +164,7 @@ private:
+    std::queue<Input> inputQueue_;
  
     boost::function<bool(const std::string&, Input*)> onPrompt_;
 -   boost::signal<void(int)> onExit_;
@@ -234,10 +234,10 @@ index f52d005..38c5e36 100644
     // regex for prompt detection
     boost::regex controlCharsPattern_;
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index 59991d9..0485d8a 100644
+index 475fe0358..7ef682784 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
-@@ -20,7 +20,7 @@
+@@ -21,7 +21,7 @@
  
  #include <boost/utility.hpp>
  #include <boost/function.hpp>
@@ -246,7 +246,7 @@ index 59991d9..0485d8a 100644
  #include <boost/shared_ptr.hpp>
  
  #include <core/HtmlUtils.hpp>
-@@ -314,32 +314,32 @@ struct firstNonEmpty
+@@ -316,32 +316,32 @@ struct firstNonEmpty
  // session events
  struct Events : boost::noncopyable
  {
@@ -301,7 +301,7 @@ index 59991d9..0485d8a 100644
  };
  
 diff --git a/src/cpp/session/include/session/SessionSourceDatabase.hpp b/src/cpp/session/include/session/SessionSourceDatabase.hpp
-index 7916b4e..5c61f57 100644
+index 7916b4e4b..5c61f5703 100644
 --- a/src/cpp/session/include/session/SessionSourceDatabase.hpp
 +++ b/src/cpp/session/include/session/SessionSourceDatabase.hpp
 @@ -21,7 +21,7 @@
@@ -335,7 +335,7 @@ index 7916b4e..5c61f57 100644
  
  Events& events();
 diff --git a/src/cpp/session/include/session/SessionUserSettings.hpp b/src/cpp/session/include/session/SessionUserSettings.hpp
-index 2ee4c89..5909faa 100644
+index 2ee4c8924..5909faab2 100644
 --- a/src/cpp/session/include/session/SessionUserSettings.hpp
 +++ b/src/cpp/session/include/session/SessionUserSettings.hpp
 @@ -20,7 +20,7 @@
@@ -357,7 +357,7 @@ index 2ee4c89..5909faa 100644
  public:
     // COPYING: boost::noncopyable
 diff --git a/src/cpp/session/include/session/projects/SessionProjects.hpp b/src/cpp/session/include/session/projects/SessionProjects.hpp
-index f98c604..f2b585f 100644
+index f98c604ae..f2b585f3e 100644
 --- a/src/cpp/session/include/session/projects/SessionProjects.hpp
 +++ b/src/cpp/session/include/session/projects/SessionProjects.hpp
 @@ -22,7 +22,7 @@
@@ -384,7 +384,7 @@ index f98c604..f2b585f 100644
  
  ProjectContext& projectContext();
 diff --git a/src/cpp/session/modules/SessionPlots.hpp b/src/cpp/session/modules/SessionPlots.hpp
-index f8ddfcc..d76c9cc 100644
+index f8ddfcc58..d76c9ccae 100644
 --- a/src/cpp/session/modules/SessionPlots.hpp
 +++ b/src/cpp/session/modules/SessionPlots.hpp
 @@ -16,7 +16,7 @@
@@ -410,7 +410,7 @@ index f8ddfcc..d76c9cc 100644
  
  Events& events();
 diff --git a/src/cpp/session/modules/build/SessionSourceCpp.cpp b/src/cpp/session/modules/build/SessionSourceCpp.cpp
-index a1c4919..e324588 100644
+index a1c4919e6..e324588df 100644
 --- a/src/cpp/session/modules/build/SessionSourceCpp.cpp
 +++ b/src/cpp/session/modules/build/SessionSourceCpp.cpp
 @@ -15,7 +15,7 @@
@@ -423,7 +423,7 @@ index a1c4919..e324588 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp b/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
-index 8ff8a1d..9133675 100644
+index ef7741315..6d2367244 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
 @@ -142,7 +142,7 @@ Error executeRcppEngineChunk(const std::string& docId,
@@ -454,7 +454,7 @@ index 8ff8a1d..9133675 100644
              boost::bind(chunkConsoleOutputHandler,
                          _1,
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-index 32b3393..4022a1c 100644
+index 32b339312..4022a1c9b 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
 @@ -441,7 +441,7 @@ void ChunkExecContext::disconnect()
@@ -467,7 +467,7 @@ index 32b3393..4022a1c 100644
        connection.disconnect();
     }
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
-index 94ed97b..c0703c6 100644
+index 94ed97b02..c0703c696 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 @@ -18,7 +18,7 @@
@@ -489,7 +489,7 @@ index 94ed97b..c0703c6 100644
  
  } // namespace notebook
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp b/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp
-index 7e857e8..823214a 100644
+index 7e857e8e5..823214a31 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookPlots.hpp
 @@ -80,9 +80,9 @@ private:
@@ -506,7 +506,7 @@ index 7e857e8..823214a 100644
     double width_;
     double height_;
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp b/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
-index 62319c3..d058e71 100644
+index 62319c32e..d058e71e7 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
 @@ -87,7 +87,7 @@ public:
@@ -528,7 +528,7 @@ index 62319c3..d058e71 100644
     // the thread which submits console input, and the queue which feeds it
     boost::thread console_;
 diff --git a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
-index 16a2593..78ac86e 100644
+index 16a2593ca..78ac86e9b 100644
 --- a/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 +++ b/src/cpp/session/modules/rmarkdown/SessionRmdNotebook.hpp
 @@ -18,7 +18,7 @@
