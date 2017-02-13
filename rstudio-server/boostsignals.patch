@@ -159,7 +159,7 @@ index a83c5cfba..1ad97bdd2 100644
  
  #include <core/Thread.hpp>
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index 6dc8a45e1..dc93b862c 100644
+index 912f72ee1..001ac4638 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -33,7 +33,7 @@
@@ -203,7 +203,7 @@ index bbe59d115..28cccc9ac 100644
                   std::greater<int> > resumeSignal_;
  };
 diff --git a/src/cpp/session/include/session/SessionConsoleProcess.hpp b/src/cpp/session/include/session/SessionConsoleProcess.hpp
-index 6cb3d341b..d19cd9115 100644
+index 775cd48fd..cf16cc4e7 100644
 --- a/src/cpp/session/include/session/SessionConsoleProcess.hpp
 +++ b/src/cpp/session/include/session/SessionConsoleProcess.hpp
 @@ -20,7 +20,7 @@
@@ -224,7 +224,7 @@ index 6cb3d341b..d19cd9115 100644
  
     std::string handle() const { return procInfo_->getHandle(); }
     InteractionMode interactionMode() const { return procInfo_->getInteractionMode(); }
-@@ -164,7 +164,7 @@ private:
+@@ -162,7 +162,7 @@ private:
     std::queue<Input> inputQueue_;
  
     boost::function<bool(const std::string&, Input*)> onPrompt_;
@@ -234,7 +234,7 @@ index 6cb3d341b..d19cd9115 100644
     // regex for prompt detection
     boost::regex controlCharsPattern_;
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index 475fe0358..7ef682784 100644
+index 374b52927..ec0bcf89f 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
 @@ -21,7 +21,7 @@
@@ -246,7 +246,7 @@ index 475fe0358..7ef682784 100644
  #include <boost/shared_ptr.hpp>
  
  #include <core/HtmlUtils.hpp>
-@@ -316,32 +316,32 @@ struct firstNonEmpty
+@@ -316,34 +316,34 @@ struct firstNonEmpty
  // session events
  struct Events : boost::noncopyable
  {
@@ -274,10 +274,7 @@ index 475fe0358..7ef682784 100644
 -   boost::signal<void(bool)>                 onBackgroundProcessing;
 -   boost::signal<void(bool)>                 onShutdown;
 -   boost::signal<void ()>                    onQuit;
--   boost::signal<void (const std::string&)>  onPackageLoaded;
--   boost::signal<void ()>                    onPackageLibraryMutated;
--   boost::signal<void ()>                    onPreferencesSaved;
--   boost::signal<void (const DistributedEvent&)>
+-   boost::signal<void (const std::vector<std::string>&)>
 +   boost::signals2::signal<void()>                     onUserInterrupt;
 +   boost::signals2::signal<void (ChangeSource)>        onDetectChanges;
 +   boost::signals2::signal<void (core::FilePath)>      onSourceEditorFileSaved;
@@ -286,6 +283,12 @@ index 475fe0358..7ef682784 100644
 +   boost::signals2::signal<void(bool)>                 onBackgroundProcessing;
 +   boost::signals2::signal<void(bool)>                 onShutdown;
 +   boost::signals2::signal<void ()>                    onQuit;
++   boost::signals2::signal<void (const std::vector<std::string>&)>
+                                              onLibPathsChanged;
+-   boost::signal<void (const std::string&)>  onPackageLoaded;
+-   boost::signal<void ()>                    onPackageLibraryMutated;
+-   boost::signal<void ()>                    onPreferencesSaved;
+-   boost::signal<void (const DistributedEvent&)>
 +   boost::signals2::signal<void (const std::string&)>  onPackageLoaded;
 +   boost::signals2::signal<void ()>                    onPackageLibraryMutated;
 +   boost::signals2::signal<void ()>                    onPreferencesSaved;
