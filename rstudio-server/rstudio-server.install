@@ -14,6 +14,7 @@ post_upgrade() {
     getent passwd rstudio-server >/dev/null 2>&1 || useradd --system -g rstudio-server -d /var/lib/rstudio-server -s /bin/false rstudio-server &>/dev/null
     chown -R rstudio-server:rstudio-server /var/lib/rstudio-server &>/dev/null
     echo `date +%s` > /var/lib/rstudio-server/installed
+    systemctl daemon-reload
     /usr/bin/rstudio-server online
 }
 

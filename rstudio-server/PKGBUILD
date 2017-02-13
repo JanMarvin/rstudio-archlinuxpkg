@@ -22,7 +22,7 @@ source=('rstudio-server.service'
         'boostsignals.patch'
         'prefs.patch')
 
-md5sums=('440c8712486d98942eef6e1c22623423'
+md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
          'c3173c1e7f41e74afdcad5b4323aab92'
