@@ -26,8 +26,8 @@ source=('rstudio.desktop'
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         '3884f8717a9c39e1f1d4dad75cc4ae68'
-         'de85436b79f298c33b5353bdeecba065'
+         '30204a486b4e42ce82885dde265c0aea'
+         'abc137c2e71a38153cf5a36d7c11b58d'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
          '43f0ff6044f0d35123abdf2fe2283861')

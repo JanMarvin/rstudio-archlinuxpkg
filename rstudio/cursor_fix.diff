@@ -3,12 +3,12 @@ index 859ca83..d9df1af 100644
 --- a/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css
 +++ b/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css
 @@ -117,8 +117,6 @@
- @url WARNINGDARK syntaxWarningDark;
- @url ERRORDARK syntaxErrorDark;
+ @url WARNINGDARK syntaxWarningDark2x;
+ @url ERRORDARK syntaxErrorDark2x;
  
--@url HANDCURSOR handCursor;
+-@url HANDCURSOR handCursor2x;
 -
- @url MACCHECK macCheck;
+ @url MACCHECK macCheck2x;
  @url RADIOBUTTONON radioButtonOn;
  
 @@ -226,12 +224,12 @@ button {
