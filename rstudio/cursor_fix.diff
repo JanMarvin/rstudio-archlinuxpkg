@@ -9,7 +9,7 @@ index 859ca83..d9df1af 100644
 -@url HANDCURSOR handCursor2x;
 -
  @url MACCHECK macCheck2x;
- @url RADIOBUTTONON radioButtonOn;
+ @url RADIOBUTTONON radioButtonOn2x;
  
 @@ -226,12 +224,12 @@ button {
  
