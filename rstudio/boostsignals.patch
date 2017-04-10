@@ -30,7 +30,7 @@ index ef16c68672..7ccb23d85d 100644
     {
        return onAdd_.connect(slot);
 diff --git a/src/cpp/r/include/r/session/RGraphics.hpp b/src/cpp/r/include/r/session/RGraphics.hpp
-index 7cd7483d3c..595dcc1ab5 100644
+index 563d4050ea..926d49f488 100644
 --- a/src/cpp/r/include/r/session/RGraphics.hpp
 +++ b/src/cpp/r/include/r/session/RGraphics.hpp
 @@ -56,7 +56,7 @@ struct is_error_code_enum<rstudio::r::session::graphics::errc::errc_t>
@@ -203,7 +203,7 @@ index dace1f6acc..b77b7d5f5d 100644
                   std::greater<int> > resumeSignal_;
  };
 diff --git a/src/cpp/session/include/session/SessionConsoleProcess.hpp b/src/cpp/session/include/session/SessionConsoleProcess.hpp
-index 8cac43749d..1481080458 100644
+index db77577fa2..22caca3906 100644
 --- a/src/cpp/session/include/session/SessionConsoleProcess.hpp
 +++ b/src/cpp/session/include/session/SessionConsoleProcess.hpp
 @@ -20,7 +20,7 @@
