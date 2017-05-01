@@ -22,7 +22,8 @@ source=('rstudio.desktop'
         'cursor_fix.diff'
         'make_shared.patch'
 	'make_shared_include.patch'
-        'prefs.patch')
+        'prefs.patch'
+	'openssl11.diff')
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
@@ -30,7 +31,8 @@ md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '32a67b90be0e75c04d83c23c35335e69'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
-         '43f0ff6044f0d35123abdf2fe2283861')
+         '43f0ff6044f0d35123abdf2fe2283861'
+         '0219c8cfd0034f639df4020b6ed29add')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -63,6 +65,8 @@ prepare() {
   git apply --whitespace=fix ../cursor_fix.diff
   msg2 "3"
   git apply --whitespace=fix ../make_shared_include.patch
+  msg2 "4"
+  git apply --whitespace=fix ../openssl11.diff
 
 
   # Gentoo fixes
