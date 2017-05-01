@@ -20,13 +20,15 @@ source=('rstudio-server.service'
         'make_shared.patch'
 	'make_shared_include.patch'
         'boostsignals.patch'
-        'prefs.patch')
+        'prefs.patch'
+	'openssl11.diff')
 
 md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
          '3884f8717a9c39e1f1d4dad75cc4ae68'
-         '43f0ff6044f0d35123abdf2fe2283861')
+         '43f0ff6044f0d35123abdf2fe2283861'
+         'd01aefc0cdd5d736c2ce8b9360441468')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -58,6 +60,9 @@ prepare() {
   msg "Gentoo fixes"
   # http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/sci-mathematics/rstudio/
   git apply ../prefs.patch
+
+  # OpenSSL 1.1 fix
+  git apply ../openssl11.diff
 
   # make sure icons and mime stuff are with prefix
   sed -i \
