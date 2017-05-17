@@ -32,7 +32,7 @@ md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
          '43f0ff6044f0d35123abdf2fe2283861'
-         '0219c8cfd0034f639df4020b6ed29add')
+         'ac11b24f155a58d532351a3b79e43fc6')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
