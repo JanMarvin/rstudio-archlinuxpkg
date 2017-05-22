@@ -33,11 +33,4 @@ index 443d20e064..887ed35032 100644
 +   cursor: hand 9 5, pointer;
  }
  }
- 
-@@ -2429,4 +2418,4 @@ body.rstudio-themes-flat .rstudio-themes-alternate {
- @external com-google-gwt-user-client-ui-CustomScrollPanel-Style-customScrollPanelCorner;
- .rstudio-themes-flat .rstudio-themes-scrollbars .com-google-gwt-user-client-ui-CustomScrollPanel-Style-customScrollPanelCorner {
-    display: none;
--}
-\ No newline at end of file
-+}
+
