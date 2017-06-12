@@ -21,9 +21,10 @@ source=('rstudio.desktop'
         'boostsignals.patch'
         'cursor_fix.diff'
         'make_shared.patch'
-	'make_shared_include.patch'
+        'make_shared_include.patch'
         'prefs.patch'
-	'openssl11.diff')
+        'openssl11.diff'
+        'cmake.diff')
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
@@ -32,7 +33,8 @@ md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
          '43f0ff6044f0d35123abdf2fe2283861'
-         'ac11b24f155a58d532351a3b79e43fc6')
+         'ac11b24f155a58d532351a3b79e43fc6'
+         'bf29d350088f98d08c96516a4bb9b501')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -67,6 +69,8 @@ prepare() {
   git apply --whitespace=fix ../make_shared_include.patch
   msg2 "4"
   git apply --whitespace=fix ../openssl11.diff
+  msg2 "5"
+  git apply --whitespace=fix ../cmake.diff
 
 
   # Gentoo fixes
@@ -159,7 +163,7 @@ build(){
   cmake -DRSTUDIO_TARGET=Desktop \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio \
-        -DQT_QMAKE_EXECUTABLE=/usr/lib/qt/bin/qmake \
+        -DQT_QMAKE_EXECUTABLE=/usr/lib/qmake \
         ..
 
   msg "Starting make"
