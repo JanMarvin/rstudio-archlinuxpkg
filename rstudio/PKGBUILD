@@ -125,6 +125,7 @@ prepare() {
 
   # Create empty dictionaries folder
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
+  touch "$srcdir/$_gitname/dependencies/common/dictionaries/.dic"
   # Add mathjax
   mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-26"
   ln -s "/opt/mathjax/"* "$srcdir/$_gitname/dependencies/common/mathjax-26"
