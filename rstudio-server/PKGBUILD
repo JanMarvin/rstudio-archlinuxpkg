@@ -26,7 +26,7 @@ source=('rstudio-server.service'
 md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
-         '3884f8717a9c39e1f1d4dad75cc4ae68'
+         'c43dd66a57f8326a79a0ec6886835247'
          '43f0ff6044f0d35123abdf2fe2283861'
          'ac11b24f155a58d532351a3b79e43fc6')
 

@@ -52,10 +52,10 @@ index 563d4050ea..926d49f488 100644
     // set manipulator values
     virtual void setPlotManipulatorValues(const core::json::Object& values) = 0;
 diff --git a/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp b/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
-index 20d98aee8b..925a1d34d4 100644
+index 807ab0cd47..04d101e6fd 100644
 --- a/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
 +++ b/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
-@@ -539,7 +539,7 @@ void PlotManager::clear()
+@@ -540,7 +540,7 @@ void PlotManager::clear()
  
  
  
@@ -159,7 +159,7 @@ index a83c5cfba9..1ad97bdd28 100644
  
  #include <core/Thread.hpp>
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index 2c95954bb6..3f1e81f259 100644
+index 57e6cca279..5f22e1e66b 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -33,7 +33,7 @@
@@ -172,7 +172,7 @@ index 2c95954bb6..3f1e81f259 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index dace1f6acc..b77b7d5f5d 100644
+index b6b3b65d92..b436e6abec 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -184,7 +184,7 @@ index dace1f6acc..b77b7d5f5d 100644
  #include <boost/format.hpp>
  #include <boost/numeric/conversion/cast.hpp>
  
-@@ -571,13 +571,13 @@ private:
+@@ -582,13 +582,13 @@ private:
     
     int nextGroup_; 
     
@@ -203,7 +203,7 @@ index dace1f6acc..b77b7d5f5d 100644
                   std::greater<int> > resumeSignal_;
  };
 diff --git a/src/cpp/session/include/session/SessionConsoleProcess.hpp b/src/cpp/session/include/session/SessionConsoleProcess.hpp
-index db77577fa2..22caca3906 100644
+index 6ccb879db4..2dc6685ead 100644
 --- a/src/cpp/session/include/session/SessionConsoleProcess.hpp
 +++ b/src/cpp/session/include/session/SessionConsoleProcess.hpp
 @@ -20,7 +20,7 @@
@@ -215,7 +215,7 @@ index db77577fa2..22caca3906 100644
  #include <boost/circular_buffer.hpp>
  #include <boost/enable_shared_from_this.hpp>
  
-@@ -117,7 +117,7 @@ public:
+@@ -140,7 +140,7 @@ public:
     void setPromptHandler(
           const boost::function<bool(const std::string&, Input*)>& onPrompt);
  
@@ -224,7 +224,7 @@ index db77577fa2..22caca3906 100644
  
     std::string handle() const { return procInfo_->getHandle(); }
     InteractionMode interactionMode() const { return procInfo_->getInteractionMode(); }
-@@ -183,7 +183,7 @@ private:
+@@ -247,7 +247,7 @@ private:
     int lastInputSequence_;
  
     boost::function<bool(const std::string&, Input*)> onPrompt_;
@@ -234,7 +234,7 @@ index db77577fa2..22caca3906 100644
     // regex for prompt detection
     boost::regex controlCharsPattern_;
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index 374b52927d..ec0bcf89f5 100644
+index 46bce20233..a2b6fa7d1e 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
 @@ -21,7 +21,7 @@
@@ -246,7 +246,7 @@ index 374b52927d..ec0bcf89f5 100644
  #include <boost/shared_ptr.hpp>
  
  #include <core/HtmlUtils.hpp>
-@@ -316,34 +316,34 @@ struct firstNonEmpty
+@@ -316,35 +316,35 @@ struct firstNonEmpty
  // session events
  struct Events : boost::noncopyable
  {
@@ -274,6 +274,7 @@ index 374b52927d..ec0bcf89f5 100644
 -   boost::signal<void(bool)>                 onBackgroundProcessing;
 -   boost::signal<void(bool)>                 onShutdown;
 -   boost::signal<void ()>                    onQuit;
+-   boost::signal<void ()>                    onDestroyed;
 -   boost::signal<void (const std::vector<std::string>&)>
 +   boost::signals2::signal<void()>                     onUserInterrupt;
 +   boost::signals2::signal<void (ChangeSource)>        onDetectChanges;
@@ -283,6 +284,7 @@ index 374b52927d..ec0bcf89f5 100644
 +   boost::signals2::signal<void(bool)>                 onBackgroundProcessing;
 +   boost::signals2::signal<void(bool)>                 onShutdown;
 +   boost::signals2::signal<void ()>                    onQuit;
++   boost::signals2::signal<void ()>                    onDestroyed;
 +   boost::signals2::signal<void (const std::vector<std::string>&)>
                                               onLibPathsChanged;
 -   boost::signal<void (const std::string&)>  onPackageLoaded;
@@ -304,7 +306,7 @@ index 374b52927d..ec0bcf89f5 100644
  };
  
 diff --git a/src/cpp/session/include/session/SessionSourceDatabase.hpp b/src/cpp/session/include/session/SessionSourceDatabase.hpp
-index 7e052a904a..b8b8293d6e 100644
+index 47eadf7a64..226db8cb4f 100644
 --- a/src/cpp/session/include/session/SessionSourceDatabase.hpp
 +++ b/src/cpp/session/include/session/SessionSourceDatabase.hpp
 @@ -21,7 +21,7 @@
@@ -316,7 +318,7 @@ index 7e052a904a..b8b8293d6e 100644
  
  #include <core/FilePath.hpp>
  #include <core/json/Json.hpp>
-@@ -203,14 +203,14 @@ core::Error rename(const core::FilePath& from, const core::FilePath& to);
+@@ -204,14 +204,14 @@ core::Error rename(const core::FilePath& from, const core::FilePath& to);
  // source database events
  struct Events : boost::noncopyable
  {
@@ -338,7 +340,7 @@ index 7e052a904a..b8b8293d6e 100644
  
  Events& events();
 diff --git a/src/cpp/session/include/session/SessionUserSettings.hpp b/src/cpp/session/include/session/SessionUserSettings.hpp
-index 48a1b43c10..fcdbffd7fe 100644
+index 3d347ec2f9..2fffd081fe 100644
 --- a/src/cpp/session/include/session/SessionUserSettings.hpp
 +++ b/src/cpp/session/include/session/SessionUserSettings.hpp
 @@ -20,7 +20,7 @@
@@ -350,7 +352,7 @@ index 48a1b43c10..fcdbffd7fe 100644
  
  #include <core/Settings.hpp>
  #include <core/FilePath.hpp>
-@@ -60,7 +60,7 @@ private:
+@@ -61,7 +61,7 @@ private:
     friend UserSettings& userSettings();
  
  public:
@@ -360,7 +362,7 @@ index 48a1b43c10..fcdbffd7fe 100644
  public:
     // COPYING: boost::noncopyable
 diff --git a/src/cpp/session/include/session/projects/SessionProjects.hpp b/src/cpp/session/include/session/projects/SessionProjects.hpp
-index f98c604ae4..f2b585f3eb 100644
+index 3301e6e313..7fb41debc6 100644
 --- a/src/cpp/session/include/session/projects/SessionProjects.hpp
 +++ b/src/cpp/session/include/session/projects/SessionProjects.hpp
 @@ -22,7 +22,7 @@
@@ -509,7 +511,7 @@ index 7e857e8e55..823214a312 100644
     double width_;
     double height_;
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp b/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
-index 62319c32e8..d058e71e79 100644
+index ac05b68670..0e5d97f6f5 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
 @@ -87,7 +87,7 @@ public:
@@ -521,7 +523,7 @@ index 62319c32e8..d058e71e79 100644
        {
           connection.disconnect();
        }
-@@ -638,7 +638,7 @@ private:
+@@ -644,7 +644,7 @@ private:
     boost::shared_ptr<ChunkExecContext> execContext_;
  
     // registered signal handlers
