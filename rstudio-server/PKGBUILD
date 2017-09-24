@@ -21,14 +21,16 @@ source=('rstudio-server.service'
 	'make_shared_include.patch'
         'boostsignals.patch'
         'prefs.patch'
-	'openssl11.diff')
+	'openssl11.diff'
+	'evp.diff')
 
 md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
          'ba6d7cfc105c3f90518acb4755b2850c'
          '43f0ff6044f0d35123abdf2fe2283861'
-         'ac11b24f155a58d532351a3b79e43fc6')
+         'ac11b24f155a58d532351a3b79e43fc6'
+         '1efc995452ccb1f75aa9d3af2454c087')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -63,6 +65,7 @@ prepare() {
 
   # OpenSSL 1.1 fix
   git apply ../openssl11.diff
+  git apply ../evp.diff
 
   # make sure icons and mime stuff are with prefix
   sed -i \
