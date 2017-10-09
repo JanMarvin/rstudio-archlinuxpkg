@@ -1,7 +1,7 @@
-diff --git a/src/cpp/core/system/PosixCrypto.cpp b/src/cpp/core/system/PosixCrypto.cpp
+diff --git a/src/cpp/core/system/Crypto.cpp b/src/cpp/core/system/Crypto.cpp
 index 2e4c01bb12..cb9109d6a4 100644
---- a/src/cpp/core/system/PosixCrypto.cpp
-+++ b/src/cpp/core/system/PosixCrypto.cpp
+--- a/src/cpp/core/system/Crypto.cpp
++++ b/src/cpp/core/system/Crypto.cpp
 @@ -261,27 +261,28 @@ Error aesEncrypt(const std::vector<unsigned char>& data,
     int outlen = 0;
     int bytesEncrypted = 0;
