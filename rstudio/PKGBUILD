@@ -21,18 +21,22 @@ source=('rstudio.desktop'
         'boostsignals.patch'
         'cursor_fix.diff'
         'make_shared.patch'
-	'make_shared_include.patch'
+        'make_shared_include.patch'
         'prefs.patch'
-	'openssl11.diff')
+        'openssl11.diff'
+        'cmake.diff'
+	'evp.diff')
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         '3309a9bd6035e9f862db8bf7c9c85b63'
-         'be90b40894bf9a67c2c7cb3bf886724e'
+         'ba6d7cfc105c3f90518acb4755b2850c'
+         'c0c582348c22c7381779b49e10c434b3'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
          '43f0ff6044f0d35123abdf2fe2283861'
-         'ac11b24f155a58d532351a3b79e43fc6')
+         'ac11b24f155a58d532351a3b79e43fc6'
+         'bf29d350088f98d08c96516a4bb9b501'
+         '6e839893209beb73a07f14048eccee35')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -67,6 +71,10 @@ prepare() {
   git apply --whitespace=fix ../make_shared_include.patch
   msg2 "4"
   git apply --whitespace=fix ../openssl11.diff
+  msg2 "5"
+  git apply --whitespace=fix ../cmake.diff
+  msg2 "6"
+  git apply --whitespace=fix ../evp.diff
 
 
   # Gentoo fixes
@@ -125,6 +133,8 @@ prepare() {
 
   # Create empty dictionaries folder
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
+  touch "$srcdir/$_gitname/dependencies/common/dictionaries/.aff"
+  touch "$srcdir/$_gitname/dependencies/common/dictionaries/.dic"
   # Add mathjax
   mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-26"
   ln -s "/opt/mathjax/"* "$srcdir/$_gitname/dependencies/common/mathjax-26"
@@ -158,7 +168,7 @@ build(){
   cmake -DRSTUDIO_TARGET=Desktop \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio \
-        -DQT_QMAKE_EXECUTABLE=/usr/lib/qt/bin/qmake \
+        -DQT_QMAKE_EXECUTABLE=/usr/lib/qmake \
         ..
 
   msg "Starting make"

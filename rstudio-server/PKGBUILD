@@ -21,14 +21,16 @@ source=('rstudio-server.service'
 	'make_shared_include.patch'
         'boostsignals.patch'
         'prefs.patch'
-	'openssl11.diff')
+	'openssl11.diff'
+	'evp.diff')
 
 md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
-         '3884f8717a9c39e1f1d4dad75cc4ae68'
+         'ba6d7cfc105c3f90518acb4755b2850c'
          '43f0ff6044f0d35123abdf2fe2283861'
-         'ac11b24f155a58d532351a3b79e43fc6')
+         'ac11b24f155a58d532351a3b79e43fc6'
+         '6e839893209beb73a07f14048eccee35')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -63,6 +65,7 @@ prepare() {
 
   # OpenSSL 1.1 fix
   git apply ../openssl11.diff
+  git apply ../evp.diff
 
   # make sure icons and mime stuff are with prefix
   sed -i \
@@ -114,6 +117,8 @@ prepare() {
   # cp "$srcdir/../$_gitname/dependencies/common/"profvis_*.tar.gz "$srcdir/$_gitname/dependencies/common"
 
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
+  touch    "$srcdir/$_gitname/dependencies/common/dictionaries/.aff"
+  touch    "$srcdir/$_gitname/dependencies/common/dictionaries/.dic"
   mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-26"
   ln -s "/opt/mathjax/"* "$srcdir/$_gitname/dependencies/common/mathjax-26"
 
