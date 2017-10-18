@@ -1,7 +1,7 @@
 # Maintainer: Jan Marvin Garbuszus <Jan.Garbuszus@ruhr-uni-bochum.de>
 # This package is required for my personal rstudio PKGBUILD
 pkgname=gin
-pkgver=1.5
+pkgver=2.1.2
 arch=(i686 x86_64)
 pkgrel=1
 pkgdesc="Gin."
@@ -19,4 +19,4 @@ package() {
   cp -R $srcdir/* $pkgdir/opt/$pkgname/$pkgver
 }
 
-md5sums=('2409168cc18bf5f341e107e6887fe359')
+md5sums=('e2617189fe5c138945b8cc95f26bd476')
