@@ -16,12 +16,12 @@ index 5957bf850b..170d4abee0 100644
  
  @if rstudio.desktop true {
  .linux button {
--   cursor: HANDCURSOR, pointer;
+-   cursor: HANDCURSOR 8 4, pointer;
 +   cursor: hand, pointer;
  }
  
  .linux .handCursor {
--   cursor: HANDCURSOR, pointer;
+-   cursor: HANDCURSOR 8 4, pointer;
 +   cursor: hand, pointer;
  }
  }
