@@ -1,8 +1,8 @@
 diff --git a/src/cpp/core/system/Crypto.cpp b/src/cpp/core/system/Crypto.cpp
-index da286d2950..dd2941e13c 100644
+index da286d2950..aa5413d889 100644
 --- a/src/cpp/core/system/Crypto.cpp
 +++ b/src/cpp/core/system/Crypto.cpp
-@@ -261,27 +261,39 @@ Error aesEncrypt(const std::vector<unsigned char>& data,
+@@ -261,27 +261,27 @@ Error aesEncrypt(const std::vector<unsigned char>& data,
     int outlen = 0;
     int bytesEncrypted = 0;
  
@@ -18,11 +18,7 @@ index da286d2950..dd2941e13c 100644
 +   if(!EVP_CipherUpdate(ctx, &(pEncrypted->operator[](0)), &outlen, &data[0], data.size()))
     {
 -      EVP_CIPHER_CTX_cleanup(&ctx);
-+   #if OPENSSL_VERSION_NUMBER < 0x10100000L
-+      EVP_CIPHER_CTX_cleanup(ctx);
-+   #else  // free was introduced in v1.1.0
 +      EVP_CIPHER_CTX_free(ctx);
-+   #endif
        return lastCryptoError(ERROR_LOCATION);
     }
     bytesEncrypted += outlen;
@@ -32,25 +28,17 @@ index da286d2950..dd2941e13c 100644
 +   if(!EVP_CipherFinal_ex(ctx, &(pEncrypted->operator[](outlen)), &outlen))
     {
 -      EVP_CIPHER_CTX_cleanup(&ctx);
-+   #if OPENSSL_VERSION_NUMBER < 0x10100000L
-+      EVP_CIPHER_CTX_cleanup(ctx);
-+   #else
 +      EVP_CIPHER_CTX_free(ctx);
-+   #endif
        return lastCryptoError(ERROR_LOCATION);
     }
     bytesEncrypted += outlen;
  
 -   EVP_CIPHER_CTX_cleanup(&ctx);
-+   #if OPENSSL_VERSION_NUMBER < 0x10100000L
-+      EVP_CIPHER_CTX_cleanup(ctx);
-+   #else
-+      EVP_CIPHER_CTX_free(ctx);
-+   #endif
++   EVP_CIPHER_CTX_free(ctx);
  
     // resize the container to the amount of actual bytes encrypted (including padding)
     pEncrypted->resize(bytesEncrypted);
-@@ -298,27 +310,39 @@ Error aesDecrypt(const std::vector<unsigned char>& data,
+@@ -298,27 +298,27 @@ Error aesDecrypt(const std::vector<unsigned char>& data,
     int outlen = 0;
     int bytesDecrypted = 0;
  
@@ -66,11 +54,7 @@ index da286d2950..dd2941e13c 100644
 +   if(!EVP_CipherUpdate(ctx, &(pDecrypted->operator[](0)), &outlen, &data[0], data.size()))
     {
 -      EVP_CIPHER_CTX_cleanup(&ctx);
-+    #if OPENSSL_VERSION_NUMBER < 0x10100000L
-+      EVP_CIPHER_CTX_cleanup(ctx);
-+    #else
 +      EVP_CIPHER_CTX_free(ctx);
-+    #endif
        return lastCryptoError(ERROR_LOCATION);
     }
     bytesDecrypted += outlen;
@@ -80,21 +64,13 @@ index da286d2950..dd2941e13c 100644
 +   if(!EVP_CipherFinal_ex(ctx, &(pDecrypted->operator[](outlen)), &outlen))
     {
 -      EVP_CIPHER_CTX_cleanup(&ctx);
-+    #if OPENSSL_VERSION_NUMBER < 0x10100000L
-+      EVP_CIPHER_CTX_cleanup(ctx);
-+    #else
 +      EVP_CIPHER_CTX_free(ctx);
-+   #endif
        return lastCryptoError(ERROR_LOCATION);
     }
     bytesDecrypted += outlen;
  
 -   EVP_CIPHER_CTX_cleanup(&ctx);
-+   #if OPENSSL_VERSION_NUMBER < 0x10100000L
-+      EVP_CIPHER_CTX_cleanup(ctx);
-+   #else
-+      EVP_CIPHER_CTX_free(ctx);
-+   #endif
++   EVP_CIPHER_CTX_free(ctx);
  
     // resize the container to the amount of actual bytes decrypted (padding is removed)
     pDecrypted->resize(bytesDecrypted);
