@@ -22,6 +22,7 @@ source=('rstudio-server.service'
         'boostsignals.patch'
         'prefs.patch'
 	'openssl11.diff'
+    'gwt282.diff'
 	)
 
 md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
@@ -29,7 +30,8 @@ md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
          '5986dcde37a14d95cfb31f64ebf83923'
          'ba6d7cfc105c3f90518acb4755b2850c'
          'aeaaece9f7e4b6343f7a84ab80cdedfa'
-         'ac11b24f155a58d532351a3b79e43fc6')
+         'ac11b24f155a58d532351a3b79e43fc6'
+         'a4189401293359f4f1e02f86aa7c539a')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -64,6 +66,9 @@ prepare() {
 
   # OpenSSL 1.1 fix
   git apply ../openssl11.diff
+
+  # GWT 2.8.2
+  git apply ../gwt282.diff
 
   # make sure icons and mime stuff are with prefix
   sed -i \
