@@ -159,7 +159,7 @@ index a83c5cfba9..1ad97bdd28 100644
  
  #include <core/Thread.hpp>
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index a81bb10a08..1d114ad709 100644
+index ca3414b7dd..06151708ae 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -33,7 +33,7 @@
@@ -172,7 +172,7 @@ index a81bb10a08..1d114ad709 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index 562d45b78a..85d7919a6f 100644
+index 1bbdce9618..012f51f94c 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -184,7 +184,7 @@ index 562d45b78a..85d7919a6f 100644
  #include <boost/format.hpp>
  #include <boost/numeric/conversion/cast.hpp>
  
-@@ -582,13 +582,13 @@ private:
+@@ -586,13 +586,13 @@ private:
     
     int nextGroup_; 
     
@@ -203,7 +203,7 @@ index 562d45b78a..85d7919a6f 100644
                   std::greater<int> > resumeSignal_;
  };
 diff --git a/src/cpp/session/include/session/SessionConsoleProcess.hpp b/src/cpp/session/include/session/SessionConsoleProcess.hpp
-index b71ccee48c..786705ba55 100644
+index 850a0a8762..5d88e726bd 100644
 --- a/src/cpp/session/include/session/SessionConsoleProcess.hpp
 +++ b/src/cpp/session/include/session/SessionConsoleProcess.hpp
 @@ -20,7 +20,7 @@
@@ -215,7 +215,7 @@ index b71ccee48c..786705ba55 100644
  #include <boost/circular_buffer.hpp>
  #include <boost/enable_shared_from_this.hpp>
  
-@@ -150,7 +150,7 @@ public:
+@@ -146,7 +146,7 @@ public:
     void setPromptHandler(
           const boost::function<bool(const std::string&, Input*)>& onPrompt);
  
@@ -224,7 +224,7 @@ index b71ccee48c..786705ba55 100644
  
     std::string handle() const { return procInfo_->getHandle(); }
     InteractionMode interactionMode() const { return procInfo_->getInteractionMode(); }
-@@ -263,7 +263,7 @@ private:
+@@ -264,7 +264,7 @@ private:
     boost::mutex inputOutputQueueMutex_;
  
     boost::function<bool(const std::string&, Input*)> onPrompt_;
@@ -234,7 +234,7 @@ index b71ccee48c..786705ba55 100644
     // regex for prompt detection
     boost::regex controlCharsPattern_;
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index e138cb2333..bdfcc0e2ef 100644
+index 6879dd5ad6..42b1d288fd 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
 @@ -21,7 +21,7 @@
@@ -246,7 +246,7 @@ index e138cb2333..bdfcc0e2ef 100644
  #include <boost/shared_ptr.hpp>
  
  #include <core/HtmlUtils.hpp>
-@@ -315,35 +315,35 @@ struct firstNonEmpty
+@@ -318,35 +318,35 @@ struct firstNonEmpty
  // session events
  struct Events : boost::noncopyable
  {
@@ -340,7 +340,7 @@ index 47eadf7a64..226db8cb4f 100644
  
  Events& events();
 diff --git a/src/cpp/session/include/session/SessionUserSettings.hpp b/src/cpp/session/include/session/SessionUserSettings.hpp
-index 3a1e76b8ed..2a00096868 100644
+index 5430301845..ab0227da54 100644
 --- a/src/cpp/session/include/session/SessionUserSettings.hpp
 +++ b/src/cpp/session/include/session/SessionUserSettings.hpp
 @@ -20,7 +20,7 @@
@@ -352,7 +352,7 @@ index 3a1e76b8ed..2a00096868 100644
  
  #include <core/Settings.hpp>
  #include <core/FilePath.hpp>
-@@ -61,7 +61,7 @@ private:
+@@ -62,7 +62,7 @@ private:
     friend UserSettings& userSettings();
  
  public:
@@ -428,7 +428,7 @@ index a1c4919e6a..e324588df6 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp b/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
-index ef7741315e..6d23672442 100644
+index b25c9bb3a1..148360eb33 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
 @@ -142,7 +142,7 @@ Error executeRcppEngineChunk(const std::string& docId,
@@ -458,11 +458,20 @@ index ef7741315e..6d23672442 100644
           module_context::events().onConsoleOutput.connect(
              boost::bind(chunkConsoleOutputHandler,
                          _1,
+@@ -459,7 +459,7 @@ Error runUserDefinedEngine(const std::string& docId,
+       LOG_ERROR(error);
+    
+    // capture console output, error
+-   boost::signals::scoped_connection consoleHandler =
++   boost::signals2::scoped_connection consoleHandler =
+          module_context::events().onConsoleOutput.connect(
+             boost::bind(chunkConsoleOutputHandler, _1, _2, targetPath));
+    
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-index 32b339312c..4022a1c9bf 100644
+index 6277112ce1..5e23cb826a 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-@@ -441,7 +441,7 @@ void ChunkExecContext::disconnect()
+@@ -446,7 +446,7 @@ void ChunkExecContext::disconnect()
     }
  
     // unhook all our event handlers
@@ -472,7 +481,7 @@ index 32b339312c..4022a1c9bf 100644
        connection.disconnect();
     }
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
-index 94ed97b021..c0703c696f 100644
+index 6a0623e785..4e56a0d3c9 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 @@ -18,7 +18,7 @@
@@ -484,7 +493,7 @@ index 94ed97b021..c0703c696f 100644
  
  #include <core/json/Json.hpp>
  
-@@ -99,7 +99,7 @@ private:
+@@ -100,7 +100,7 @@ private:
     bool hasErrors_;
  
     std::vector<boost::shared_ptr<NotebookCapture> > captures_;
@@ -511,7 +520,7 @@ index 7e857e8e55..823214a312 100644
     double width_;
     double height_;
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp b/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
-index ac05b68670..0e5d97f6f5 100644
+index bfd34198d1..c7e3b84df3 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
 @@ -87,7 +87,7 @@ public:
@@ -523,7 +532,7 @@ index ac05b68670..0e5d97f6f5 100644
        {
           connection.disconnect();
        }
-@@ -644,7 +644,7 @@ private:
+@@ -651,7 +651,7 @@ private:
     boost::shared_ptr<ChunkExecContext> execContext_;
  
     // registered signal handlers
