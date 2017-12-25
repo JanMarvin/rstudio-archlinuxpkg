@@ -24,17 +24,19 @@ source=('rstudio.desktop'
         'make_shared_include.patch'
         'prefs.patch'
         'openssl11.diff'
-	'cmake.diff')
+	'cmake.diff'
+    'gwt282.diff')
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         'ba6d7cfc105c3f90518acb4755b2850c'
+         '9dafa8b5ad84629acaad5232f1472466'
          'a078bf83239b723bcd738c7c23a830d6'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
          'aeaaece9f7e4b6343f7a84ab80cdedfa'
          'ac11b24f155a58d532351a3b79e43fc6'
-         'bf29d350088f98d08c96516a4bb9b501')
+         'bf29d350088f98d08c96516a4bb9b501'
+         'a4189401293359f4f1e02f86aa7c539a')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -71,6 +73,8 @@ prepare() {
   git apply --whitespace=fix ../openssl11.diff
   msg2 "5"
   git apply --whitespace=fix ../cmake.diff
+  # msg2 "6"
+  # git apply --whitespace=fix ../gwt282.diff
 
   # Gentoo fixes
   msg "Gentoo fixes"
