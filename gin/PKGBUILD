@@ -9,6 +9,12 @@ url="https://code.google.com/archive/p/google-gin/"
 license=('Apache 2')
 depends=('java-environment')
 source=(https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/google-gin/$pkgname-$pkgver.zip)
+noextract=("$pkgname-$pkgver.zip")
+
+prepare() {
+	mkdir "$pkgname-$pkgver"
+    unzip "$pkgname-$pkgver.zip" -d "$pkgname-$pkgver"
+}
 
 package() {
   cd $srcdir
@@ -16,7 +22,10 @@ package() {
   rm -rf $pkgname-$pkgver.zip
   # rstudio requires this structure
   mkdir -p $pkgdir/opt/$pkgname/$pkgver
-  cp -R $srcdir/* $pkgdir/opt/$pkgname/$pkgver
+  cp -R $srcdir/$pkgname-$pkgver/* $pkgdir/opt/$pkgname/$pkgver
+
+  # cleanup
+  rm -rf $srcdir/$pkgname-$pkgver
 }
 
 md5sums=('e2617189fe5c138945b8cc95f26bd476')
