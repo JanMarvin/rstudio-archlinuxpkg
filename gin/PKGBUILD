@@ -11,6 +11,7 @@ depends=('java-environment')
 source=(https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/google-gin/$pkgname-$pkgver.zip)
 noextract=("$pkgname-$pkgver.zip")
 
+# later on, everything is copied using a wildcard. make sure, that we only copy contents of the gin zip archive
 prepare() {
 	mkdir "$pkgname-$pkgver"
     unzip "$pkgname-$pkgver.zip" -d "$pkgname-$pkgver"
