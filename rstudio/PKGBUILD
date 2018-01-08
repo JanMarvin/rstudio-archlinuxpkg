@@ -23,7 +23,6 @@ source=('rstudio.desktop'
         'make_shared.patch'
         'make_shared_include.patch'
         'prefs.patch'
-        'openssl11.diff'
 	'cmake.diff'
     'gwt282.diff')
 
@@ -34,7 +33,6 @@ md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
          'aeaaece9f7e4b6343f7a84ab80cdedfa'
-         'ac11b24f155a58d532351a3b79e43fc6'
          'bf29d350088f98d08c96516a4bb9b501'
          'a4189401293359f4f1e02f86aa7c539a')
 
@@ -70,8 +68,6 @@ prepare() {
   msg2 "3"
   git apply --whitespace=fix ../make_shared_include.patch
   msg2 "4"
-  git apply --whitespace=fix ../openssl11.diff
-  msg2 "5"
   git apply --whitespace=fix ../cmake.diff
   # msg2 "6"
   # git apply --whitespace=fix ../gwt282.diff
