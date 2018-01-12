@@ -21,7 +21,7 @@ source=('rstudio-server.service'
 	'make_shared_include.patch'
         'boostsignals.patch'
         'prefs.patch'
-    'gwt282.diff'
+        'gwt282.diff'
 	)
 
 md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'

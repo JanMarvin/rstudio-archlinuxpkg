@@ -159,7 +159,7 @@ index a83c5cfba9..1ad97bdd28 100644
  
  #include <core/Thread.hpp>
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index ca3414b7dd..06151708ae 100644
+index 901e4263d5..2b4b2e449f 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -33,7 +33,7 @@
@@ -172,7 +172,7 @@ index ca3414b7dd..06151708ae 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index 1bbdce9618..012f51f94c 100644
+index 9fcdf9a6ca..a02c77ca4a 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -428,10 +428,10 @@ index a1c4919e6a..e324588df6 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp b/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
-index b25c9bb3a1..148360eb33 100644
+index a2e693d47d..3851105b05 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
-@@ -142,7 +142,7 @@ Error executeRcppEngineChunk(const std::string& docId,
+@@ -147,7 +147,7 @@ Error executeRcppEngineChunk(const std::string& docId,
        LOG_ERROR(error);
     
     // capture console output, error
@@ -440,7 +440,7 @@ index b25c9bb3a1..148360eb33 100644
           module_context::events().onConsoleOutput.connect(
              boost::bind(chunkConsoleOutputHandler,
                          _1,
-@@ -219,7 +219,7 @@ Error executeStanEngineChunk(const std::string& docId,
+@@ -224,7 +224,7 @@ Error executeStanEngineChunk(const std::string& docId,
        LOG_ERROR(error);
     
     // capture console output, error
@@ -449,7 +449,7 @@ index b25c9bb3a1..148360eb33 100644
           module_context::events().onConsoleOutput.connect(
              boost::bind(chunkConsoleOutputHandler,
                          _1,
-@@ -363,7 +363,7 @@ Error executeSqlEngineChunk(const std::string& docId,
+@@ -368,7 +368,7 @@ Error executeSqlEngineChunk(const std::string& docId,
        LOG_ERROR(error);
     
     // capture console output, error
@@ -458,15 +458,15 @@ index b25c9bb3a1..148360eb33 100644
           module_context::events().onConsoleOutput.connect(
              boost::bind(chunkConsoleOutputHandler,
                          _1,
-@@ -459,7 +459,7 @@ Error runUserDefinedEngine(const std::string& docId,
-       LOG_ERROR(error);
+@@ -566,7 +566,7 @@ Error runUserDefinedEngine(const std::string& docId,
+       }
+    };
     
-    // capture console output, error
--   boost::signals::scoped_connection consoleHandler =
-+   boost::signals2::scoped_connection consoleHandler =
-          module_context::events().onConsoleOutput.connect(
-             boost::bind(chunkConsoleOutputHandler, _1, _2, targetPath));
+-   boost::signals::scoped_connection handler =
++   boost::signals2::scoped_connection handler =
+          module_context::events().onConsoleOutput.connect(consoleHandler);
     
+    // run the user-defined engine
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
 index 6277112ce1..5e23cb826a 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
