@@ -21,16 +21,14 @@ source=('rstudio-server.service'
 	'make_shared_include.patch'
         'boostsignals.patch'
         'prefs.patch'
-	'openssl11.diff'
-    'gwt282.diff'
+        'gwt282.diff'
 	)
 
 md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
-         '9dafa8b5ad84629acaad5232f1472466'
+         '6c2178c65c3e0ad51dfb3e5a978ce8db'
          'aeaaece9f7e4b6343f7a84ab80cdedfa'
-         'ac11b24f155a58d532351a3b79e43fc6'
          'a4189401293359f4f1e02f86aa7c539a')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
@@ -63,9 +61,6 @@ prepare() {
   msg "Gentoo fixes"
   # http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/sci-mathematics/rstudio/
   git apply ../prefs.patch
-
-  # OpenSSL 1.1 fix
-  git apply ../openssl11.diff
 
   # # GWT 2.8.2
   # git apply ../gwt282.diff
