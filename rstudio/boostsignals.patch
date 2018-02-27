@@ -146,7 +146,7 @@ index 8657959344..724152283d 100644
     // unit conversion function
     UnitConversionFunctions convert_;
 diff --git a/src/cpp/server/include/server/ServerSessionManager.hpp b/src/cpp/server/include/server/ServerSessionManager.hpp
-index a83c5cfba9..1ad97bdd28 100644
+index f746e6a445..9e940d56d7 100644
 --- a/src/cpp/server/include/server/ServerSessionManager.hpp
 +++ b/src/cpp/server/include/server/ServerSessionManager.hpp
 @@ -20,7 +20,7 @@
@@ -157,9 +157,9 @@ index a83c5cfba9..1ad97bdd28 100644
 +#include <boost/signals2.hpp>
  #include <boost/asio/io_service.hpp>
  
- #include <core/Thread.hpp>
+ #include <core/http/AsyncClient.hpp>
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index 901e4263d5..2b4b2e449f 100644
+index 15e872ce6f..085f11e7b9 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -33,7 +33,7 @@

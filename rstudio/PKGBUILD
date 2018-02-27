@@ -27,7 +27,7 @@ source=('rstudio.desktop'
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         '6c2178c65c3e0ad51dfb3e5a978ce8db'
+         '359a8218219e52e324dd6d0b2f26d259'
          'a078bf83239b723bcd738c7c23a830d6'
          '9c5504ec85d0897845b8dfc105788b3f'
          '5986dcde37a14d95cfb31f64ebf83923'
@@ -82,7 +82,7 @@ prepare() {
 
   # get version information from git
     cd "$srcdir/$_gitname"
-    _gittag=$(git describe --abbrev=0 --tags)
+    _gittag=$(git describe --tags $(git rev-list --tags --max-count=1))
 
     gittag=${_gittag#v*}
     major=${gittag%.*.*}
