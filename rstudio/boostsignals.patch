@@ -1,5 +1,5 @@
 diff --git a/src/cpp/r/include/r/session/RConsoleHistory.hpp b/src/cpp/r/include/r/session/RConsoleHistory.hpp
-index ef16c68672..7ccb23d85d 100644
+index 57d41592f6..6331824fe6 100644
 --- a/src/cpp/r/include/r/session/RConsoleHistory.hpp
 +++ b/src/cpp/r/include/r/session/RConsoleHistory.hpp
 @@ -20,7 +20,7 @@
@@ -52,7 +52,7 @@ index 563d4050ea..926d49f488 100644
     // set manipulator values
     virtual void setPlotManipulatorValues(const core::json::Object& values) = 0;
 diff --git a/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp b/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
-index 807ab0cd47..04d101e6fd 100644
+index 79d6459656..1545a17f9b 100644
 --- a/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
 +++ b/src/cpp/r/session/graphics/RGraphicsPlotManager.cpp
 @@ -540,7 +540,7 @@ void PlotManager::clear()
@@ -159,7 +159,7 @@ index f746e6a445..9e940d56d7 100644
  
  #include <core/http/AsyncClient.hpp>
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index 15e872ce6f..085f11e7b9 100644
+index 9a3bba61c8..cd0c4fd27e 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -33,7 +33,7 @@
@@ -172,7 +172,7 @@ index 15e872ce6f..085f11e7b9 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index 9fcdf9a6ca..a02c77ca4a 100644
+index 71e6f2c00e..c0aa7e1de2 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -184,7 +184,7 @@ index 9fcdf9a6ca..a02c77ca4a 100644
  #include <boost/format.hpp>
  #include <boost/numeric/conversion/cast.hpp>
  
-@@ -586,13 +586,13 @@ private:
+@@ -648,13 +648,13 @@ private:
     
     int nextGroup_; 
     
@@ -234,7 +234,7 @@ index 850a0a8762..5d88e726bd 100644
     // regex for prompt detection
     boost::regex controlCharsPattern_;
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index 6879dd5ad6..42b1d288fd 100644
+index bad1ca54ac..8d00aec27a 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
 @@ -21,7 +21,7 @@
@@ -414,6 +414,19 @@ index f8ddfcc585..d76c9ccae7 100644
  };
  
  Events& events();
+diff --git a/src/cpp/session/modules/SessionWorkbench.cpp b/src/cpp/session/modules/SessionWorkbench.cpp
+index a11c74db4a..e0ae41345e 100644
+--- a/src/cpp/session/modules/SessionWorkbench.cpp
++++ b/src/cpp/session/modules/SessionWorkbench.cpp
+@@ -715,7 +715,7 @@ Error adaptToLanguage(const json::JsonRpcRequest& request,
+       // we screen out consecutive transition attempts (otherwise we can
+       // get multiple interleaved attempts to launch the REPL with console
+       // input)
+-      static boost::signals::connection conn;
++      static boost::signals2::connection conn;
+       if (conn.connected())
+          return Success();
+       
 diff --git a/src/cpp/session/modules/build/SessionSourceCpp.cpp b/src/cpp/session/modules/build/SessionSourceCpp.cpp
 index a1c4919e6a..e324588df6 100644
 --- a/src/cpp/session/modules/build/SessionSourceCpp.cpp
