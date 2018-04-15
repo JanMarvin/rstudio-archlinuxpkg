@@ -159,7 +159,7 @@ index f746e6a445..9e940d56d7 100644
  
  #include <core/http/AsyncClient.hpp>
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index 9a3bba61c8..cd0c4fd27e 100644
+index b34be0c325..edb0da4460 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -33,7 +33,7 @@
@@ -306,7 +306,7 @@ index bad1ca54ac..8d00aec27a 100644
  };
  
 diff --git a/src/cpp/session/include/session/SessionSourceDatabase.hpp b/src/cpp/session/include/session/SessionSourceDatabase.hpp
-index 47eadf7a64..226db8cb4f 100644
+index 608843cefc..c0e7818a78 100644
 --- a/src/cpp/session/include/session/SessionSourceDatabase.hpp
 +++ b/src/cpp/session/include/session/SessionSourceDatabase.hpp
 @@ -21,7 +21,7 @@
@@ -318,7 +318,7 @@ index 47eadf7a64..226db8cb4f 100644
  
  #include <core/FilePath.hpp>
  #include <core/json/Json.hpp>
-@@ -204,14 +204,14 @@ core::Error rename(const core::FilePath& from, const core::FilePath& to);
+@@ -205,14 +205,14 @@ core::Error rename(const core::FilePath& from, const core::FilePath& to);
  // source database events
  struct Events : boost::noncopyable
  {
@@ -441,10 +441,10 @@ index a1c4919e6a..e324588df6 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp b/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
-index a2e693d47d..3851105b05 100644
+index c9bc137eca..d1ca9b58d6 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
-@@ -147,7 +147,7 @@ Error executeRcppEngineChunk(const std::string& docId,
+@@ -148,7 +148,7 @@ Error executeRcppEngineChunk(const std::string& docId,
        LOG_ERROR(error);
     
     // capture console output, error
@@ -453,7 +453,7 @@ index a2e693d47d..3851105b05 100644
           module_context::events().onConsoleOutput.connect(
              boost::bind(chunkConsoleOutputHandler,
                          _1,
-@@ -224,7 +224,7 @@ Error executeStanEngineChunk(const std::string& docId,
+@@ -225,7 +225,7 @@ Error executeStanEngineChunk(const std::string& docId,
        LOG_ERROR(error);
     
     // capture console output, error
@@ -462,7 +462,7 @@ index a2e693d47d..3851105b05 100644
           module_context::events().onConsoleOutput.connect(
              boost::bind(chunkConsoleOutputHandler,
                          _1,
-@@ -368,7 +368,7 @@ Error executeSqlEngineChunk(const std::string& docId,
+@@ -369,7 +369,7 @@ Error executeSqlEngineChunk(const std::string& docId,
        LOG_ERROR(error);
     
     // capture console output, error
@@ -471,7 +471,7 @@ index a2e693d47d..3851105b05 100644
           module_context::events().onConsoleOutput.connect(
              boost::bind(chunkConsoleOutputHandler,
                          _1,
-@@ -566,7 +566,7 @@ Error runUserDefinedEngine(const std::string& docId,
+@@ -571,7 +571,7 @@ Error runUserDefinedEngine(const std::string& docId,
        }
     };
     
@@ -481,10 +481,10 @@ index a2e693d47d..3851105b05 100644
     
     // run the user-defined engine
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-index 6277112ce1..5e23cb826a 100644
+index daf9cc8187..5194df292f 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.cpp
-@@ -446,7 +446,7 @@ void ChunkExecContext::disconnect()
+@@ -458,7 +458,7 @@ void ChunkExecContext::disconnect()
     }
  
     // unhook all our event handlers
@@ -494,7 +494,7 @@ index 6277112ce1..5e23cb826a 100644
        connection.disconnect();
     }
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
-index 6a0623e785..4e56a0d3c9 100644
+index a15e61ce14..7815a7bbfb 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookExec.hpp
 @@ -18,7 +18,7 @@
@@ -506,7 +506,7 @@ index 6a0623e785..4e56a0d3c9 100644
  
  #include <core/json/Json.hpp>
  
-@@ -100,7 +100,7 @@ private:
+@@ -103,7 +103,7 @@ private:
     bool hasErrors_;
  
     std::vector<boost::shared_ptr<NotebookCapture> > captures_;
@@ -533,7 +533,7 @@ index 7e857e8e55..823214a312 100644
     double width_;
     double height_;
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp b/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
-index bfd34198d1..c7e3b84df3 100644
+index c0b9af80bf..1cc80bc8f5 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookQueue.cpp
 @@ -87,7 +87,7 @@ public:
@@ -545,7 +545,7 @@ index bfd34198d1..c7e3b84df3 100644
        {
           connection.disconnect();
        }
-@@ -651,7 +651,7 @@ private:
+@@ -652,7 +652,7 @@ private:
     boost::shared_ptr<ChunkExecContext> execContext_;
  
     // registered signal handlers
