@@ -1,8 +1,8 @@
 diff --git a/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css b/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css
-index 5957bf850b..170d4abee0 100644
+index 71b3f75fbc..63f6ad9ec3 100644
 --- a/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css
 +++ b/src/gwt/src/org/rstudio/core/client/theme/res/themeStyles.css
-@@ -167,9 +167,6 @@
+@@ -172,9 +172,6 @@
  @url WARNINGDARK syntaxWarningDark2x;
  @url ERRORDARK syntaxErrorDark2x;
  
@@ -12,24 +12,17 @@ index 5957bf850b..170d4abee0 100644
  @url MACCHECK macCheck2x;
  @url RADIOBUTTONON radioButtonOn2x;
  
-@@ -283,11 +280,11 @@ button {
+@@ -301,11 +298,11 @@ button {
  
  @if rstudio.desktop true {
  .linux button {
 -   cursor: HANDCURSOR 8 4, pointer;
-+   cursor: hand, pointer;
++   cursor: hand 8 4, pointer;
  }
  
  .linux .handCursor {
 -   cursor: HANDCURSOR 8 4, pointer;
-+   cursor: hand, pointer;
++   cursor: hand 8 4, pointer;
  }
  }
  
-@@ -2554,4 +2551,4 @@ body.rstudio-themes-flat .rstudio-themes-alternate {
- .rstudio-animating.rstudio-themes-flat .rstudio-themes-dark-grey,
- .rstudio-animating.rstudio-themes-flat .rstudio-themes-alternate {
-    z-index: -10;
--}
-\ No newline at end of file
-+}
