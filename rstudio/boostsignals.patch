@@ -159,7 +159,7 @@ index f746e6a445..9e940d56d7 100644
  
  #include <core/http/AsyncClient.hpp>
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index b34be0c325..edb0da4460 100644
+index 6efb7d6561..f184b02480 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
 @@ -33,7 +33,7 @@
@@ -172,7 +172,7 @@ index b34be0c325..edb0da4460 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index 71e6f2c00e..c0aa7e1de2 100644
+index 16ec522b6c..0ce7cebce1 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -184,7 +184,7 @@ index 71e6f2c00e..c0aa7e1de2 100644
  #include <boost/format.hpp>
  #include <boost/numeric/conversion/cast.hpp>
  
-@@ -648,13 +648,13 @@ private:
+@@ -652,13 +652,13 @@ private:
     
     int nextGroup_; 
     
@@ -234,7 +234,7 @@ index 850a0a8762..5d88e726bd 100644
     // regex for prompt detection
     boost::regex controlCharsPattern_;
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index bad1ca54ac..8d00aec27a 100644
+index 2833a18ecc..42a266a404 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
 @@ -21,7 +21,7 @@
@@ -246,7 +246,7 @@ index bad1ca54ac..8d00aec27a 100644
  #include <boost/shared_ptr.hpp>
  
  #include <core/HtmlUtils.hpp>
-@@ -318,35 +318,35 @@ struct firstNonEmpty
+@@ -320,35 +320,35 @@ struct firstNonEmpty
  // session events
  struct Events : boost::noncopyable
  {
@@ -290,11 +290,11 @@ index bad1ca54ac..8d00aec27a 100644
 -   boost::signal<void (const std::string&)>  onPackageLoaded;
 -   boost::signal<void ()>                    onPackageLibraryMutated;
 -   boost::signal<void ()>                    onPreferencesSaved;
--   boost::signal<void (const core::DistributedEvent&)>
+-   boost::signal<void (const server_core::DistributedEvent&)>
 +   boost::signals2::signal<void (const std::string&)>  onPackageLoaded;
 +   boost::signals2::signal<void ()>                    onPackageLibraryMutated;
 +   boost::signals2::signal<void ()>                    onPreferencesSaved;
-+   boost::signals2::signal<void (const core::DistributedEvent&)>
++   boost::signals2::signal<void (const server_core::DistributedEvent&)>
                                               onDistributedEvent;
 -   boost::signal<void (core::FilePath)>      onPermissionsChanged;
 +   boost::signals2::signal<void (core::FilePath)>      onPermissionsChanged;
@@ -306,7 +306,7 @@ index bad1ca54ac..8d00aec27a 100644
  };
  
 diff --git a/src/cpp/session/include/session/SessionSourceDatabase.hpp b/src/cpp/session/include/session/SessionSourceDatabase.hpp
-index 608843cefc..c0e7818a78 100644
+index 2999daf5d6..f62b851f54 100644
 --- a/src/cpp/session/include/session/SessionSourceDatabase.hpp
 +++ b/src/cpp/session/include/session/SessionSourceDatabase.hpp
 @@ -21,7 +21,7 @@
@@ -318,7 +318,7 @@ index 608843cefc..c0e7818a78 100644
  
  #include <core/FilePath.hpp>
  #include <core/json/Json.hpp>
-@@ -205,14 +205,14 @@ core::Error rename(const core::FilePath& from, const core::FilePath& to);
+@@ -212,14 +212,14 @@ core::Error rename(const core::FilePath& from, const core::FilePath& to);
  // source database events
  struct Events : boost::noncopyable
  {
@@ -340,7 +340,7 @@ index 608843cefc..c0e7818a78 100644
  
  Events& events();
 diff --git a/src/cpp/session/include/session/SessionUserSettings.hpp b/src/cpp/session/include/session/SessionUserSettings.hpp
-index 5430301845..ab0227da54 100644
+index 488da00e16..d611cfadff 100644
 --- a/src/cpp/session/include/session/SessionUserSettings.hpp
 +++ b/src/cpp/session/include/session/SessionUserSettings.hpp
 @@ -20,7 +20,7 @@
@@ -352,7 +352,7 @@ index 5430301845..ab0227da54 100644
  
  #include <core/Settings.hpp>
  #include <core/FilePath.hpp>
-@@ -62,7 +62,7 @@ private:
+@@ -64,7 +64,7 @@ private:
     friend UserSettings& userSettings();
  
  public:
@@ -415,10 +415,10 @@ index f8ddfcc585..d76c9ccae7 100644
  
  Events& events();
 diff --git a/src/cpp/session/modules/SessionWorkbench.cpp b/src/cpp/session/modules/SessionWorkbench.cpp
-index a11c74db4a..e0ae41345e 100644
+index d94a452795..f9f41e542f 100644
 --- a/src/cpp/session/modules/SessionWorkbench.cpp
 +++ b/src/cpp/session/modules/SessionWorkbench.cpp
-@@ -715,7 +715,7 @@ Error adaptToLanguage(const json::JsonRpcRequest& request,
+@@ -719,7 +719,7 @@ Error adaptToLanguage(const json::JsonRpcRequest& request,
        // we screen out consecutive transition attempts (otherwise we can
        // get multiple interleaved attempts to launch the REPL with console
        // input)
@@ -441,10 +441,10 @@ index a1c4919e6a..e324588df6 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp b/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
-index c9bc137eca..d1ca9b58d6 100644
+index 0c5c1768bc..17f89e3f78 100644
 --- a/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
 +++ b/src/cpp/session/modules/rmarkdown/NotebookAlternateEngines.cpp
-@@ -148,7 +148,7 @@ Error executeRcppEngineChunk(const std::string& docId,
+@@ -165,7 +165,7 @@ Error executeRcppEngineChunk(const std::string& docId,
        LOG_ERROR(error);
     
     // capture console output, error
@@ -453,7 +453,7 @@ index c9bc137eca..d1ca9b58d6 100644
           module_context::events().onConsoleOutput.connect(
              boost::bind(chunkConsoleOutputHandler,
                          _1,
-@@ -225,7 +225,7 @@ Error executeStanEngineChunk(const std::string& docId,
+@@ -242,7 +242,7 @@ Error executeStanEngineChunk(const std::string& docId,
        LOG_ERROR(error);
     
     // capture console output, error
@@ -462,7 +462,7 @@ index c9bc137eca..d1ca9b58d6 100644
           module_context::events().onConsoleOutput.connect(
              boost::bind(chunkConsoleOutputHandler,
                          _1,
-@@ -369,7 +369,7 @@ Error executeSqlEngineChunk(const std::string& docId,
+@@ -386,7 +386,7 @@ Error executeSqlEngineChunk(const std::string& docId,
        LOG_ERROR(error);
     
     // capture console output, error
@@ -471,7 +471,7 @@ index c9bc137eca..d1ca9b58d6 100644
           module_context::events().onConsoleOutput.connect(
              boost::bind(chunkConsoleOutputHandler,
                          _1,
-@@ -571,7 +571,7 @@ Error runUserDefinedEngine(const std::string& docId,
+@@ -591,7 +591,7 @@ Error runUserDefinedEngine(const std::string& docId,
        }
     };
     
