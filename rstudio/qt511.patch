@@ -1,17 +1,8 @@
 diff --git a/src/cpp/desktop/CMakeLists.txt b/src/cpp/desktop/CMakeLists.txt
-index acd1381e9b..e702527c6d 100644
+index 5af21f9217..ea65e68773 100644
 --- a/src/cpp/desktop/CMakeLists.txt
 +++ b/src/cpp/desktop/CMakeLists.txt
-@@ -13,7 +13,7 @@
- #
- #
- 
--cmake_minimum_required(VERSION 2.8.8)
-+cmake_minimum_required(VERSION 2.8.11)
- 
- project(DESKTOP)
- 
-@@ -103,23 +103,27 @@ add_definitions(
+@@ -112,26 +112,29 @@ add_definitions(
     -DQT_NO_SIGNALS_SLOTS_KEYWORDS)
  set(CMAKE_INCLUDE_CURRENT_DIR ON)
  
@@ -24,6 +15,7 @@ index acd1381e9b..e702527c6d 100644
 -find_package(Qt5WebEngineWidgets REQUIRED)
 -find_package(Qt5PrintSupport REQUIRED)
 -find_package(Qt5Quick REQUIRED)
+-find_package(Qt5QuickWidgets REQUIRED)
 -find_package(Qt5Positioning REQUIRED)
 -find_package(Qt5Sensors REQUIRED)
 -find_package(Qt5Svg REQUIRED)
@@ -35,7 +27,7 @@ index acd1381e9b..e702527c6d 100644
 +find_package(Qt5 REQUIRED
 +             Core
 +             Widgets
-+             Gui 
++             Gui
 +             Network
 +             WebChannel
 +             WebEngine
@@ -52,65 +44,10 @@ index acd1381e9b..e702527c6d 100644
 +             Sql
 +             OpenGL
 +)
-+
  if(UNIX AND NOT APPLE)
-    find_package(Qt5DBus REQUIRED)
+-   find_package(Qt5DBus REQUIRED)
++   find_package(Qt5 REQUIRED
++                DBus)
  endif()
-@@ -322,22 +326,22 @@ if(APPLE OR WIN32 OR
- endif()
  
- set(RSTUDIO_QTMODULES
--    Core
--    Widgets
--    Gui
--    Network
--    WebChannel
--    WebEngine
--    WebEngineWidgets
--    PrintSupport
--    Quick
--    QuickWidgets
--    Positioning
--    Sensors
--    Svg
--    Xml
--    XmlPatterns
--    Qml
-+    Qt5::Core
-+    Qt5::Widgets
-+    Qt5::Gui
-+    Qt5::Network
-+    Qt5::WebChannel
-+    Qt5::WebEngine
-+    Qt5::WebEngineWidgets
-+    Qt5::PrintSupport
-+    Qt5::Quick
-+    Qt5::QuickWidgets
-+    Qt5::Positioning
-+    Qt5::Sensors
-+    Qt5::Svg
-+    Qt5::Xml
-+    Qt5::XmlPatterns
-+    Qt5::Qml
- )
- 
- # define executable (Windows & Linux)
-@@ -353,14 +357,14 @@ if(NOT APPLE)
-    # These cause issues with macdeployqt due to missing dependencies; suspect we don't need
-    # these on any platform.
-    set(RSTUDIO_EXTRA_QTMODULES
--      Sql
--      OpenGL
-+      Qt5::Sql
-+      Qt5::OpenGL
-    )
- 
-    if(WIN32)
--      qt5_use_modules(rstudio ${RSTUDIO_QTMODULES} ${RSTUDIO_EXTRA_QTMODULES})
-+      target_link_libraries(rstudio ${RSTUDIO_QTMODULES} ${RSTUDIO_EXTRA_QTMODULES})
-    else()
--      qt5_use_modules(rstudio ${RSTUDIO_QTMODULES} ${RSTUDIO_EXTRA_QTMODULES} DBus)
-+      target_link_libraries(rstudio ${RSTUDIO_QTMODULES} ${RSTUDIO_EXTRA_QTMODULES} Qt5::DBus)
-    endif()
- 
-    # add rpath for linux so we can find qt libraries in our bin dir
+ get_filename_component(QT_BINARY_PATH  "${QT_BIN_DIR}"            ABSOLUTE CACHE)
