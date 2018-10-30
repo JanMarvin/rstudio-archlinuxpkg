@@ -159,10 +159,10 @@ index f746e6a445..9e940d56d7 100644
  
  #include <core/http/AsyncClient.hpp>
 diff --git a/src/cpp/session/SessionMain.cpp b/src/cpp/session/SessionMain.cpp
-index 6efb7d6561..f184b02480 100644
+index b8d6665fff..cc1e2d371d 100644
 --- a/src/cpp/session/SessionMain.cpp
 +++ b/src/cpp/session/SessionMain.cpp
-@@ -33,7 +33,7 @@
+@@ -38,7 +38,7 @@
  #include <boost/lexical_cast.hpp>
  #include <boost/format.hpp>
  
@@ -172,7 +172,7 @@ index 6efb7d6561..f184b02480 100644
  #include <boost/algorithm/string/predicate.hpp>
  #include <boost/algorithm/string/join.hpp>
 diff --git a/src/cpp/session/SessionModuleContext.cpp b/src/cpp/session/SessionModuleContext.cpp
-index 16ec522b6c..0ce7cebce1 100644
+index 0b8255e49b..9360981610 100644
 --- a/src/cpp/session/SessionModuleContext.cpp
 +++ b/src/cpp/session/SessionModuleContext.cpp
 @@ -19,7 +19,7 @@
@@ -184,7 +184,7 @@ index 16ec522b6c..0ce7cebce1 100644
  #include <boost/format.hpp>
  #include <boost/numeric/conversion/cast.hpp>
  
-@@ -652,13 +652,13 @@ private:
+@@ -654,13 +654,13 @@ private:
     
     int nextGroup_; 
     
@@ -234,7 +234,7 @@ index 850a0a8762..5d88e726bd 100644
     // regex for prompt detection
     boost::regex controlCharsPattern_;
 diff --git a/src/cpp/session/include/session/SessionModuleContext.hpp b/src/cpp/session/include/session/SessionModuleContext.hpp
-index 2833a18ecc..42a266a404 100644
+index 0c16cf8ab0..b02fba546c 100644
 --- a/src/cpp/session/include/session/SessionModuleContext.hpp
 +++ b/src/cpp/session/include/session/SessionModuleContext.hpp
 @@ -21,7 +21,7 @@
@@ -246,7 +246,7 @@ index 2833a18ecc..42a266a404 100644
  #include <boost/shared_ptr.hpp>
  
  #include <core/HtmlUtils.hpp>
-@@ -320,35 +320,35 @@ struct firstNonEmpty
+@@ -321,35 +321,35 @@ struct firstNonEmpty
  // session events
  struct Events : boost::noncopyable
  {
@@ -340,7 +340,7 @@ index 2999daf5d6..f62b851f54 100644
  
  Events& events();
 diff --git a/src/cpp/session/include/session/SessionUserSettings.hpp b/src/cpp/session/include/session/SessionUserSettings.hpp
-index 488da00e16..d611cfadff 100644
+index d79f448d31..6e31bd7836 100644
 --- a/src/cpp/session/include/session/SessionUserSettings.hpp
 +++ b/src/cpp/session/include/session/SessionUserSettings.hpp
 @@ -20,7 +20,7 @@
@@ -362,7 +362,7 @@ index 488da00e16..d611cfadff 100644
  public:
     // COPYING: boost::noncopyable
 diff --git a/src/cpp/session/include/session/projects/SessionProjects.hpp b/src/cpp/session/include/session/projects/SessionProjects.hpp
-index 0e3122f5d2..f266bd5709 100644
+index 88235bbd11..c433b706d6 100644
 --- a/src/cpp/session/include/session/projects/SessionProjects.hpp
 +++ b/src/cpp/session/include/session/projects/SessionProjects.hpp
 @@ -22,7 +22,7 @@
@@ -374,7 +374,7 @@ index 0e3122f5d2..f266bd5709 100644
  
  #include <core/FileInfo.hpp>
  #include <core/FilePath.hpp>
-@@ -220,10 +220,10 @@ private:
+@@ -225,10 +225,10 @@ private:
  
     bool hasFileMonitor_;
     std::vector<std::string> monitorSubscribers_;
@@ -414,11 +414,24 @@ index f8ddfcc585..d76c9ccae7 100644
  };
  
  Events& events();
+diff --git a/src/cpp/session/modules/SessionRAddins.cpp b/src/cpp/session/modules/SessionRAddins.cpp
+index 4ce525e469..e6d4fa9992 100644
+--- a/src/cpp/session/modules/SessionRAddins.cpp
++++ b/src/cpp/session/modules/SessionRAddins.cpp
+@@ -45,7 +45,7 @@ namespace r_addins {
+ 
+ namespace {
+ 
+-boost::signals::connection s_consolePromptHandler;
++boost::signals2::connection s_consolePromptHandler;
+ 
+ bool isDevtoolsLoadAllActive()
+ {
 diff --git a/src/cpp/session/modules/SessionWorkbench.cpp b/src/cpp/session/modules/SessionWorkbench.cpp
-index d94a452795..f9f41e542f 100644
+index 486726931a..01b4d07f6d 100644
 --- a/src/cpp/session/modules/SessionWorkbench.cpp
 +++ b/src/cpp/session/modules/SessionWorkbench.cpp
-@@ -719,7 +719,7 @@ Error adaptToLanguage(const json::JsonRpcRequest& request,
+@@ -722,7 +722,7 @@ Error adaptToLanguage(const json::JsonRpcRequest& request,
        // we screen out consecutive transition attempts (otherwise we can
        // get multiple interleaved attempts to launch the REPL with console
        // input)
