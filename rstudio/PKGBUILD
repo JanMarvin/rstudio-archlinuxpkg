@@ -40,6 +40,9 @@ prepare() {
     cd "$_gitname"
     # git reset required for the sed-gin-hack
     git reset --hard && git pull
+
+    # development is happening in this branch
+    git checkout v1.3
   else
     msg "Cloning from GIT server …"
     git clone "$_gitroot" "$_gitname"
