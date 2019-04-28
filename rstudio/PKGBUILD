@@ -11,7 +11,7 @@ pkgdesc="rstudio git release pkgbuild by jmg"
 arch=('i686' 'x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
-depends=('r>=3.0.1' 'qt4>=4.7' 'boost-libs>=1.50' 'clang')
+depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang')
 makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'gin' 'gwt' 'mathjax' 'rrdtool' 'pandoc')
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
@@ -41,8 +41,7 @@ prepare() {
     # git reset required for the sed-gin-hack
     git reset --hard && git pull
 
-    # development is happening in this branch
-    git checkout v1.3
+    git checkout master
   else
     msg "Cloning from GIT server …"
     git clone "$_gitroot" "$_gitname"
