@@ -98,25 +98,15 @@ prepare() {
   # ToDo: hardcoded junit number
   ln -s /opt/junit/junit-4.93b.jar $srcdir/$_gitname/src/gwt/lib
   
-  msg "Pandoc"
+  msg "install-packages and Pandoc"
   cd $srcdir/$_gitname/dependencies/common/
+  ./install-packages
+
   rm -rf "pandoc/" && mkdir pandoc && cd pandoc
   ln -s "/usr/bin/pandoc" .
   
-  msg "create packages"
-  # folderis are empty and not needed, cmake checks for them.
-  # (These packages are not included!)
-
   # Copy rmarkdown
-  mkdir -p "$srcdir/$_gitname/dependencies/common/rmarkdown"
-  # Copy rsconnect
-  mkdir -p "$srcdir/$_gitname/dependencies/common/rsconnect"
-  # Copy profvis
-  mkdir -p "$srcdir/$_gitname/dependencies/common/profvis"
-  # Copy r2d3
-  mkdir -p "$srcdir/$_gitname/dependencies/common/r2d3"
-  # plumber
-  mkdir -p "$srcdir/$_gitname/dependencies/common/plumber"
+  cd "$srcdir/$_gitname/dependencies/common/"
 
   # Create empty dictionaries folder
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
@@ -159,7 +149,7 @@ build(){
         ..
 
   msg "Starting make"
-  make -j8
+  make -j16
 }
 
 package() {
