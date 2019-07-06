@@ -36,7 +36,7 @@ prepare() {
 
   # Fetch Sources
   if [ -d "$_gitname" ] ; then
-    msg "Updating repository from server …" 
+    msg "Updating repository from server …"
     cd "$_gitname"
     # git reset required for the sed-gin-hack
     git reset --hard && git pull
@@ -46,7 +46,6 @@ prepare() {
     msg "Cloning from GIT server …"
     git clone "$_gitroot" "$_gitname"
   fi
-  
 
   cd "$srcdir"
   rm -rf rstudio
@@ -69,7 +68,7 @@ prepare() {
   sed -i \
     -e "s:/usr:$pkgdir/usr:g" \
     CMakeGlobals.txt src/cpp/desktop/CMakeLists.txt || die
-	
+
   cd ..
 
   # get version information from git
@@ -85,28 +84,23 @@ prepare() {
     echo "${major}.${minor}.${patch}"
 
   # Additional Requirements
-  
   msg "GWT"
   mkdir "$srcdir/$_gitname/src/gwt/lib"
-  ln -s /opt/gwt $srcdir/$_gitname/src/gwt/lib 
-  
+  ln -s /opt/gwt $srcdir/$_gitname/src/gwt/lib
+
   msg "GIN"
   # build: requires gin 2.1.2
   ln -s /opt/gin $srcdir/$_gitname/src/gwt/lib
-  
+
   msg "JUNIT"
   # ToDo: hardcoded junit number
   ln -s /opt/junit/junit-4.93b.jar $srcdir/$_gitname/src/gwt/lib
-  
+
   msg "install-packages and Pandoc"
   cd $srcdir/$_gitname/dependencies/common/
   ./install-packages
-
   rm -rf "pandoc/" && mkdir pandoc && cd pandoc
   ln -s "/usr/bin/pandoc" .
-  
-  # Copy rmarkdown
-  cd "$srcdir/$_gitname/dependencies/common/"
 
   # Create empty dictionaries folder
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
@@ -115,14 +109,6 @@ prepare() {
   # Add mathjax
   mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-26"
   ln -s "/opt/mathjax/"* "$srcdir/$_gitname/dependencies/common/mathjax-26"
-  # libclang.so
-  mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/3.5"
-  ln -s "/usr/lib/libclang.so" "$srcdir/$_gitname/dependencies/common/libclang/3.5"
-  # Clang headers
-  mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/3.5"
-  ln -s "/usr/lib/clang/3.5.0/include/"* "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/3.5"
-  mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/libc++/3.5"
-  ln -s "/usr/include/c++/v1/"* "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/libc++/3.5"
 
   # Desktop, Release
   cd "$srcdir/$_gitname"
@@ -153,18 +139,17 @@ build(){
 }
 
 package() {
-    
   LANG=POSIX
   cd "$srcdir/$_gitname/build/"
 
-  msg "Starting install"
+  msg "make install"
   make DESTDIR="$pkgdir/" install
 
   rm -rf "$pkgdir/usr/lib/rstudio/R/packages/"*.tar.gz
 
   install -Dm644 "$srcdir/rstudio.desktop" "$pkgdir/usr/share/applications/rstudio.desktop"
   install -Dm644 "$srcdir/rstudio.png" "$pkgdir/usr/share/pixmaps/rstudio.png"
-  
+
   msg "Cleaning Sources …"
   rm -rf "$srcdir/$_gitname/build"
   rm "$srcdir/$_gitname/src/gwt/lib/gwt"
@@ -173,5 +158,6 @@ package() {
   rm -r "$srcdir/$_gitname/src/gwt/lib"
   rm -r "$srcdir/$_gitname/dependencies/common/dictionaries/"
   rm -r "$srcdir/$_gitname/dependencies/common/mathjax-26"
-
 }
+
+# vim:set ts=2 sw=2 et:

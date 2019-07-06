@@ -1,3 +1,4 @@
+# Maintainer: Jan Marvin Garbuszus <jan.garbuszus@ruhr-uni-bochum.de>
 # Inspired by https://aur.archlinux.org/packages.php?ID=47225
 #
 
@@ -11,25 +12,16 @@ pkgdesc="rstudio git release pkgbuild by jmg"
 arch=('i686' 'x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
-depends=('r>=3.0.1' 'qt4>=4.7' 'boost-libs>=1.50' 'clang')
+depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang')
 makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'gin' 'gwt' 'mathjax' 'rrdtool' 'pandoc')
 provides=('rstudio-server')
 conflicts=('rstudio-server')
 install=rstudio-server.install
 source=('rstudio-server.service'
-        'make_shared.patch'
-	'make_shared_include.patch'
-        'boostsignals.patch'
-        'prefs.patch'
-        'gwt282.diff'
-	)
+        'prefs.patch')
 
 md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
-         '9c5504ec85d0897845b8dfc105788b3f'
-         '5986dcde37a14d95cfb31f64ebf83923'
-         '6c2178c65c3e0ad51dfb3e5a978ce8db'
-         'aeaaece9f7e4b6343f7a84ab80cdedfa'
-         'a4189401293359f4f1e02f86aa7c539a')
+         'aeaaece9f7e4b6343f7a84ab80cdedfa')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -39,37 +31,32 @@ prepare() {
 
   # Fetch Sources
   if [ -d "$_gitname" ] ; then
-    msg "Updating repository from server …" 
+    msg "Updating repository from server …"
     cd "$_gitname"
     # git reset required for the sed-gin-hack
     git reset --hard && git pull
+
+    git checkout master
   else
     msg "Cloning from GIT server …"
     git clone "$_gitroot" "$_gitname"
   fi
-  
-  # srcdir
+
   cd "$srcdir"
   rm -rf rstudio
   git clone ../$_gitname
   cd $_gitname
-  git apply --whitespace=fix ../boostsignals.patch
-
-  git apply --whitespace=fix ../make_shared_include.patch
 
   # Gentoo fixes
   msg "Gentoo fixes"
   # http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/sci-mathematics/rstudio/
   git apply ../prefs.patch
 
-  # # GWT 2.8.2
-  # git apply ../gwt282.diff
-
   # make sure icons and mime stuff are with prefix
   sed -i \
     -e "s:/usr:$pkgdir/usr:g" \
     CMakeGlobals.txt src/cpp/desktop/CMakeLists.txt || die
-	
+
   cd ..
 
 
@@ -86,54 +73,37 @@ prepare() {
     echo "${major}.${minor}.${patch}"
 
   # Additional Requirements
-  
   msg "GWT"
   mkdir "$srcdir/$_gitname/src/gwt/lib"
-  ln -s /opt/gwt $srcdir/$_gitname/src/gwt/lib 
-  
+  ln -s /opt/gwt $srcdir/$_gitname/src/gwt/lib
+
   msg "GIN"
-  # build: requires gin 1.5
+  # build: requires gin 2.1.2
   ln -s /opt/gin $srcdir/$_gitname/src/gwt/lib
-  
+
   msg "JUNIT"
   # ToDo: hardcoded junit number
   ln -s /opt/junit/junit-4.93b.jar $srcdir/$_gitname/src/gwt/lib
-  
-  msg "Pandoc"
+
+  msg "install-packages and Pandoc"
   cd $srcdir/$_gitname/dependencies/common/
+  ./install-packages
   rm -rf "pandoc/" && mkdir pandoc && cd pandoc
   ln -s "/usr/bin/pandoc" .
-  
-  # Copy rmarkdown
-  mkdir -p "$srcdir/$_gitname/dependencies/common/rmarkdown"
-  #cp "$srcdir/../$_gitname/dependencies/common/"rmarkdown_*.tar.gz "$srcdir/$_gitname/dependencies/common"
-  # Copy rsconnect
-  mkdir -p "$srcdir/$_gitname/dependencies/common/rsconnect"
-  # cp "$srcdir/../$_gitname/dependencies/common/"rsconnect_*.tar.gz "$srcdir/$_gitname/dependencies/common"
-  # Copy profvis
-  mkdir -p "$srcdir/$_gitname/dependencies/common/profvis"
-  # cp "$srcdir/../$_gitname/dependencies/common/"profvis_*.tar.gz "$srcdir/$_gitname/dependencies/common"
 
+  # Create empty dictionaries folder
   mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
-  touch    "$srcdir/$_gitname/dependencies/common/dictionaries/.aff"
-  touch    "$srcdir/$_gitname/dependencies/common/dictionaries/.dic"
+  touch "$srcdir/$_gitname/dependencies/common/dictionaries/.aff"
+  touch "$srcdir/$_gitname/dependencies/common/dictionaries/.dic"
+  # Add mathjax
   mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-26"
   ln -s "/opt/mathjax/"* "$srcdir/$_gitname/dependencies/common/mathjax-26"
 
-  # Clang
-  mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/3.5"
-  ln -s "/usr/lib/libclang.so" "$srcdir/$_gitname/dependencies/common/libclang/3.5"
-
-  mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/3.5"
-  ln -s "/usr/lib/clang/3.5.0/include/"* "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/3.5"
-  mkdir -p "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/libc++/3.5"
-  ln -s "/usr/include/c++/v1/"* "$srcdir/$_gitname/dependencies/common/libclang/builtin-headers/libc++/3.5"
-
-  # Server, Release 
+  # Server, Release
   cd "$srcdir/$_gitname"
   mkdir build && cd build
 
-  # another sed hack for correct version information in rstudio
+  # version information in rstudio
   sed -i -e "s/CPACK_PACKAGE_VERSION_MAJOR \"99\"/CPACK_PACKAGE_VERSION_MAJOR \"$major\"/g; \
              s/CPACK_PACKAGE_VERSION_MINOR \"9\"/CPACK_PACKAGE_VERSION_MINOR \"$minor\"/g; \
              s/CPACK_PACKAGE_VERSION_PATCH \"9\"/CPACK_PACKAGE_VERSION_PATCH \"$patch\"/g" \
@@ -145,55 +115,58 @@ build(){
   LANG=POSIX
 
   cd "$srcdir/$_gitname/build/"
-  
+
   msg "Starting cmake …"
-  #-DQT_QMAKE_EXECUTABLE=/usr/lib/qt/qmake \
   cmake -DRSTUDIO_TARGET=Server \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio-server \
+        -DQT_QMAKE_EXECUTABLE=/usr/lib/qmake \
         ..
 
   msg "Starting make"
-
-  make -j8
+  make -j16
 }
 
 package() {
-    cd "$srcdir/$_gitname/build/"
+  LANG=POSIX
+  cd "$srcdir/$_gitname/build/"
 
-    msg "make install"
-    make DESTDIR="$pkgdir/" install
+  msg "make install"
+  make DESTDIR="$pkgdir/" install
 
-    # Create config directory
-    install -dm755 "$pkgdir/etc/rstudio/"
-    
-    # Create var directories
-    install -dm755 "$pkgdir/run/$_pkgnames"
-    install -dm755 "$pkgdir/run/lock/$_pkgnames"
-    install -dm755 "$pkgdir/var/log/$_pkgnames"
-    install -dm755 "$pkgdir/var/lib/$_pkgnames"
-    install -dm755 "$pkgdir/var/lib/$_pkgnames/conf"
-    install -dm755 "$pkgdir/var/lib/$_pkgnames/body"
-    install -dm755 "$pkgdir/var/lib/$_pkgnames/proxy"
-    
-    # PAM config
-    install -dm755 "$pkgdir/etc/pam.d"
-    install -Dm644 "$pkgdir/usr/lib/$_pkgnames/extras/pam/rstudio" "$pkgdir/etc/pam.d/rstudio"
-    
-    # Systemd script
-    install -Dm644 "$srcdir/$_pkgnames.service" "$pkgdir/usr/lib/systemd/system/$_pkgnames.service"
-    
-    # Create symlink for admin script
-    install -dm755 "$pkgdir/usr/bin"
-    ln -sv "/usr/lib/$_pkgnames/bin/$_pkgnames" "$pkgdir/usr/bin/$_pkgnames"
-    
-    # Cleaning sources
-    msg "Cleaning Sources …"
-    rm -rf "$srcdir/$_gitname/build"
-    rm "$srcdir/$_gitname/src/gwt/lib/gwt"
-    rm "$srcdir/$_gitname/src/gwt/lib/gin"
-    rm $srcdir/$_gitname/src/gwt/lib/junit-4.93b.jar
-    rm -r "$srcdir/$_gitname/src/gwt/lib"
-    rm -r "$srcdir/$_gitname/dependencies/common/dictionaries/"
-    rm -r "$srcdir/$_gitname/dependencies/common/mathjax-26"
+  rm -rf "$pkgdir/usr/lib/rstudio/R/packages/"*.tar.gz
+
+  # Create config directory
+  install -dm755 "$pkgdir/etc/rstudio/"
+
+  # Create var directories
+  install -dm755 "$pkgdir/run/$_pkgnames"
+  install -dm755 "$pkgdir/run/lock/$_pkgnames"
+  install -dm755 "$pkgdir/var/log/$_pkgnames"
+  install -dm755 "$pkgdir/var/lib/$_pkgnames"
+  install -dm755 "$pkgdir/var/lib/$_pkgnames/conf"
+  install -dm755 "$pkgdir/var/lib/$_pkgnames/body"
+  install -dm755 "$pkgdir/var/lib/$_pkgnames/proxy"
+
+  # PAM config
+  install -dm755 "$pkgdir/etc/pam.d"
+  install -Dm644 "$pkgdir/usr/lib/$_pkgnames/extras/pam/rstudio" "$pkgdir/etc/pam.d/rstudio"
+
+  # Systemd script
+  install -Dm644 "$srcdir/$_pkgnames.service" "$pkgdir/usr/lib/systemd/system/$_pkgnames.service"
+
+  # Create symlink for admin script
+  install -dm755 "$pkgdir/usr/bin"
+  ln -sv "/usr/lib/$_pkgnames/bin/$_pkgnames" "$pkgdir/usr/bin/$_pkgnames"
+
+  msg "Cleaning Sources …"
+  rm -rf "$srcdir/$_gitname/build"
+  rm "$srcdir/$_gitname/src/gwt/lib/gwt"
+  rm "$srcdir/$_gitname/src/gwt/lib/gin"
+  rm "$srcdir/$_gitname/src/gwt/lib/junit-4.93b.jar"
+  rm -r "$srcdir/$_gitname/src/gwt/lib"
+  rm -r "$srcdir/$_gitname/dependencies/common/dictionaries/"
+  rm -r "$srcdir/$_gitname/dependencies/common/mathjax-26"
 }
+
+# vim:set ts=2 sw=2 et:
