@@ -132,6 +132,7 @@ build(){
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio \
         -DQT_QMAKE_EXECUTABLE=/usr/lib/qmake \
+        -DRSTUDIO_USE_SYSTEM_BOOST=yes \
         ..
 
   msg "Starting make"
