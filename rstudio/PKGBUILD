@@ -12,7 +12,7 @@ arch=('i686' 'x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
 depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang')
-makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'gin' 'gwt' 'mathjax' 'rrdtool' 'pandoc')
+makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax' 'rrdtool' 'pandoc')
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
 install=rstudio.install
@@ -69,32 +69,17 @@ prepare() {
     -e "s:/usr:$pkgdir/usr:g" \
     CMakeGlobals.txt src/cpp/desktop/CMakeLists.txt || die
 
-  cd ..
-
   # get version information from git
-    cd "$srcdir/$_gitname"
-    _gittag=$(git describe --tags $(git rev-list --tags --max-count=1))
+  cd "$srcdir/$_gitname"
+  _gittag=$(git describe --tags $(git rev-list --tags --max-count=1))
 
-    gittag=${_gittag#v*}
-    major=${gittag%.*.*}
-    gittag=${gittag#$major.*}
-    minor=${gittag%.*}
-    patch=${gittag#*.}
+  gittag=${_gittag#v*}
+  major=${gittag%.*.*}
+  gittag=${gittag#$major.*}
+  minor=${gittag%.*}
+  patch=${gittag#*.}
 
-    echo "${major}.${minor}.${patch}"
-
-  # Additional Requirements
-  msg "GWT"
-  mkdir "$srcdir/$_gitname/src/gwt/lib"
-  ln -s /opt/gwt $srcdir/$_gitname/src/gwt/lib
-
-  msg "GIN"
-  # build: requires gin 2.1.2
-  ln -s /opt/gin $srcdir/$_gitname/src/gwt/lib
-
-  msg "JUNIT"
-  # ToDo: hardcoded junit number
-  ln -s /opt/junit/junit-4.93b.jar $srcdir/$_gitname/src/gwt/lib
+  echo "${major}.${minor}.${patch}"
 
   msg "install-packages and Pandoc"
   cd $srcdir/$_gitname/dependencies/common/
@@ -153,10 +138,6 @@ package() {
 
   msg "Cleaning Sources …"
   rm -rf "$srcdir/$_gitname/build"
-  rm "$srcdir/$_gitname/src/gwt/lib/gwt"
-  rm "$srcdir/$_gitname/src/gwt/lib/gin"
-  rm "$srcdir/$_gitname/src/gwt/lib/junit-4.93b.jar"
-  rm -r "$srcdir/$_gitname/src/gwt/lib"
   rm -r "$srcdir/$_gitname/dependencies/common/dictionaries/"
   rm -r "$srcdir/$_gitname/dependencies/common/mathjax-26"
 }
