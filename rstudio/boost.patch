@@ -1,0 +1,25 @@
+diff --git a/src/cpp/CMakeLists.txt b/src/cpp/CMakeLists.txt
+index a38181cc8c..a873d23f3a 100644
+--- a/src/cpp/CMakeLists.txt
++++ b/src/cpp/CMakeLists.txt
+@@ -271,13 +271,13 @@ endif()
+ 
+ # allow opt-in to using Boost.Signals2
+ # TODO: remove this in RStudio v1.3 and port to signals2
+-if(NOT RSTUDIO_BOOST_SIGNALS_VERSION)
+-   if (Boost_VERSION LESS 106900)
+-      set(RSTUDIO_BOOST_SIGNALS_VERSION 1)
+-   else()
+-      set(RSTUDIO_BOOST_SIGNALS_VERSION 2)
+-   endif()
+-endif()
++# if(NOT RSTUDIO_BOOST_SIGNALS_VERSION)
++#    if (Boost_VERSION LESS 106900)
++#       set(RSTUDIO_BOOST_SIGNALS_VERSION 1)
++#    else()
++       set(RSTUDIO_BOOST_SIGNALS_VERSION 2)
++#    endif()
++# endif()
+ 
+ message(STATUS "Using Boost.Signals version ${RSTUDIO_BOOST_SIGNALS_VERSION}")
+ add_definitions(-DRSTUDIO_BOOST_SIGNALS_VERSION=${RSTUDIO_BOOST_SIGNALS_VERSION})
