@@ -96,8 +96,8 @@ prepare() {
   touch "$srcdir/$_gitname/dependencies/common/dictionaries/.aff"
   touch "$srcdir/$_gitname/dependencies/common/dictionaries/.dic"
   # Add mathjax
-  mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-26"
-  ln -s "/opt/mathjax/"* "$srcdir/$_gitname/dependencies/common/mathjax-26"
+  mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-27"
+  ln -s "/opt/mathjax/"* "$srcdir/$_gitname/dependencies/common/mathjax-27"
 
   # Desktop, Release
   cd "$srcdir/$_gitname"
@@ -143,7 +143,7 @@ package() {
   msg "Cleaning Sources …"
   rm -rf "$srcdir/$_gitname/build"
   rm -r "$srcdir/$_gitname/dependencies/common/dictionaries/"
-  rm -r "$srcdir/$_gitname/dependencies/common/mathjax-26"
+  rm -r "$srcdir/$_gitname/dependencies/common/mathjax-27"
 }
 
 # vim:set ts=2 sw=2 et:
