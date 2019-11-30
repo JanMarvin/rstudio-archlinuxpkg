@@ -18,10 +18,12 @@ provides=('rstudio-server')
 conflicts=('rstudio-server')
 install=rstudio-server.install
 source=('rstudio-server.service'
-        'prefs.patch')
+        'prefs.patch'
+        'boost.patch')
 
 md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
-         'aeaaece9f7e4b6343f7a84ab80cdedfa')
+         'b7ca2e015536f4df360b26322ccc2d72'
+         '83df084fa6423696d67aad300f6474c0')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -46,6 +48,9 @@ prepare() {
   rm -rf rstudio
   git clone ../$_gitname
   cd $_gitname
+
+  msg2 "1"
+  git apply --whitespace=fix ../boost.patch
 
   # Gentoo fixes
   msg "Gentoo fixes"
@@ -80,8 +85,8 @@ prepare() {
   touch "$srcdir/$_gitname/dependencies/common/dictionaries/.aff"
   touch "$srcdir/$_gitname/dependencies/common/dictionaries/.dic"
   # Add mathjax
-  mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-26"
-  ln -s "/opt/mathjax/"* "$srcdir/$_gitname/dependencies/common/mathjax-26"
+  mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-27"
+  ln -s "/opt/mathjax/"* "$srcdir/$_gitname/dependencies/common/mathjax-27"
 
   # Server, Release
   cd "$srcdir/$_gitname"
@@ -147,7 +152,7 @@ package() {
   msg "Cleaning Sources …"
   rm -rf "$srcdir/$_gitname/build"
   rm -r "$srcdir/$_gitname/dependencies/common/dictionaries/"
-  rm -r "$srcdir/$_gitname/dependencies/common/mathjax-26"
+  rm -r "$srcdir/$_gitname/dependencies/common/mathjax-27"
 }
 
 # vim:set ts=2 sw=2 et:
