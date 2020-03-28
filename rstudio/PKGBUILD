@@ -11,7 +11,7 @@ pkgdesc="rstudio git release pkgbuild by jmg"
 arch=('i686' 'x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
-depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang')
+depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'soci' 'postgresql-libs' 'sqlite')
 makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax' 'rrdtool' 'pandoc')
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
@@ -21,14 +21,14 @@ source=('rstudio.desktop'
         'cursor_fix.diff'
         'prefs.patch'
         'qt511.patch'
-        'boost.patch')
+        'boost_soci.diff')
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
          'bb9bfbb9f24185b334a0d39e8cab2200'
          'b7ca2e015536f4df360b26322ccc2d72'
          '550b1e8a983906b0754174c03ba6d025'
-         '83df084fa6423696d67aad300f6474c0')
+         'e6e7cfa0f0958fe2aca55a53a7ad6cda')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -44,6 +44,7 @@ prepare() {
     git reset --hard && git pull
 
     git checkout master
+    # git checkout v1.3
   else
     msg "Cloning from GIT server …"
     git clone "$_gitroot" "$_gitname"
@@ -61,7 +62,7 @@ prepare() {
   msg2 "2"
   git apply --whitespace=fix ../qt511.patch
   msg2 "3"
-  git apply --whitespace=fix ../boost.patch
+  git apply --whitespace=fix ../boost_soci.diff
 
   # Gentoo fixes
   msg "Gentoo fixes"
@@ -88,6 +89,7 @@ prepare() {
   msg "install-packages and Pandoc"
   cd $srcdir/$_gitname/dependencies/common/
   ./install-packages
+  ./install-npm-dependencies # hardcoded nodejs version. can this be avoided?
   rm -rf "pandoc/" && mkdir pandoc && cd pandoc
   ln -s "/usr/bin/pandoc" .
 
