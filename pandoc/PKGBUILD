@@ -1,7 +1,7 @@
 # Maintainer: Jan Marvin Garbuszus <jan[dot]garbuszus[at]ruhr-uni-bochum[dot]de>
 pkgname=pandoc-deb
 _pkgname=pandoc
-pkgver=2.10
+pkgver=2.10.1
 pkgrel=1
 pkgdesc="general markup converter
  Pandoc is a Haskell library for converting from one markup
@@ -27,7 +27,7 @@ replaces=()
 backup=()
 install=''
 source=("https://github.com/jgm/pandoc/releases/download/${pkgver}/${_pkgname}-${pkgver}-${pkgrel}-amd64.deb")
-md5sums=('ab559019a6870e9f8ba6fb1384356e70')
+md5sums=('47c8f7c0ebbe98d4cc9615f6ca4d0721')
 
 build() {
   cd "${srcdir}"
