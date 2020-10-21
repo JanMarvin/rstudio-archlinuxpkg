@@ -11,8 +11,8 @@ pkgdesc="rstudio git release pkgbuild by jmg"
 arch=('i686' 'x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
-depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'soci' 'postgresql-libs' 'sqlite')
-makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'pandoc')
+depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'soci' 'postgresql-libs' 'sqlite' 'pandoc')
+makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool')
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
 install=rstudio.install
@@ -87,20 +87,19 @@ prepare() {
   echo "${major}.${minor}.${patch}"
 
   msg "install-packages and Pandoc"
-  cd $srcdir/$_gitname/dependencies/common/
+  cd "$srcdir/$_gitname/dependencies/common"
   ./install-packages
   ./install-npm-dependencies # hardcoded nodejs version. can this be avoided?
-  rm -rf "pandoc/" && mkdir pandoc
+  rm -rf "pandoc/" && mkdir -p "pandoc/2.11.0.2"
 
   # Create empty dictionaries folder
-  mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
-  touch "$srcdir/$_gitname/dependencies/common/dictionaries/.aff"
-  touch "$srcdir/$_gitname/dependencies/common/dictionaries/.dic"
+  mkdir -p "dictionaries"
+  touch "dictionaries/.aff"
+  touch "dictionaries/.dic"
 
-  # Add mathjax
+  # Add mathjax & pandoc
   ln -s "/usr/share/mathjax2" "mathjax-27"
-  ln -s "/usr/bin/pandoc" "pandoc/pandoc"
-  ln -s "/usr/bin/pandoc-citeproc" "pandoc/pandoc-citeproc"
+  ln -s "/usr/bin/pandoc" "pandoc/2.11.0.2/pandoc"
 
   # Desktop, Release
   cd "$srcdir/$_gitname"
@@ -145,9 +144,8 @@ package() {
   install -Dm644 "$srcdir/rstudio.png" "$pkgdir/usr/share/pixmaps/rstudio.png"
 
   # link pandoc (again)
-  mkdir "$pkgdir/usr/lib/rstudio/bin/pandoc"
-  ln -s "/usr/bin/pandoc" "$pkgdir/usr/lib/rstudio/bin/pandoc/pandoc"
-  ln -s "/usr/bin/pandoc-citeproc" "$pkgdir/usr/lib/rstudio/bin/pandoc/pandoc-citeproc"
+  mkdir -p "$pkgdir/usr/lib/rstudio/bin/pandoc/2.11.0.2"
+  ln -s "/usr/bin/pandoc" "$pkgdir/usr/lib/rstudio/bin/pandoc/2.11.0.2"
 
   msg "Cleaning Sources …"
   rm -rf "$srcdir/$_gitname/build"
