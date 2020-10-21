@@ -1,9 +1,9 @@
 README
 =============
 
-First build and install the PKGBUILDs for gin, gwt, junit and mathjax. They provide what rstudio installs with its dependencies script. Be careful updating these.
+First build and install the PKGBUILD for pandoc. It provides what rstudio installs with its dependencies script.
 
-Second build and install rstudio. The previously installed packages are linked into the build directory.
+Second build and install rstudio. The previously installed package is linked into the build directory.
 
 I will not continue to build rstudio-desktop-git on a regularly basis. This PKGBUILD is updated only if I need to and have a free minute.
 
