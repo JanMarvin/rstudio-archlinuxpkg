@@ -1,6 +1,7 @@
 *.zip
 *.deb
 *.tar.xz
+*.tar.zst
 *.jar
 
 pkg/
