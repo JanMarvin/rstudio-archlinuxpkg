@@ -12,8 +12,8 @@ pkgdesc="rstudio git release pkgbuild by jmg"
 arch=('i686' 'x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
-depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang')
-makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax' 'rrdtool' 'pandoc')
+depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'soci' 'postgresql-libs' 'pandoc')
+makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool')
 provides=('rstudio-server')
 conflicts=('rstudio-server')
 install=rstudio-server.install
@@ -75,18 +75,19 @@ prepare() {
   echo "${major}.${minor}.${patch}"
 
   msg "install-packages and Pandoc"
-  cd $srcdir/$_gitname/dependencies/common/
+  cd "$srcdir/$_gitname/dependencies/common/"
   ./install-packages
-  rm -rf "pandoc/" && mkdir pandoc && cd pandoc
-  ln -s "/usr/bin/pandoc" .
+  ./install-npm-dependencies
+  rm -rf "pandoc/" && mkdir -p "pandoc/2.11.0.2"
 
   # Create empty dictionaries folder
-  mkdir -p "$srcdir/$_gitname/dependencies/common/dictionaries"
-  touch "$srcdir/$_gitname/dependencies/common/dictionaries/.aff"
-  touch "$srcdir/$_gitname/dependencies/common/dictionaries/.dic"
-  # Add mathjax
-  mkdir -p "$srcdir/$_gitname/dependencies/common/mathjax-27"
-  ln -s "/opt/mathjax/"* "$srcdir/$_gitname/dependencies/common/mathjax-27"
+  mkdir -p "dictionaries"
+  touch "dictionaries/.aff"
+  touch "dictionaries/.dic"
+
+  # Add mathjax & pandoc
+  ln -s "/usr/share/mathjax2" "mathjax-27"
+  ln -s "/usr/bin/pandoc" "pandoc/2.11.0.2"
 
   # Server, Release
   cd "$srcdir/$_gitname"
@@ -109,8 +110,8 @@ build(){
   cmake -DRSTUDIO_TARGET=Server \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio-server \
-        -DQT_QMAKE_EXECUTABLE=/usr/lib/qmake \
         -DRSTUDIO_USE_SYSTEM_BOOST=yes \
+        -DRSTUDIO_USE_SYSTEM_SOCI=yes \
         ..
 
   msg "Starting make"
@@ -148,6 +149,10 @@ package() {
   # Create symlink for admin script
   install -dm755 "$pkgdir/usr/bin"
   ln -sv "/usr/lib/$_pkgnames/bin/$_pkgnames" "$pkgdir/usr/bin/$_pkgnames"
+
+  # link pandoc (again)
+  mkdir -p "$pkgdir/usr/lib/$_pkgnames/bin/pandoc/2.11.0.2"
+  ln -s "/usr/bin/pandoc" "$pkgdir/usr/lib/$_pkgnames/bin/pandoc/2.11.0.2"
 
   msg "Cleaning Sources …"
   rm -rf "$srcdir/$_gitname/build"
