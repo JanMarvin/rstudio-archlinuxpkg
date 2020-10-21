@@ -150,10 +150,6 @@ package() {
   install -dm755 "$pkgdir/usr/bin"
   ln -sv "/usr/lib/$_pkgnames/bin/$_pkgnames" "$pkgdir/usr/bin/$_pkgnames"
 
-  # link pandoc (again)
-  mkdir -p "$pkgdir/usr/lib/$_pkgnames/bin/pandoc/2.11.0.2"
-  ln -s "/usr/bin/pandoc" "$pkgdir/usr/lib/$_pkgnames/bin/pandoc/2.11.0.2"
-
   msg "Cleaning Sources …"
   rm -rf "$srcdir/$_gitname/build"
   rm -r "$srcdir/$_gitname/dependencies/common/dictionaries/"
