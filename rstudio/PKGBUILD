@@ -32,6 +32,7 @@ md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
+pandocver="2.11.0.4"
 
 prepare() {
   cd $srcdir/..
@@ -90,7 +91,7 @@ prepare() {
   cd "$srcdir/$_gitname/dependencies/common"
   ./install-packages
   ./install-npm-dependencies # hardcoded nodejs version. can this be avoided?
-  rm -rf "pandoc/" && mkdir -p "pandoc/2.11.0.2"
+  rm -rf "pandoc/" && mkdir -p "pandoc/$pandocver"
 
   # Create empty dictionaries folder
   mkdir -p "dictionaries"
@@ -99,7 +100,7 @@ prepare() {
 
   # Add mathjax & pandoc
   ln -s "/usr/share/mathjax2" "mathjax-27"
-  ln -s "/usr/bin/pandoc" "pandoc/2.11.0.2/pandoc"
+  ln -s "/usr/bin/pandoc" "pandoc/$pandocver/pandoc"
 
   # Desktop, Release
   cd "$srcdir/$_gitname"
@@ -144,8 +145,8 @@ package() {
   install -Dm644 "$srcdir/rstudio.png" "$pkgdir/usr/share/pixmaps/rstudio.png"
 
   # link pandoc (again)
-  mkdir -p "$pkgdir/usr/lib/rstudio/bin/pandoc/2.11.0.2"
-  ln -s "/usr/bin/pandoc" "$pkgdir/usr/lib/rstudio/bin/pandoc/2.11.0.2"
+  mkdir -p "$pkgdir/usr/lib/rstudio/bin/pandoc/$pandocver"
+  ln -s "/usr/bin/pandoc" "$pkgdir/usr/lib/rstudio/bin/pandoc/$pandocver"
 
   msg "Cleaning Sources …"
   rm -rf "$srcdir/$_gitname/build"
