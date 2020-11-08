@@ -32,7 +32,7 @@ md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
-pandocver="2.11.0.4"
+pandocver="2.11.1"
 
 prepare() {
   cd $srcdir/..
