@@ -19,14 +19,17 @@ conflicts=('rstudio-server')
 install=rstudio-server.install
 source=('rstudio-server.service'
         'prefs.patch'
-        'boost.patch')
+        'boost.patch'
+        'boost_175.patch')
 
 md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
          'b7ca2e015536f4df360b26322ccc2d72'
-         '83df084fa6423696d67aad300f6474c0')
+         '83df084fa6423696d67aad300f6474c0'
+         '9f825b8c0d1be5cf875d1d200143779c')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
+pandocver="2.11.2"
 
 prepare() {
   cd $srcdir/..
@@ -51,6 +54,8 @@ prepare() {
 
   msg2 "1"
   git apply --whitespace=fix ../boost.patch
+  msg2 "2"
+  git apply --whitespace=fix ../boost_175.patch
 
   # Gentoo fixes
   msg "Gentoo fixes"
@@ -78,7 +83,7 @@ prepare() {
   cd "$srcdir/$_gitname/dependencies/common/"
   ./install-packages
   ./install-npm-dependencies
-  rm -rf "pandoc/" && mkdir -p "pandoc/2.11.0.2"
+  rm -rf "pandoc/" && mkdir -p "pandoc/$pandocver"
 
   # Create empty dictionaries folder
   mkdir -p "dictionaries"
@@ -87,7 +92,7 @@ prepare() {
 
   # Add mathjax & pandoc
   ln -s "/usr/share/mathjax2" "mathjax-27"
-  ln -s "/usr/bin/pandoc" "pandoc/2.11.0.2"
+  ln -s "/usr/bin/pandoc" "pandoc/$pandocver/pandoc"
 
   # Server, Release
   cd "$srcdir/$_gitname"
@@ -149,6 +154,10 @@ package() {
   # Create symlink for admin script
   install -dm755 "$pkgdir/usr/bin"
   ln -sv "/usr/lib/$_pkgnames/bin/$_pkgnames" "$pkgdir/usr/bin/$_pkgnames"
+
+  # link pandoc (again)
+  mkdir -p "$pkgdir/usr/lib/rstudio/bin/pandoc/$pandocver"
+  ln -s "/usr/bin/pandoc" "$pkgdir/usr/lib/rstudio/bin/pandoc/$pandocver"
 
   msg "Cleaning Sources …"
   rm -rf "$srcdir/$_gitname/build"
