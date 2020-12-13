@@ -21,14 +21,16 @@ source=('rstudio.desktop'
         'cursor_fix.diff'
         'prefs.patch'
         'qt511.patch'
-        'boost.patch')
+        'boost.patch'
+        'boost_175.patch')
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
          'bb9bfbb9f24185b334a0d39e8cab2200'
          'b7ca2e015536f4df360b26322ccc2d72'
          '550b1e8a983906b0754174c03ba6d025'
-         '83df084fa6423696d67aad300f6474c0')
+         '83df084fa6423696d67aad300f6474c0'
+         '9f825b8c0d1be5cf875d1d200143779c')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -64,6 +66,8 @@ prepare() {
   git apply --whitespace=fix ../qt511.patch
   msg2 "3"
   git apply --whitespace=fix ../boost.patch
+  msg2 "4"
+  git apply --whitespace=fix ../boost_175.patch
 
   # Gentoo fixes
   msg "Gentoo fixes"
