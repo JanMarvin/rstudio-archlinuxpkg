@@ -6,13 +6,15 @@ verdate=$(date +"%Y%m%d")
 
 pkgname=rstudio-desktop-git
 pkgver=$verdate
+pandocver="2.11.2"
+nodever=10.19.0
 pkgrel=1
 pkgdesc="rstudio git release pkgbuild by jmg"
 arch=('i686' 'x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
 depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'soci' 'postgresql-libs' 'sqlite' 'pandoc')
-makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool')
+makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'yarn')
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
 install=rstudio.install
@@ -20,21 +22,22 @@ source=('rstudio.desktop'
         'rstudio.png'
         'cursor_fix.diff'
         'prefs.patch'
-        'qt511.patch'
+        'qt_lib.patch'
         'boost.patch'
-        'boost_175.patch')
+        'boost_175.patch'
+        "https://nodejs.org/dist/v${nodever}/node-v${nodever}-linux-x64.tar.gz")
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
          'bb9bfbb9f24185b334a0d39e8cab2200'
          'b7ca2e015536f4df360b26322ccc2d72'
-         '550b1e8a983906b0754174c03ba6d025'
+         '92f0611916adab94abbdfb245c4689ab'
          '83df084fa6423696d67aad300f6474c0'
-         '9fafe8ab18accf4af32839f5895e3464')
+         '9fafe8ab18accf4af32839f5895e3464'
+         '441a8e19ab9cd9884cbd24f85840c7a6')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
-pandocver="2.11.2"
 
 prepare() {
   cd $srcdir/..
@@ -63,7 +66,7 @@ prepare() {
   msg2 "1"
   git apply --whitespace=fix ../cursor_fix.diff
   msg2 "2"
-  git apply --whitespace=fix ../qt511.patch
+  git apply --whitespace=fix ../qt_lib.patch
   msg2 "3"
   git apply --whitespace=fix ../boost.patch
   msg2 "4"
@@ -93,22 +96,27 @@ prepare() {
 
   msg "install-packages and Pandoc"
   cd "$srcdir/$_gitname/dependencies/common"
-  ./install-packages
-  ./install-npm-dependencies # hardcoded nodejs version. can this be avoided?
-  rm -rf "pandoc/" && mkdir -p "pandoc/$pandocver"
-
   # Create empty dictionaries folder
   mkdir -p "dictionaries"
   touch "dictionaries/.aff"
   touch "dictionaries/.dic"
 
   # Add mathjax & pandoc
+  rm -rf "pandoc/" && mkdir -p "pandoc/$pandocver"
   ln -s "/usr/share/mathjax2" "mathjax-27"
   ln -s "/usr/bin/pandoc" "pandoc/$pandocver/pandoc"
+  ./install-packages
 
-  # Desktop, Release
-  cd "$srcdir/$_gitname"
-  mkdir build && cd build
+  # Nodejs
+  install -d node/${nodever}
+  cp -r "${srcdir}/node-v${nodever}-linux-x64/"* node/${nodever}
+  cd "${srcdir}/${_gitname}/src/gwt/panmirror/src/editor"
+  yarn config set ignore-engines true
+  yarn install
+
+  # # Desktop, Release
+  # cd "$srcdir/$_gitname"
+  # mkdir build && cd build
 
   # version information in rstudio
   sed -i -e "s/CPACK_PACKAGE_VERSION_MAJOR \"99\"/CPACK_PACKAGE_VERSION_MAJOR \"$major\"/g; \
@@ -119,38 +127,30 @@ prepare() {
 }
 
 build(){
-  LANG=POSIX
-
-  cd "$srcdir/$_gitname/build/"
 
   msg "Starting cmake …"
-  cmake -DRSTUDIO_TARGET=Desktop \
+  cmake -B build -S $srcdir/$_gitname \
+        -DRSTUDIO_TARGET=Desktop \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio \
-        -DQT_QMAKE_EXECUTABLE=/usr/lib/qmake \
+        -DQT_QMAKE_EXECUTABLE=/usr/bin/qmake \
         -DRSTUDIO_USE_SYSTEM_BOOST=yes \
         -DRSTUDIO_USE_SYSTEM_SOCI=yes \
         ..
 
   msg "Starting make"
-  make -j16
+  cmake --build build -j16
 }
 
 package() {
-  LANG=POSIX
-  cd "$srcdir/$_gitname/build/"
 
   msg "make install"
-  make DESTDIR="$pkgdir/" install
+  DESTDIR="$pkgdir" cmake --install build
 
   rm -rf "$pkgdir/usr/lib/rstudio/R/packages/"*.tar.gz
 
   install -Dm644 "$srcdir/rstudio.desktop" "$pkgdir/usr/share/applications/rstudio.desktop"
   install -Dm644 "$srcdir/rstudio.png" "$pkgdir/usr/share/pixmaps/rstudio.png"
-
-  # link pandoc (again)
-  mkdir -p "$pkgdir/usr/lib/rstudio/bin/pandoc/$pandocver"
-  ln -s "/usr/bin/pandoc" "$pkgdir/usr/lib/rstudio/bin/pandoc/$pandocver"
 
   msg "Cleaning Sources …"
   rm -rf "$srcdir/$_gitname/build"
