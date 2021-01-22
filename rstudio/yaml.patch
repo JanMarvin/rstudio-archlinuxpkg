@@ -1,0 +1,19 @@
+index b4c5b72e88..95dce0eb0f 100644
+diff --git a/src/cpp/CMakeLists.txt b/src/cpp/CMakeLists.txt
+index 738a1a2290..27e03dd49d 100644
+--- a/src/cpp/CMakeLists.txt
++++ b/src/cpp/CMakeLists.txt
+@@ -208,8 +208,13 @@ if(WIN32)
+ 
+ else()
+ 
++ if(NOT RSTUDIO_USE_SYSTEM_YAML)
+    set(YAML_CPP_INCLUDE_DIR "/opt/rstudio-tools/yaml-cpp/0.6.3/include")
+    set(YAML_CPP_LIBRARIES   "/opt/rstudio-tools/yaml-cpp/0.6.3/build/libyaml-cpp.a")
++ else()
++      find_package(yaml-cpp)
++      message(STATUS "Found YAML: ${yaml-cpp_CONFIG}")
++ endif()
+ 
+ endif()
+ 

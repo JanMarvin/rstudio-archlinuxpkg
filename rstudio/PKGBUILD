@@ -6,14 +6,14 @@ verdate=$(date +"%Y%m%d")
 
 pkgname=rstudio-desktop-git
 pkgver=$verdate
-pandocver="2.11.2"
+pandocver="2.11.3.2"
 nodever=10.19.0
 pkgrel=1
 pkgdesc="rstudio git release pkgbuild by jmg"
 arch=('i686' 'x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
-depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'soci' 'postgresql-libs' 'sqlite' 'pandoc')
+depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'soci' 'postgresql-libs' 'sqlite' 'pandoc' 'yaml-cpp')
 makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'yarn')
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
@@ -24,7 +24,7 @@ source=('rstudio.desktop'
         'prefs.patch'
         'qt_lib.patch'
         'boost.patch'
-        'boost_175.patch'
+        'yaml.patch'
         "https://nodejs.org/dist/v${nodever}/node-v${nodever}-linux-x64.tar.gz")
 
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
@@ -33,7 +33,7 @@ md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          'b7ca2e015536f4df360b26322ccc2d72'
          '92f0611916adab94abbdfb245c4689ab'
          '83df084fa6423696d67aad300f6474c0'
-         '9fafe8ab18accf4af32839f5895e3464'
+         '19b71e24dbdcc2c8fa4190df3bac7e2f'
          '441a8e19ab9cd9884cbd24f85840c7a6')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
@@ -70,7 +70,7 @@ prepare() {
   msg2 "3"
   git apply --whitespace=fix ../boost.patch
   msg2 "4"
-  git apply --whitespace=fix ../boost_175.patch
+  git apply --whitespace=fix ../yaml.patch
 
   # Gentoo fixes
   msg "Gentoo fixes"
@@ -136,6 +136,7 @@ build(){
         -DQT_QMAKE_EXECUTABLE=/usr/bin/qmake \
         -DRSTUDIO_USE_SYSTEM_BOOST=yes \
         -DRSTUDIO_USE_SYSTEM_SOCI=yes \
+        -DRSTUDIO_USE_SYSTEM_YAML=yes\
         ..
 
   msg "Starting make"
