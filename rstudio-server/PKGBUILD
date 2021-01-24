@@ -13,23 +13,22 @@ arch=('i686' 'x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
 depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'soci' 'postgresql-libs' 'pandoc')
-makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool')
+makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'nodejs' 'yarn')
 provides=('rstudio-server')
 conflicts=('rstudio-server')
 install=rstudio-server.install
 source=('rstudio-server.service'
         'prefs.patch'
-        'boost.patch'
-        'boost_175.patch')
+        'boost.patch')
 
 md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
          'b7ca2e015536f4df360b26322ccc2d72'
-         '83df084fa6423696d67aad300f6474c0'
-         '9f825b8c0d1be5cf875d1d200143779c')
+         '83df084fa6423696d67aad300f6474c0')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
-pandocver="2.11.2"
+pandocver="2.11.3.2"
+nodever=10.19.0
 
 prepare() {
   cd $srcdir/..
@@ -54,8 +53,6 @@ prepare() {
 
   msg2 "1"
   git apply --whitespace=fix ../boost.patch
-  msg2 "2"
-  git apply --whitespace=fix ../boost_175.patch
 
   # Gentoo fixes
   msg "Gentoo fixes"
@@ -81,22 +78,28 @@ prepare() {
 
   msg "install-packages and Pandoc"
   cd "$srcdir/$_gitname/dependencies/common/"
-  ./install-packages
-  ./install-npm-dependencies
-  rm -rf "pandoc/" && mkdir -p "pandoc/$pandocver"
-
   # Create empty dictionaries folder
   mkdir -p "dictionaries"
   touch "dictionaries/.aff"
   touch "dictionaries/.dic"
 
   # Add mathjax & pandoc
+  rm -rf "pandoc/" && mkdir -p "pandoc/$pandocver"
   ln -s "/usr/share/mathjax2" "mathjax-27"
   ln -s "/usr/bin/pandoc" "pandoc/$pandocver/pandoc"
+  ./install-packages
 
-  # Server, Release
-  cd "$srcdir/$_gitname"
-  mkdir build && cd build
+  # Nodejs
+  mkdir -p node/${nodever}/{bin,include}
+  ln -s /usr/bin/node node/${nodever}/bin
+  ln -s /usr/include/node node/${nodever}/include
+  cd "${srcdir}/${_gitname}/src/gwt/panmirror/src/editor"
+  yarn config set ignore-engines true
+  yarn install
+
+  # # Server, Release
+  # cd "$srcdir/$_gitname"
+  # mkdir build && cd build
 
   # version information in rstudio
   sed -i -e "s/CPACK_PACKAGE_VERSION_MAJOR \"99\"/CPACK_PACKAGE_VERSION_MAJOR \"$major\"/g; \
@@ -107,30 +110,27 @@ prepare() {
 }
 
 build(){
-  LANG=POSIX
-
-  cd "$srcdir/$_gitname/build/"
 
   msg "Starting cmake …"
-  cmake -DRSTUDIO_TARGET=Server \
+  cmake -B build -S $srcdir/$_gitname \
+        -DRSTUDIO_TARGET=Server \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio-server \
         -DRSTUDIO_USE_SYSTEM_BOOST=yes \
         -DRSTUDIO_USE_SYSTEM_SOCI=yes \
+        -DRSTUDIO_USE_SYSTEM_YAML_CPP=yes\
         ..
 
   msg "Starting make"
-  make -j16
+  cmake --build build -j16
 }
 
 package() {
-  LANG=POSIX
-  cd "$srcdir/$_gitname/build/"
 
   msg "make install"
-  make DESTDIR="$pkgdir/" install
+  DESTDIR="$pkgdir/" cmake --install build
 
-  rm -rf "$pkgdir/usr/lib/rstudio/R/packages/"*.tar.gz
+  rm -rf "$pkgdir/usr/lib/$_pkgnames/R/packages/"*.tar.gz
 
   # Create config directory
   install -dm755 "$pkgdir/etc/rstudio/"
@@ -154,10 +154,6 @@ package() {
   # Create symlink for admin script
   install -dm755 "$pkgdir/usr/bin"
   ln -sv "/usr/lib/$_pkgnames/bin/$_pkgnames" "$pkgdir/usr/bin/$_pkgnames"
-
-  # link pandoc (again)
-  mkdir -p "$pkgdir/usr/lib/rstudio/bin/pandoc/$pandocver"
-  ln -s "/usr/bin/pandoc" "$pkgdir/usr/lib/rstudio/bin/pandoc/$pandocver"
 
   msg "Cleaning Sources …"
   rm -rf "$srcdir/$_gitname/build"
