@@ -14,7 +14,7 @@ arch=('i686' 'x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
 depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'soci' 'postgresql-libs' 'sqlite' 'pandoc' 'yaml-cpp')
-makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'yarn')
+makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'nodejs' 'yarn')
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
 install=rstudio.install
@@ -24,17 +24,13 @@ source=('rstudio.desktop'
         'prefs.patch'
         'qt_lib.patch'
         'boost.patch'
-        'yaml.patch'
-        "https://nodejs.org/dist/v${nodever}/node-v${nodever}-linux-x64.tar.gz")
-
+        )
 md5sums=('07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
          'bb9bfbb9f24185b334a0d39e8cab2200'
          'b7ca2e015536f4df360b26322ccc2d72'
          '92f0611916adab94abbdfb245c4689ab'
-         '83df084fa6423696d67aad300f6474c0'
-         '19b71e24dbdcc2c8fa4190df3bac7e2f'
-         '441a8e19ab9cd9884cbd24f85840c7a6')
+         '83df084fa6423696d67aad300f6474c0')
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
@@ -69,8 +65,6 @@ prepare() {
   git apply --whitespace=fix ../qt_lib.patch
   msg2 "3"
   git apply --whitespace=fix ../boost.patch
-  msg2 "4"
-  git apply --whitespace=fix ../yaml.patch
 
   # Gentoo fixes
   msg "Gentoo fixes"
@@ -108,8 +102,9 @@ prepare() {
   ./install-packages
 
   # Nodejs
-  install -d node/${nodever}
-  cp -r "${srcdir}/node-v${nodever}-linux-x64/"* node/${nodever}
+  mkdir -p node/${nodever}/{bin,include}
+  ln -s /usr/bin/node node/${nodever}/bin
+  ln -s /usr/include/node node/${nodever}/include
   cd "${srcdir}/${_gitname}/src/gwt/panmirror/src/editor"
   yarn config set ignore-engines true
   yarn install
@@ -136,7 +131,7 @@ build(){
         -DQT_QMAKE_EXECUTABLE=/usr/bin/qmake \
         -DRSTUDIO_USE_SYSTEM_BOOST=yes \
         -DRSTUDIO_USE_SYSTEM_SOCI=yes \
-        -DRSTUDIO_USE_SYSTEM_YAML=yes\
+        -DRSTUDIO_USE_SYSTEM_YAML_CPP=yes\
         ..
 
   msg "Starting make"
