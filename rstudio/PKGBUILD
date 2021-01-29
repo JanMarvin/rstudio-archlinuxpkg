@@ -6,7 +6,7 @@ verdate=$(date +"%Y%m%d")
 
 pkgname=rstudio-desktop-git
 pkgver=$verdate
-pandocver="2.11.3.2"
+pandocver="2.11.4"
 nodever=10.19.0
 pkgrel=1
 pkgdesc="rstudio git release pkgbuild by jmg"
