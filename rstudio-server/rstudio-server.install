@@ -1,21 +1,13 @@
-post_install() {
-    groupadd --system rstudio-server &>/dev/null
-    useradd --system -g rstudio-server -d /var/lib/rstudio-server -s /bin/false rstudio-server &>/dev/null
-    chown -R rstudio-server:rstudio-server /var/lib/rstudio-server &>/dev/null
-    echo `date +%s` > /var/lib/rstudio-server/installed
-}
-
 pre_upgrade() {
     /usr/bin/rstudio-server offline
 }
 
 post_upgrade() {
-    getent group rstudio-server >/dev/null 2>&1 || groupadd --system rstudio-server &>/dev/null
-    getent passwd rstudio-server >/dev/null 2>&1 || useradd --system -g rstudio-server -d /var/lib/rstudio-server -s /bin/false rstudio-server &>/dev/null
-    chown -R rstudio-server:rstudio-server /var/lib/rstudio-server &>/dev/null
-    echo `date +%s` > /var/lib/rstudio-server/installed
-    systemctl daemon-reload
     /usr/bin/rstudio-server online
+}
+
+pre_remove() {
+    echo "Leftover files may reside in /var/log/rstudio-server"
 }
 
 post_remove() {

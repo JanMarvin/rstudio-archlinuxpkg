@@ -18,6 +18,8 @@ provides=('rstudio-server')
 conflicts=('rstudio-server')
 install=rstudio-server.install
 source=('rstudio-server.service'
+        'rstudio-server.sysusers'
+        'rstudio-server.tmpfiles'
         'prefs.patch'
         'boost.patch')
 
@@ -27,8 +29,6 @@ md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
 
 _gitroot="git://github.com/rstudio/rstudio.git"
 _gitname="rstudio"
-pandocver="2.11.3.2"
-nodever=10.19.0
 
 prepare() {
   cd $srcdir/..
@@ -83,6 +83,10 @@ prepare() {
   touch "dictionaries/.aff"
   touch "dictionaries/.dic"
 
+  # get pandocver and nodever install-{pandoc,npm-dependencies}
+  pandocver=$(grep "PANDOC_VERSION=" install-pandoc | cut -d '"' -f2)
+  nodever=$(grep "NODE_VERSION=" install-npm-dependencies | cut -d '"' -f2)
+
   # Add mathjax & pandoc
   rm -rf "pandoc/" && mkdir -p "pandoc/$pandocver"
   ln -s "/usr/share/mathjax2" "mathjax-27"
@@ -96,10 +100,6 @@ prepare() {
   cd "${srcdir}/${_gitname}/src/gwt/panmirror/src/editor"
   yarn config set ignore-engines true
   yarn install
-
-  # # Server, Release
-  # cd "$srcdir/$_gitname"
-  # mkdir build && cd build
 
   # version information in rstudio
   sed -i -e "s/CPACK_PACKAGE_VERSION_MAJOR \"99\"/CPACK_PACKAGE_VERSION_MAJOR \"$major\"/g; \
@@ -138,11 +138,11 @@ package() {
   # Create var directories
   install -dm755 "$pkgdir/run/$_pkgnames"
   install -dm755 "$pkgdir/run/lock/$_pkgnames"
-  install -dm755 "$pkgdir/var/log/$_pkgnames"
   install -dm755 "$pkgdir/var/lib/$_pkgnames"
   install -dm755 "$pkgdir/var/lib/$_pkgnames/conf"
   install -dm755 "$pkgdir/var/lib/$_pkgnames/body"
   install -dm755 "$pkgdir/var/lib/$_pkgnames/proxy"
+  install -dm755 "$pkgdir/var/log/$_pkgnames"
 
   # PAM config
   install -dm755 "$pkgdir/etc/pam.d"

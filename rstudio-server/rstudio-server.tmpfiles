@@ -1,0 +1,2 @@
+d  /var/lib/rstudio-server          0775  rstudio-server  rstudio-server
+d  /var/log/rstudio-server          0775  rstudio-server  log
