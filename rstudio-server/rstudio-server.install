@@ -7,6 +7,7 @@ post_upgrade() {
 }
 
 pre_remove() {
+    /usr/bin/rstudio-server offline
     echo "Leftover files may reside in /var/log/rstudio-server and /var/lib/rstudio-server"
 }
 
