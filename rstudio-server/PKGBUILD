@@ -23,7 +23,7 @@ source=('rstudio-server.service'
         'prefs.patch'
         'boost.patch')
 
-md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
+md5sums=('6c48d54eae2436b4021106d976ee6b2c'
          '0140e5b2fbc96a62ace589f121cab45f'
          '63b8c7f91d3a019260191e545bde328f'
          'b7ca2e015536f4df360b26322ccc2d72'
@@ -134,33 +134,37 @@ package() {
 
   rm -rf "$pkgdir/usr/lib/$_pkgnames/R/packages/"*.tar.gz
 
+  # 02210 is boston
+  _gid_log=19
+  _gid_rstudio_server=2210
+  _uid_rstudio_server=2210
+
   # Create config directory
-  install -dm755 "$pkgdir/etc/rstudio/"
+  install -dm  775 "$pkgdir/etc/rstudio/"
 
   # Create var directories
-  install -dm755 "$pkgdir/run/$_pkgnames"
-  install -dm755 "$pkgdir/run/lock/$_pkgnames"
-  install -dm755 "$pkgdir/var/lib/$_pkgnames"
-  install -dm755 "$pkgdir/var/lib/$_pkgnames/conf"
-  install -dm755 "$pkgdir/var/lib/$_pkgnames/body"
-  install -dm755 "$pkgdir/var/lib/$_pkgnames/proxy"
-  install -dm755 "$pkgdir/var/log/$_pkgnames"
+  install -dm 1777 "$pkgdir/run/$_pkgnames"
+  install -dm  775 "$pkgdir/run/lock/$_pkgnames"
+  install -dm  775 "$pkgdir/var/lib/$_pkgnames"
+  install -dm  775 "$pkgdir/var/lib/$_pkgnames/"{conf,body,proxy}
+  install -dm  775 -o ${_uid_rstudio_server} -g ${_gid_log} "$pkgdir/var/log/$_pkgnames"
+
+  chown -R ${_uid_rstudio_server}:${_gid_rstudio_server} "$pkgdir/run/$_pkgnames" 
+  chown -R ${_uid_rstudio_server}:${_gid_rstudio_server} "$pkgdir/var/lib/$_pkgnames" 
 
   # PAM config
-  install -dm755 "$pkgdir/etc/pam.d"
-  install -Dm644 "$pkgdir/usr/lib/$_pkgnames/extras/pam/rstudio" "$pkgdir/etc/pam.d/rstudio"
+  install -dm  755 "$pkgdir/etc/pam.d"
+  install -Dm  644 "$pkgdir/usr/lib/$_pkgnames/extras/pam/rstudio" "$pkgdir/etc/pam.d/rstudio"
 
   # Systemd script
-  install -Dm644 "$srcdir/$_pkgnames.service" "$pkgdir/usr/lib/systemd/system/$_pkgnames.service"
+  install -Dm  644 "$srcdir/$_pkgnames.service"  "$pkgdir/usr/lib/systemd/system/$_pkgnames.service"
+  install -Dm  644 "$srcdir/$_pkgnames.sysusers" "$pkgdir/usr/lib/sysusers.d/$_pkgnames.conf"
+  install -Dm  644 "$srcdir/$_pkgnames.tmpfiles" "$pkgdir/usr/lib/tmpfiles.d/$_pkgnames.conf"
 
   # Create symlink for admin script
-  install -dm755 "$pkgdir/usr/bin"
+  install -dm  755 "$pkgdir/usr/bin"
   ln -sv "/usr/lib/$_pkgnames/bin/$_pkgnames" "$pkgdir/usr/bin/$_pkgnames"
 
-  msg "Cleaning Sources …"
-  rm -rf "$srcdir/$_gitname/build"
-  rm -r "$srcdir/$_gitname/dependencies/common/dictionaries/"
-  rm -r "$srcdir/$_gitname/dependencies/common/mathjax-27"
 }
 
 # vim:set ts=2 sw=2 et:

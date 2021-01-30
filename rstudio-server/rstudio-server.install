@@ -7,7 +7,7 @@ post_upgrade() {
 }
 
 pre_remove() {
-    echo "Leftover files may reside in /var/log/rstudio-server"
+    echo "Leftover files may reside in /var/log/rstudio-server and /var/lib/rstudio-server"
 }
 
 post_remove() {

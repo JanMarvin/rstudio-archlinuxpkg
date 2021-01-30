@@ -1,12 +1,15 @@
 [Unit]
 Description=RStudio Server
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=forking
+PIDFile=/run/rstudio-server.pid
+Restart=on-failure
+TimeoutStopSec=70
 ExecStart=/usr/lib/rstudio-server/bin/rserver
 ExecStop=/usr/bin/killall -TERM rserver
-KillMode=none
-Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
