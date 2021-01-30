@@ -24,6 +24,8 @@ source=('rstudio-server.service'
         'boost.patch')
 
 md5sums=('b40ceae6b1f5a6b881a06b6d2ca4748d'
+         '0140e5b2fbc96a62ace589f121cab45f'
+         '63b8c7f91d3a019260191e545bde328f'
          'b7ca2e015536f4df360b26322ccc2d72'
          '83df084fa6423696d67aad300f6474c0')
 
