@@ -1,11 +1,11 @@
 README
 =============
 
-First build and install the PKGBUILD for pandoc. It provides what rstudio installs with its dependencies script.
+First (build and) install the dependencies. Either from this repo or from Arch/AUR.
 
-Second build and install rstudio. The previously installed package is linked into the build directory.
+Second build and install rstudio desktop/server.
 
-I will not continue to build rstudio-desktop-git on a regularly basis. This PKGBUILD is updated only if I need to and have a free minute.
+This PKGBUILD is updated only if I need to and have a free minute.
 
 Server
 =============
