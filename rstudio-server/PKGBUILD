@@ -75,20 +75,22 @@ prepare() {
   echo "${major}.${minor}.${patch}"
 
   msg "install-packages and Pandoc"
-  cd "$srcdir/$_gitname/dependencies/common/"
+  cd "$srcdir/$_gitname/dependencies/"
   # Create empty dictionaries folder
   mkdir -p "dictionaries"
   touch "dictionaries/.aff"
   touch "dictionaries/.dic"
 
   # get pandocver and nodever install-{pandoc,npm-dependencies}
-  pandocver=$(grep "PANDOC_VERSION=" install-pandoc | cut -d '"' -f2)
-  nodever=$(grep "NODE_VERSION=" install-npm-dependencies | cut -d '"' -f2)
+  pandocver=$(grep "PANDOC_VERSION=" common/install-pandoc | cut -d '"' -f2)
+  nodever=$(grep "NODE_VERSION=" common/install-npm-dependencies | cut -d '"' -f2)
 
   # Add mathjax & pandoc
   rm -rf "pandoc/" && mkdir -p "pandoc/$pandocver"
   ln -s "/usr/share/mathjax2" "mathjax-27"
   ln -s "/usr/bin/pandoc" "pandoc/$pandocver/pandoc"
+
+  cd "common/"
   ./install-packages
 
   # Nodejs
