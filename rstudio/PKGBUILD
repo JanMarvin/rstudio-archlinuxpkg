@@ -21,14 +21,12 @@ source=('rstudio::git+git://github.com/rstudio/rstudio.git'
         'rstudio.png'
         'prefs.patch'
         'qt_lib.patch'
-        'boost.patch'
         )
 md5sums=('SKIP'
          '07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
          'b7ca2e015536f4df360b26322ccc2d72'
-         '92f0611916adab94abbdfb245c4689ab'
-         '83df084fa6423696d67aad300f6474c0')
+         '92f0611916adab94abbdfb245c4689ab')
 
 
 prepare() {
