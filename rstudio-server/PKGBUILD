@@ -17,40 +17,22 @@ makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'java-environment' 'apache-ant' 'u
 provides=('rstudio-server')
 conflicts=('rstudio-server')
 install=rstudio-server.install
-source=('rstudio-server.service'
+source=('rstudio::git+git://github.com/rstudio/rstudio.git'
+'rstudio-server.service'
         'rstudio-server.sysusers'
         'rstudio-server.tmpfiles'
         'prefs.patch'
         )
 
-md5sums=('6c48d54eae2436b4021106d976ee6b2c'
+md5sums=('SKIP'
+'6c48d54eae2436b4021106d976ee6b2c'
          '0140e5b2fbc96a62ace589f121cab45f'
          '63b8c7f91d3a019260191e545bde328f'
          'b7ca2e015536f4df360b26322ccc2d72')
 
-_gitroot="git://github.com/rstudio/rstudio.git"
-_gitname="rstudio"
-
 prepare() {
-  cd $srcdir/..
-
-  # Fetch Sources
-  if [ -d "$_gitname" ] ; then
-    msg "Updating repository from server …"
-    cd "$_gitname"
-    # git reset required for the sed-gin-hack
-    git reset --hard && git pull
-
-    git checkout master
-  else
-    msg "Cloning from GIT server …"
-    git clone "$_gitroot" "$_gitname"
-  fi
-
-  cd "$srcdir"
-  rm -rf rstudio
-  git clone ../$_gitname
-  cd $_gitname
+  cd "$srcdir/rstudio"
+  git reset --hard
 
   # Gentoo fixes
   msg "Gentoo fixes"
@@ -63,7 +45,7 @@ prepare() {
     CMakeGlobals.txt src/cpp/desktop/CMakeLists.txt || die
 
   # get version information from git
-  cd "$srcdir/$_gitname"
+  cd "$srcdir/rstudio"
   _gittag=$(git describe --abbrev=0 --tags)
 
   gittag=${_gittag#v*}
@@ -75,7 +57,7 @@ prepare() {
   echo "${major}.${minor}.${patch}"
 
   msg "install-packages and Pandoc"
-  cd "$srcdir/$_gitname/dependencies/"
+  cd "$srcdir/rstudio/dependencies/"
   # Create empty dictionaries folder
   mkdir -p "dictionaries"
   touch "dictionaries/.aff"
@@ -86,8 +68,9 @@ prepare() {
   nodever=$(grep "NODE_VERSION=" common/install-npm-dependencies | cut -d '"' -f2)
 
   # Add mathjax & pandoc
-  rm -rf "pandoc/" && mkdir -p "pandoc/$pandocver"
+  rm -rf "mathjax-27"
   ln -s "/usr/share/mathjax2" "mathjax-27"
+  rm -rf "pandoc/" && mkdir -p "pandoc/$pandocver"
   ln -s "/usr/bin/pandoc" "pandoc/$pandocver/pandoc"
 
   cd "common/"
@@ -97,7 +80,7 @@ prepare() {
   mkdir -p node/${nodever}/{bin,include}
   ln -s /usr/bin/node node/${nodever}/bin
   ln -s /usr/include/node node/${nodever}/include
-  cd "${srcdir}/${_gitname}/src/gwt/panmirror/src/editor"
+  cd "${srcdir}/rstudio/src/gwt/panmirror/src/editor"
   yarn config set ignore-engines true
   yarn install
 
@@ -105,14 +88,14 @@ prepare() {
   sed -i -e "s/CPACK_PACKAGE_VERSION_MAJOR \"99\"/CPACK_PACKAGE_VERSION_MAJOR \"$major\"/g; \
              s/CPACK_PACKAGE_VERSION_MINOR \"9\"/CPACK_PACKAGE_VERSION_MINOR \"$minor\"/g; \
              s/CPACK_PACKAGE_VERSION_PATCH \"9\"/CPACK_PACKAGE_VERSION_PATCH \"$patch\"/g" \
-             "$srcdir/$_gitname/CMakeGlobals.txt"
+             "$srcdir/rstudio/CMakeGlobals.txt"
 
 }
 
 build(){
 
   msg "Starting cmake …"
-  cmake -B build -S $srcdir/$_gitname \
+  cmake -B build -S $srcdir/rstudio \
         -DRSTUDIO_TARGET=Server \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio-server \
