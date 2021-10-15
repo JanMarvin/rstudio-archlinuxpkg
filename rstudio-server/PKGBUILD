@@ -12,18 +12,20 @@ pkgdesc="rstudio git release pkgbuild by jmg"
 arch=('i686' 'x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
-depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'soci' 'postgresql-libs' 'pandoc')
+depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'soci' 'postgresql-libs')
 makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'jdk11-openjdk' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'nodejs' 'yarn')
 provides=('rstudio-server')
 conflicts=('rstudio-server')
 install=rstudio-server.install
 source=('rstudio::git+git://github.com/rstudio/rstudio.git'
-'rstudio-server.service'
+        'https://github.com/quarto-dev/quarto-cli/releases/download/v0.2.214/quarto-0.2.214-linux-amd64.tar.gz'
+        'rstudio-server.service'
         'rstudio-server.sysusers'
         'rstudio-server.tmpfiles'
         )
 
 md5sums=('SKIP'
+         '421f3b6394668820c652b4a99a79de72'
          '6c48d54eae2436b4021106d976ee6b2c'
          '0140e5b2fbc96a62ace589f121cab45f'
          '63b8c7f91d3a019260191e545bde328f')
@@ -56,15 +58,15 @@ prepare() {
   touch "dictionaries/.aff"
   touch "dictionaries/.dic"
 
-  # get pandocver and nodever install-{pandoc,npm-dependencies}
-  pandocver=$(grep "PANDOC_VERSION=" common/install-pandoc | cut -d '"' -f2)
-  nodever=$(grep "NODE_VERSION=" common/install-npm-dependencies | cut -d '"' -f2)
+  # get nodever 
+  nodever=$(grep "RSTUDIO_NODE_VERSION=" tools/rstudio-tools.sh | cut -d '"' -f2)
 
-  # Add mathjax & pandoc
+  # Add mathjax & quarto (this #!@*&% does not bother me at all)
   rm -rf "mathjax-27"
   ln -s "/usr/share/mathjax2" "mathjax-27"
-  rm -rf "pandoc/" && mkdir -p "pandoc/$pandocver"
-  ln -s "/usr/bin/pandoc" "pandoc/$pandocver/pandoc"
+
+  rm -rf "quarto" && mkdir -p "quarto"
+  cp -r $srcdir/{bin,share} "quarto/"
 
   cd "common/"
   ./install-packages
