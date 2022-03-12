@@ -16,21 +16,26 @@ makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'jdk11-openjdk' 'apache-ant' 'unzi
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
 install=rstudio.install
-quartover='0.9.16'
+quartover='0.9.80'
 source=('rstudio::git+git://github.com/rstudio/rstudio.git'
         "https://github.com/quarto-dev/quarto-cli/releases/download/v$quartover/quarto-$quartover-linux-amd64.tar.gz"
         'rstudio.desktop'
         'rstudio.png'
+        'node_path.diff'
         )
 md5sums=('SKIP'
-         'c4da31553974cbce3ec72d6f91a2b9e3'
+         '2e1d43e87a80822ef1d83041afbb2205'
          '07b7333a588e5629f86b7dc3fba79ecf'
-         '99ad4e9914f50ecec97e5cdb4001ad29')
+         '99ad4e9914f50ecec97e5cdb4001ad29'
+         'fee83f7711bcce0b9843e0abe30035fa')
 
 
 prepare() {
   cd "$srcdir/rstudio"
   git reset --hard
+  
+  msg "fix cmake install path"
+  git apply ../node_path.diff
 
   # make sure icons and mime stuff are with prefix
   sed -i \
@@ -92,7 +97,6 @@ build(){
 
   # https://github.com/rstudio/rstudio/issues/9463
   export PATH=/usr/lib/jvm/java-11-openjdk/bin/:${PATH}
-  rm -rf "${srcdir}/rstudio/src/node/desktop/out/*"
   
   cmake -B build -S $srcdir/rstudio \
         -DRSTUDIO_TARGET=Electron \
@@ -106,8 +110,6 @@ build(){
   msg "Starting make"
   cmake --build build -j16
   
-  cd "${srcdir}/rstudio/src/node/desktop/out/"
-  mv RStudio-linux-x64 rstudio-linux-x64
 }
 
 package() {
