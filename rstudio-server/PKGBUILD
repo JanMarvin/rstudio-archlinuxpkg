@@ -18,7 +18,7 @@ provides=('rstudio-server')
 conflicts=('rstudio-server')
 install=rstudio-server.install
 quartover='0.9.80'
-source=('rstudio::git+git://github.com/rstudio/rstudio.git'
+source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         "https://github.com/quarto-dev/quarto-cli/releases/download/v$quartover/quarto-$quartover-linux-amd64.tar.gz"
         'rstudio-server.service'
         'rstudio-server.sysusers'
