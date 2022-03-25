@@ -42,18 +42,6 @@ prepare() {
     -e "s:/usr:$pkgdir/usr:g" \
     CMakeGlobals.txt src/cpp/desktop/CMakeLists.txt || die
 
-  # get version information from git
-  cd "$srcdir/rstudio"
-  _gittag=$(git describe --tags $(git rev-list --tags --max-count=1))
-
-  gittag=${_gittag#v*}
-  major=${gittag%.*.*}
-  gittag=${gittag#$major.*}
-  minor=${gittag%.*}
-  patch=${gittag#*.}
-
-  echo "${major}.${minor}.${patch}"
-
   msg "install-packages and Pandoc"
   cd "$srcdir/rstudio/dependencies/"
   # Create empty dictionaries folder
@@ -85,12 +73,6 @@ prepare() {
   yarn config set ignore-engines true
   yarn install --arch=x64
 
-  # version information in rstudio
-  sed -i -e "s/CPACK_PACKAGE_VERSION_MAJOR \"99\"/CPACK_PACKAGE_VERSION_MAJOR \"$major\"/g; \
-             s/CPACK_PACKAGE_VERSION_MINOR \"9\"/CPACK_PACKAGE_VERSION_MINOR \"$minor\"/g; \
-             s/CPACK_PACKAGE_VERSION_PATCH \"9\"/CPACK_PACKAGE_VERSION_PATCH \"$patch\"/g" \
-             "$srcdir/rstudio/CMakeGlobals.txt"
-
 }
 
 build(){
@@ -105,6 +87,7 @@ build(){
         -DRSTUDIO_USE_SYSTEM_BOOST=yes \
         -DRSTUDIO_USE_SYSTEM_SOCI=yes \
         -DRSTUDIO_USE_SYSTEM_YAML_CPP=yes\
+        -DRSTUDIO_INSTALL_FREEDESKTOP=yes\
         ..
 
   msg "Starting make"
