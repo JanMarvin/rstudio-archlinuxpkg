@@ -17,7 +17,7 @@ makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'jdk11-openjdk' 'apache-ant' 'unzi
 provides=('rstudio-server')
 conflicts=('rstudio-server')
 install=rstudio-server.install
-quartover='0.9.80'
+quartover='0.9.230'
 source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         "https://github.com/quarto-dev/quarto-cli/releases/download/v$quartover/quarto-$quartover-linux-amd64.tar.gz"
         'rstudio-server.service'
@@ -26,7 +26,7 @@ source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         )
 
 md5sums=('SKIP'
-         '2e1d43e87a80822ef1d83041afbb2205'
+         '26cc76eca975728e6cf657102f7452b4'
          '6c48d54eae2436b4021106d976ee6b2c'
          '0140e5b2fbc96a62ace589f121cab45f'
          '63b8c7f91d3a019260191e545bde328f')
