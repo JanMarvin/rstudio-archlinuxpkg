@@ -21,21 +21,16 @@ source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         "https://github.com/quarto-dev/quarto-cli/releases/download/v$quartover/quarto-$quartover-linux-amd64.tar.gz"
         'rstudio.desktop'
         'rstudio.png'
-        'node_path.diff'
         )
 md5sums=('SKIP'
          '26cc76eca975728e6cf657102f7452b4'
          '07b7333a588e5629f86b7dc3fba79ecf'
-         '99ad4e9914f50ecec97e5cdb4001ad29'
-         'fee83f7711bcce0b9843e0abe30035fa')
+         '99ad4e9914f50ecec97e5cdb4001ad29')
 
 
 prepare() {
   cd "$srcdir/rstudio"
   git reset --hard
-  
-  msg "fix cmake install path"
-  git apply ../node_path.diff
 
   # make sure icons and mime stuff are with prefix
   sed -i \
