@@ -1,6 +1,6 @@
 post_install() {
   # make install complete
-  ln -s /usr/lib/rstudio/RStudio /usr/bin/rstudio
+  ln -s /usr/lib/rstudio/rstudio /usr/bin/rstudio
   #echo "install R packages"
   # R CMD INSTALL /usr/lib/rstudio/R/packages/yaml_*.tar.gz
   # R CMD INSTALL /usr/lib/rstudio/R/packages/digest_*.tar.gz
