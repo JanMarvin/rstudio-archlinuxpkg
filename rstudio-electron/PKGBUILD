@@ -17,14 +17,14 @@ provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
 install=rstudio.install
 # https://api.github.com/repos/quarto-dev/quarto-cli/releases
-quartover='0.9.464'
+quartover='0.9.508'
 source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         "https://github.com/quarto-dev/quarto-cli/releases/download/v$quartover/quarto-$quartover-linux-amd64.tar.gz"
         'rstudio.desktop'
         'rstudio.png'
         )
 md5sums=('SKIP'
-         'da58b0d32d0d018e10ed8dc148ee44c3'
+         'c80564cb2be23a340645e7ce2cb10bb6'
          '07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29')
 

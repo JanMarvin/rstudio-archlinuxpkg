@@ -18,7 +18,7 @@ provides=('rstudio-server')
 conflicts=('rstudio-server')
 install=rstudio-server.install
 # https://api.github.com/repos/quarto-dev/quarto-cli/releases
-quartover='0.9.464'
+quartover='0.9.508'
 source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         "https://github.com/quarto-dev/quarto-cli/releases/download/v$quartover/quarto-$quartover-linux-amd64.tar.gz"
         'rstudio-server.service'
@@ -27,7 +27,7 @@ source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         )
 
 md5sums=('SKIP'
-         'da58b0d32d0d018e10ed8dc148ee44c3'
+         'c80564cb2be23a340645e7ce2cb10bb6'
          '6c48d54eae2436b4021106d976ee6b2c'
          '0140e5b2fbc96a62ace589f121cab45f'
          '63b8c7f91d3a019260191e545bde328f')
