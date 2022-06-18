@@ -1,5 +1,5 @@
 # Maintainer: Jan Marvin Garbuszus <jan[dot]garbuszus[at]ruhr-uni-bochum[dot]de>
-pkgname=quarto-deb
+pkgname=quarto-bin
 _pkgname=quarto
 pkgver=0.9.594
 pkgrel=1
