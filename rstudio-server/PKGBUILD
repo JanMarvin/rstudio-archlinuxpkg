@@ -67,8 +67,13 @@ prepare() {
   rm -rf "mathjax-27"
   ln -s "/usr/share/mathjax2" "mathjax-27"
 
-  rm -rf "quarto" && mkdir -p "quarto"
-  cp -r $srcdir/"quarto-$quartover"/{bin,share} "quarto"
+  rm -rf "quarto"
+  if [[ $(which quarto) == "/usr/local/bin/quarto" ]] 
+  then
+    ln -s "/usr/local/lib/quarto" .
+  else
+    ln -s "/opt/quarto" .
+  fi
 
   cd "common/"
   ./install-packages

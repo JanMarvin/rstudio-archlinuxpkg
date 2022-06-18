@@ -7,24 +7,20 @@ verdate=$(date +"%Y%m%d")
 pkgname=rstudio-electron-git
 pkgver=$verdate
 pkgrel=1
-pkgdesc="rstudio git release pkgbuild by jmg"
-arch=('i686' 'x86_64')
+pkgdesc="rstudio-electron git release pkgbuild by jmg"
+arch=('x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
-depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'soci' 'postgresql-libs' 'sqlite' 'yaml-cpp')
+depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'postgresql-libs' 'quarto' 'soci' 'sqlite' 'yaml-cpp')
 makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'jdk11-openjdk' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'yarn')
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
 install=rstudio.install
-# https://api.github.com/repos/quarto-dev/quarto-cli/releases
-quartover='0.9.512'
 source=('rstudio::git+https://github.com/rstudio/rstudio.git'
-        "https://github.com/quarto-dev/quarto-cli/releases/download/v$quartover/quarto-$quartover-linux-amd64.tar.gz"
         'rstudio.desktop'
         'rstudio.png'
         )
 md5sums=('SKIP'
-         '69693a1bde153bcb783e0f149f898a6a'
          '07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29')
 
@@ -52,8 +48,13 @@ prepare() {
   rm -rf "mathjax-27" 
   ln -s "/usr/share/mathjax2" "mathjax-27"
 
-  rm -rf "quarto" && mkdir -p "quarto"
-  cp -r $srcdir/"quarto-$quartover"/{bin,share} "quarto"
+  rm -rf "quarto"
+  if [[ $(which quarto) == "/usr/local/bin/quarto" ]] 
+  then
+    ln -s "/usr/local/lib/quarto" .
+  else
+    ln -s "/opt/quarto" .
+  fi
 
   cd "common/"
   ./install-packages
