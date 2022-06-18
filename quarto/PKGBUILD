@@ -1,0 +1,30 @@
+# Maintainer: Jan Marvin Garbuszus <jan[dot]garbuszus[at]ruhr-uni-bochum[dot]de>
+pkgname=quarto-deb
+_pkgname=quarto
+pkgver=0.9.594
+pkgrel=1
+pkgdesc='quarto: an open-source scientific and technical publishing system built on Pandoc'
+url="https://quarto.org/"
+arch=('x86_64')
+license=('GPLv2')
+provides=('quarto')
+source=("https://github.com/quarto-dev/quarto-cli/releases/download/v$pkgver/quarto-$pkgver-linux-amd64.tar.gz")
+md5sums=('acf762ffbcc6b72b2b209f9ee2872be3')
+install=quarto.install
+options=(!strip)
+
+check() {
+
+  "${srcdir}/${_pkgname}-${pkgver}/bin/"quarto check || true
+
+}
+
+package() { 
+
+  install -d -m755 "${pkgdir}/usr/local/lib"
+
+  msg2 "Installing quarto ..."
+  cp -R "${srcdir}/${_pkgname}-${pkgver}" "${pkgdir}/usr/local/lib/quarto" 
+}
+
+# vim:set ts=2 sw=2 et:
