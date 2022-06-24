@@ -1,7 +1,7 @@
 # Maintainer: Jan Marvin Garbuszus <jan[dot]garbuszus[at]ruhr-uni-bochum[dot]de>
 pkgname=quarto-bin
 _pkgname=quarto
-pkgver=0.9.594
+pkgver=0.9.617
 pkgrel=1
 pkgdesc='quarto: an open-source scientific and technical publishing system built on Pandoc'
 url="https://quarto.org/"
@@ -9,13 +9,16 @@ arch=('x86_64')
 license=('GPLv2')
 provides=('quarto')
 source=("https://github.com/quarto-dev/quarto-cli/releases/download/v$pkgver/quarto-$pkgver-linux-amd64.tar.gz")
-md5sums=('acf762ffbcc6b72b2b209f9ee2872be3')
+md5sums=('82a831782ca27b92189fb97c69094e6c')
 install=quarto.install
 options=(!strip)
 
 check() {
 
   "${srcdir}/${_pkgname}-${pkgver}/bin/"quarto check || true
+
+  rm -rf "${srcdir}/${_pkgname}-${pkgver}/share/jupyter/__pycache__"
+  rm -rf "${srcdir}/${_pkgname}-${pkgver}/share/jupyter/poyo/__pycache__"
 
 }
 
