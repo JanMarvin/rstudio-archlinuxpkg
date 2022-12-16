@@ -73,13 +73,13 @@ prepare() {
 
   cd "common/"
   ./install-packages
+  ./install-panmirror
 
   # Nodejs
   rm -rf node
   mkdir -p node/${nodever}/{bin,include}
   ln -s /usr/bin/node node/${nodever}/bin
   ln -s /usr/include/node node/${nodever}/include
-  cd "${srcdir}/rstudio/src/gwt/panmirror/src/editor"
   yarn config set ignore-engines true
   yarn install
 
