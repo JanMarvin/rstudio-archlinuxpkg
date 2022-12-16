@@ -67,7 +67,6 @@ prepare() {
   ln -s /usr/bin/npm node/${nodever}/bin
   ln -s /usr/bin/npx node/${nodever}/bin
   ln -s /usr/include/node node/${nodever}/include
-  cd "${srcdir}/rstudio/src/gwt/panmirror/src/editor"
   yarn config set ignore-engines true
   yarn install --arch=x64
 
