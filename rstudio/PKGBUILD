@@ -12,7 +12,7 @@ arch=('x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
 depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'postgresql-libs' 'quarto' 'soci' 'sqlite' 'yaml-cpp')
-makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'jdk-openjdk' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'yarn' 'nodejs')
+makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'jdk11-openjdk' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'yarn' 'nodejs')
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
 install=rstudio.install
