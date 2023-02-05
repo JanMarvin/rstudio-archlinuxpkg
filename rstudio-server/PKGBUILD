@@ -12,8 +12,8 @@ pkgdesc="rstudio git release pkgbuild by jmg"
 arch=('x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
-depends=('r>=3.0.1' 'boost-libs>=1.50' 'clang' 'soci' 'postgresql-libs' 'quarto')
-makedepends=('git' 'cmake>=2.6' 'boost>=1.50' 'jdk11-openjdk' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'nodejs' 'yarn')
+depends=('r' 'boost-libs' 'clang' 'soci' 'postgresql-libs' 'quarto')
+makedepends=('git' 'cmake' 'boost' 'jdk-openjdk' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'nodejs' 'yarn')
 provides=('rstudio-server')
 conflicts=('rstudio-server')
 install=rstudio-server.install
