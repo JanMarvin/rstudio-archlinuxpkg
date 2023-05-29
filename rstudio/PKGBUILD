@@ -12,7 +12,7 @@ arch=('x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
 depends=('r' 'boost-libs' 'clang' 'postgresql-libs' 'quarto' 'soci' 'sqlite' 'yaml-cpp')
-makedepends=('git' 'cmake' 'boost' 'jdk-openjdk' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'yarn' 'nodejs')
+makedepends=('git' 'cmake' 'jdk-openjdk' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'yarn' 'nodejs')
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
 install=rstudio.install
@@ -61,6 +61,7 @@ prepare() {
   fi
 
   cd "common/"
+  ./install-boost
   ./install-packages
   ./install-panmirror
 
@@ -85,7 +86,6 @@ build(){
         -DRSTUDIO_TARGET=Electron \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio \
-        -DRSTUDIO_USE_SYSTEM_BOOST=yes \
         -DRSTUDIO_USE_SYSTEM_SOCI=yes \
         -DRSTUDIO_USE_SYSTEM_YAML_CPP=yes\
         -DRSTUDIO_INSTALL_FREEDESKTOP=yes
