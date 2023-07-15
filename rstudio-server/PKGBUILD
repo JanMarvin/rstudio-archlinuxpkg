@@ -12,7 +12,7 @@ pkgdesc="rstudio git release pkgbuild by jmg"
 arch=('x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
-depends=('r' 'boost-libs' 'clang' 'soci' 'postgresql-libs' 'quarto')
+depends=('r' 'clang' 'soci' 'postgresql-libs' 'quarto')
 makedepends=('git' 'cmake' 'boost' 'jdk-openjdk' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'nodejs' 'yarn')
 provides=('rstudio-server')
 conflicts=('rstudio-server')
@@ -21,33 +21,25 @@ source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         'rstudio-server.service'
         'rstudio-server.sysusers'
         'rstudio-server.tmpfiles'
+        'jdk19.diff'
         )
 
 md5sums=('SKIP'
          '6c48d54eae2436b4021106d976ee6b2c'
          '0140e5b2fbc96a62ace589f121cab45f'
-         '63b8c7f91d3a019260191e545bde328f')
+         '63b8c7f91d3a019260191e545bde328f'
+         'a6b8c47c4f26e1365b50976a09def2e7')
 
 prepare() {
   cd "$srcdir/rstudio"
   git reset --hard
 
+  git apply ../jdk19.diff
+
   # make sure icons and mime stuff are with prefix
   sed -i \
     -e "s:/usr:$pkgdir/usr:g" \
     CMakeGlobals.txt src/cpp/desktop/CMakeLists.txt || die
-
-  # get version information from git
-  cd "$srcdir/rstudio"
-  _gittag=$(git describe --abbrev=0 --tags)
-
-  gittag=${_gittag#v*}
-  major=${gittag%.*.*}
-  gittag=${gittag#$major.*}
-  minor=${gittag%.*}
-  patch=${gittag#*.}
-
-  echo "${major}.${minor}.${patch}"
 
   msg "install-packages and Pandoc"
   cd "$srcdir/rstudio/dependencies/"
@@ -72,6 +64,7 @@ prepare() {
   fi
 
   cd "common/"
+  ./install-boost
   ./install-packages
   ./install-panmirror
 
@@ -79,6 +72,8 @@ prepare() {
   rm -rf node
   mkdir -p node/${nodever}/{bin,include}
   ln -s /usr/bin/node node/${nodever}/bin
+  ln -s /usr/bin/npm node/${nodever}/bin
+  ln -s /usr/bin/npx node/${nodever}/bin
   ln -s /usr/include/node node/${nodever}/include
   yarn config set ignore-engines true
   yarn install
@@ -101,7 +96,6 @@ build(){
         -DRSTUDIO_TARGET=Server \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio-server \
-        -DRSTUDIO_USE_SYSTEM_BOOST=yes \
         -DRSTUDIO_USE_SYSTEM_SOCI=yes \
         -DRSTUDIO_USE_SYSTEM_YAML_CPP=yes\
         ..
