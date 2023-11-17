@@ -22,19 +22,22 @@ source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         'rstudio-server.sysusers'
         'rstudio-server.tmpfiles'
         'jdk19.diff'
+        'nan_npm.diff'
         )
 
 md5sums=('SKIP'
          '6c48d54eae2436b4021106d976ee6b2c'
          '0140e5b2fbc96a62ace589f121cab45f'
          '63b8c7f91d3a019260191e545bde328f'
-         'a6b8c47c4f26e1365b50976a09def2e7')
+         'a6b8c47c4f26e1365b50976a09def2e7'
+         '666ba26a50442591815fcdb4e62774e8')
 
 prepare() {
   cd "$srcdir/rstudio"
   git reset --hard
 
   git apply ../jdk19.diff
+  git apply ../nan_npm.diff
 
   # make sure icons and mime stuff are with prefix
   sed -i \
