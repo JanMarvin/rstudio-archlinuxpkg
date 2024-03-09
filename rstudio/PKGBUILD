@@ -31,7 +31,7 @@ prepare() {
   cd "$srcdir/rstudio"
   git reset --hard
 
-  git apply ../jdk19.diff
+  # git apply ../jdk19.diff
 
   # make sure icons and mime stuff are with prefix
   sed -i \
@@ -87,7 +87,6 @@ build(){
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio \
         -DRSTUDIO_USE_SYSTEM_SOCI=yes \
-        -DRSTUDIO_USE_SYSTEM_YAML_CPP=yes\
         -DRSTUDIO_INSTALL_FREEDESKTOP=yes
 
   msg "Starting make"
