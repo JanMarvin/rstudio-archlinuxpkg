@@ -21,19 +21,19 @@ source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         'rstudio-server.service'
         'rstudio-server.sysusers'
         'rstudio-server.tmpfiles'
-        'jdk19.diff')
+        'cmake.diff')
 md5sums=('SKIP'
          '6c48d54eae2436b4021106d976ee6b2c'
          '0140e5b2fbc96a62ace589f121cab45f'
          '63b8c7f91d3a019260191e545bde328f'
-         'a6b8c47c4f26e1365b50976a09def2e7')
+         'abb09217dd627d0b68f5838f0a2cb427')
 options=(!debug)
 
 prepare() {
   cd "$srcdir/rstudio"
   git reset --hard
 
-  git apply ../jdk19.diff
+  git apply ../cmake.diff
 
   # make sure icons and mime stuff are with prefix
   sed -i \
@@ -96,8 +96,7 @@ build(){
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio-server \
         -DRSTUDIO_USE_SYSTEM_SOCI=yes \
-        -DRSTUDIO_USE_SYSTEM_YAML_CPP=yes\
-        ..
+        -DRSTUDIO_USE_SYSTEM_YAML_CPP=yes
 
   msg "Starting make"
   cmake --build build -j16

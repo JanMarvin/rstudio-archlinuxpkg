@@ -19,19 +19,19 @@ install=rstudio.install
 source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         'rstudio.desktop'
         'rstudio.png'
-        'jdk19.diff'
+        'cmake.diff'
         )
 md5sums=('SKIP'
          '07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         'a6b8c47c4f26e1365b50976a09def2e7')
+         'abb09217dd627d0b68f5838f0a2cb427')
 options=(!debug)
 
 prepare() {
   cd "$srcdir/rstudio"
   git reset --hard
 
-  # git apply ../jdk19.diff
+  git apply ../cmake.diff
 
   # make sure icons and mime stuff are with prefix
   sed -i \
