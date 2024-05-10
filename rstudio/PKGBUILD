@@ -87,7 +87,8 @@ build(){
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio \
         -DRSTUDIO_USE_SYSTEM_SOCI=yes \
-        -DRSTUDIO_INSTALL_FREEDESKTOP=yes
+        -DRSTUDIO_INSTALL_FREEDESKTOP=yes \
+        -DRSTUDIO_USE_SYSTEM_YAML_CPP=yes
 
   msg "Starting make"
   cmake --build build -j16
