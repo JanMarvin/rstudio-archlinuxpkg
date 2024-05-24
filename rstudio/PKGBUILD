@@ -36,7 +36,7 @@ prepare() {
   # make sure icons and mime stuff are with prefix
   sed -i \
     -e "s:/usr:$pkgdir/usr:g" \
-    CMakeGlobals.txt src/cpp/desktop/CMakeLists.txt || die
+    cmake/globals.cmake src/cpp/desktop/CMakeLists.txt || die
 
   msg "install-packages and Pandoc"
   cd "$srcdir/rstudio/dependencies/"
