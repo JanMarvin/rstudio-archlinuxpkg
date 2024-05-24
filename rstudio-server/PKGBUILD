@@ -38,7 +38,7 @@ prepare() {
   # make sure icons and mime stuff are with prefix
   sed -i \
     -e "s:/usr:$pkgdir/usr:g" \
-    CMakeGlobals.txt src/cpp/desktop/CMakeLists.txt || die
+    cmake/globals.cmake src/cpp/desktop/CMakeLists.txt || die
 
   msg "install-packages and Pandoc"
   cd "$srcdir/rstudio/dependencies/"
@@ -75,13 +75,7 @@ prepare() {
   ln -s /usr/bin/npx node/${nodever}/bin
   ln -s /usr/include/node node/${nodever}/include
   yarn config set ignore-engines true
-  yarn install
-
-  # version information in rstudio
-  sed -i -e "s/CPACK_PACKAGE_VERSION_MAJOR \"99\"/CPACK_PACKAGE_VERSION_MAJOR \"$major\"/g; \
-             s/CPACK_PACKAGE_VERSION_MINOR \"9\"/CPACK_PACKAGE_VERSION_MINOR \"$minor\"/g; \
-             s/CPACK_PACKAGE_VERSION_PATCH \"9\"/CPACK_PACKAGE_VERSION_PATCH \"$patch\"/g" \
-             "$srcdir/rstudio/CMakeGlobals.txt"
+  yarn install --arch=x64
 
 }
 
