@@ -1,7 +1,7 @@
 # Maintainer: Jan Marvin Garbuszus <jan[dot]garbuszus[at]ruhr-uni-bochum[dot]de>
 pkgname=quarto-bin
 _pkgname=quarto
-pkgver=1.5.37
+pkgver=1.5.39
 pkgrel=1
 pkgdesc='quarto: an open-source scientific and technical publishing system built on Pandoc'
 url="https://quarto.org/"
@@ -9,7 +9,7 @@ arch=('x86_64')
 license=('GPLv2')
 provides=('quarto')
 source=("https://github.com/quarto-dev/quarto-cli/releases/download/v$pkgver/quarto-$pkgver-linux-amd64.tar.gz")
-md5sums=('53a884e120e786d861ff0297ff87b86f')
+md5sums=('07ceefda123c3a03026675270ebe3d23')
 install=quarto.install
 options=(!strip)
 
