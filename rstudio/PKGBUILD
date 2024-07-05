@@ -33,10 +33,9 @@ prepare() {
 
   git apply ../cmake.diff
 
-  # make sure icons and mime stuff are with prefix
   sed -i \
     -e "s:/usr:$pkgdir/usr:g" \
-    cmake/globals.cmake src/cpp/desktop/CMakeLists.txt || die
+    cmake/globals.cmake || die
 
   msg "install-packages and Pandoc"
   cd "$srcdir/rstudio/dependencies/"
