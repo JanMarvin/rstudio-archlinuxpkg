@@ -13,7 +13,7 @@ arch=('x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
 depends=('r' 'clang' 'soci' 'postgresql-libs' 'quarto')
-makedepends=('git' 'cmake' 'boost' 'jdk-openjdk' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'nodejs' 'yarn')
+makedepends=('git' 'cmake' 'boost' 'jdk-openjdk' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'nodejs' 'yarn' 'typescript')
 provides=('rstudio-server')
 conflicts=('rstudio-server')
 install=rstudio-server.install
@@ -38,7 +38,7 @@ prepare() {
   # make sure icons and mime stuff are with prefix
   sed -i \
     -e "s:/usr:$pkgdir/usr:g" \
-    cmake/globals.cmake src/cpp/desktop/CMakeLists.txt || die
+    cmake/globals.cmake || die
 
   msg "install-packages and Pandoc"
   cd "$srcdir/rstudio/dependencies/"
