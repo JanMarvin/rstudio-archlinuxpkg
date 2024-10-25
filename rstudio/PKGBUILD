@@ -20,11 +20,13 @@ source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         'rstudio.desktop'
         'rstudio.png'
         'cmake.diff'
+        'update_nan.diff'
         )
 md5sums=('SKIP'
          '07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         'ec56e6393fd8a44c66c03d275bdd9453')
+         'ec56e6393fd8a44c66c03d275bdd9453'
+         'd54a33f3fcf22b44ec19b69208a733eb')
 options=(!debug)
 
 prepare() {
@@ -32,6 +34,7 @@ prepare() {
   git reset --hard
 
   git apply ../cmake.diff
+  git apply ../update_nan.diff
 
   sed -i \
     -e "s:/usr:$pkgdir/usr:g" \
