@@ -22,13 +22,13 @@ source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         'rstudio-server.sysusers'
         'rstudio-server.tmpfiles'
         'cmake.diff'
-        'update_nan.diff')
+        )
 md5sums=('SKIP'
          '6c48d54eae2436b4021106d976ee6b2c'
          '0140e5b2fbc96a62ace589f121cab45f'
          '63b8c7f91d3a019260191e545bde328f'
          'ec56e6393fd8a44c66c03d275bdd9453'
-         'd54a33f3fcf22b44ec19b69208a733eb')
+         )
 options=(!debug)
 
 prepare() {
@@ -36,7 +36,6 @@ prepare() {
   git reset --hard
 
   git apply ../cmake.diff
-  git apply ../update_nan.diff
 
   # make sure icons and mime stuff are with prefix
   sed -i \
