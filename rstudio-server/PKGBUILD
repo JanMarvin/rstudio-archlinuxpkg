@@ -83,9 +83,7 @@ prepare() {
 
 build(){
 
-  # https://github.com/rstudio/rstudio/issues/9463
-  export PATH=/usr/lib/jvm/java-11-openjdk/bin/:${PATH}
-
+  # archlinux-java set java-23-openjdk
   msg "Starting cmake …"
   cmake -B build -S $srcdir/rstudio \
         -DRSTUDIO_TARGET=Server \
