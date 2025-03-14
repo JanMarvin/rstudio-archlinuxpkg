@@ -19,20 +19,16 @@ install=rstudio.install
 source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         'rstudio.desktop'
         'rstudio.png'
-        'cmake.diff'
         )
 md5sums=('SKIP'
          '07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         'ec56e6393fd8a44c66c03d275bdd9453'
          )
 options=(!debug)
 
 prepare() {
   cd "$srcdir/rstudio"
   git reset --hard
-
-  git apply ../cmake.diff
 
   sed -i \
     -e "s:/usr:$pkgdir/usr:g" \
@@ -62,7 +58,8 @@ prepare() {
 
   cd "common/"
   ./install-boost
-  ./install-packages
+  ./install-copilot-language-server
+  # ./install-packages
   ./install-panmirror
 
   # Nodejs: use any nodejs available (legacy or current does not seem to matter)
