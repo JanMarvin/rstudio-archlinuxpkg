@@ -11,7 +11,7 @@ pkgdesc="rstudio git release pkgbuild by jmg"
 arch=('x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
-depends=('r' 'boost-libs' 'clang' 'postgresql-libs' 'quarto' 'soci' 'sqlite' 'yaml-cpp')
+depends=('r' 'boost-libs' 'clang' 'postgresql-libs' 'quarto' 'soci' 'sqlite') # 'yaml-cpp'
 makedepends=('git' 'cmake' 'jdk-openjdk' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'yarn' 'nodejs' 'typescript')
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
@@ -59,7 +59,7 @@ prepare() {
   cd "common/"
   ./install-boost
   ./install-copilot-language-server
-  # ./install-packages
+  ./install-packages
   ./install-panmirror
 
   # Nodejs: use any nodejs available (legacy or current does not seem to matter)
@@ -83,7 +83,7 @@ build(){
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio \
         -DRSTUDIO_USE_SYSTEM_SOCI=yes \
         -DRSTUDIO_INSTALL_FREEDESKTOP=yes \
-        -DRSTUDIO_USE_SYSTEM_YAML_CPP=yes
+        -DRSTUDIO_USE_SYSTEM_YAML_CPP=no #yes fails
 
   msg "Starting make"
   cmake --build build -j16
