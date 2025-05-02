@@ -20,11 +20,13 @@ source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         'rstudio.desktop'
         'rstudio.png'
         'fix_arch_detection.diff'
+        'yaml_cmake.diff'
         )
 md5sums=('SKIP'
          '07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         '32ebb18c4c19a970cf55e3b303530bcc')
+         '32ebb18c4c19a970cf55e3b303530bcc'
+         '3ea50bedd4f294c82ed78eca19ba8ada')
 options=(!debug)
 
 prepare() {
@@ -32,6 +34,7 @@ prepare() {
   git reset --hard
 
   git apply ../fix_arch_detection.diff
+  git apply ../yaml_cmake.diff
 
   sed -i \
     -e "s:/usr:$pkgdir/usr:g" \
@@ -86,7 +89,7 @@ build(){
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio \
         -DRSTUDIO_USE_SYSTEM_SOCI=yes \
         -DRSTUDIO_INSTALL_FREEDESKTOP=yes \
-        -DRSTUDIO_USE_SYSTEM_YAML_CPP=no #yes fails
+        -DRSTUDIO_USE_SYSTEM_YAML_CPP=yes
 
   msg "Starting make"
   cmake --build build -j16

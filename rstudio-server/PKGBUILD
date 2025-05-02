@@ -22,12 +22,14 @@ source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         'rstudio-server.sysusers'
         'rstudio-server.tmpfiles'
         'fix_arch_detection.diff'
+        'yaml_cmake.diff'
         )
 md5sums=('SKIP'
          '6c48d54eae2436b4021106d976ee6b2c'
          '0140e5b2fbc96a62ace589f121cab45f'
          '63b8c7f91d3a019260191e545bde328f'
-         '32ebb18c4c19a970cf55e3b303530bcc')
+         '32ebb18c4c19a970cf55e3b303530bcc'
+         '3ea50bedd4f294c82ed78eca19ba8ada')
 options=(!debug)
 
 prepare() {
@@ -35,6 +37,7 @@ prepare() {
   git reset --hard
 
   git apply ../fix_arch_detection.diff
+  git apply ../yaml_cmake.diff
 
   # make sure icons and mime stuff are with prefix
   sed -i \
@@ -90,7 +93,7 @@ build(){
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/lib/rstudio-server \
         -DRSTUDIO_USE_SYSTEM_SOCI=yes \
-        -DRSTUDIO_USE_SYSTEM_YAML_CPP=no
+        -DRSTUDIO_USE_SYSTEM_YAML_CPP=yes
 
   msg "Starting make"
   cmake --build build -j16
