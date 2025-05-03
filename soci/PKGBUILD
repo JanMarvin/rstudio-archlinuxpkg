@@ -5,7 +5,7 @@
 
 pkgname=soci
 pkgver=4.0.3
-pkgrel=7
+pkgrel=8
 pkgdesc="The C++ Database Access Library"
 arch=('x86_64')
 url="http://soci.sf.net"
@@ -23,11 +23,15 @@ source=("http://downloads.sourceforge.net/project/soci/soci/$pkgname-$pkgver/$pk
 sha1sums=('e76d5862f90cfa8a0f9fe6ce477c3c7fa669af62')
 
 prepare() {
-    cmake -B build -S $srcdir/$pkgname-$pkgver \
-        -DSOCI_TESTS=OFF \
+
+    # fix socis cmake for cmake 4
+    sed -i 's/cmake_minimum_required(VERSION 2.8/cmake_minimum_required(VERSION 3.5/' "$srcdir/$pkgname-$pkgver/CMakeLists.txt"
+
+    cmake -B build -S "$srcdir/$pkgname-$pkgver" \
         -DCMAKE_INSTALL_PREFIX="/usr" \
         -DSOCI_SHARED=ON \
         -DSOCI_STATIC=ON \
+        -DSOCI_TESTS=OFF \
         -DCMAKE_CXX_STANDARD=11
 }
 
