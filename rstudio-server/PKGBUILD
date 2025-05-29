@@ -71,6 +71,7 @@ prepare() {
   ./install-packages
   ./install-panmirror
   ./install-copilot-language-server
+  ./install-gwt
 
   # Nodejs
   rm -rf node

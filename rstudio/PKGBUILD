@@ -67,6 +67,7 @@ prepare() {
   ./install-copilot-language-server
   ./install-packages
   ./install-panmirror
+  ./install-gwt
 
   # Nodejs: use any nodejs available (legacy or current does not seem to matter)
   rm -rf node
