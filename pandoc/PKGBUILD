@@ -1,7 +1,7 @@
 # Maintainer: Jan Marvin Garbuszus <jan[dot]garbuszus[at]ruhr-uni-bochum[dot]de>
 pkgname=pandoc-deb
 _pkgname=pandoc
-pkgver=3.8.2
+pkgver=3.8.2.1
 pkgrel=1
 pkgdesc="general markup converter
  Pandoc is a Haskell library for converting from one markup
@@ -20,7 +20,7 @@ arch=('x86_64')
 license=('GPLv2')
 provides=('pandoc')
 source=("https://github.com/jgm/pandoc/releases/download/${pkgver}/${_pkgname}-${pkgver}-${pkgrel}-amd64.deb")
-md5sums=('84c5b1b6aff5950ada5e885ba1bf2c0e')
+md5sums=('d31b5228e7c150c3a78c81c649673fc0')
 options=(!debug)
 
 build() {
