@@ -90,6 +90,9 @@ prepare() {
 
 build(){
 
+  export NODE_OPTIONS="--localstorage-file=$srcdir/rstudio-build-localstorage"
+  touch "$srcdir/rstudio-build-localstorage"
+
   # archlinux-java set java-23-openjdk
   msg "Starting cmake …"
   cmake -B build -S $srcdir/rstudio \
