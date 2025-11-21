@@ -41,6 +41,8 @@ prepare() {
     -e "s:/usr:$pkgdir/usr:g" \
     cmake/globals.cmake || die
 
+  sed -i '/add_definitions(-D_FORTIFY_SOURCE=2)/d' $srcdir/rstudio/src/cpp/CMakeLists.txt
+
   msg "install-packages and Pandoc"
   cd "$srcdir/rstudio/dependencies/"
   # Create empty dictionaries folder
@@ -85,6 +87,10 @@ prepare() {
 
   yarn config set ignore-engines true
   yarn install --arch=x64
+  
+  # fix packages out of sync
+  cd $srcdir/rstudio/src/node/desktop
+  npm install
 
 }
 
