@@ -1,0 +1,17 @@
+diff --git a/src/node/desktop/package.json b/src/node/desktop/package.json
+index dee8d6e921..8bff0f0f4e 100644
+--- a/src/node/desktop/package.json
++++ b/src/node/desktop/package.json
+@@ -18,9 +18,10 @@
+     "testwip": "electron-mocha -c -g WIP --config ./test/unit/mocharc.json",
+     "format": "npx prettier --write . --ignore-path .gitignore",
+     "postinstall": "node scripts/postinstall.js && npx electron-rebuild && ts-node scripts/generate.ts",
+-    "generate": "ts-node scripts/generate.ts",
++    "generate": "node --experimental-require-module -r ts-node/register scripts/generate.ts",
+     "install-fuses": "node scripts/install-fuses.mjs",
+-    "automation": "electron-forge start -- --no-sandbox --run-automation"
++    "automation": "electron-forge start -- --no-sandbox --run-automation",
++    "postinstall": "node --experimental-require-module scripts/postinstall.js"
+   },
+   "config": {
+     "forge": "./forge.config.js"
