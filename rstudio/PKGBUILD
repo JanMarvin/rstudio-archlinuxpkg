@@ -89,8 +89,17 @@ prepare() {
 
   # fix packages out of sync
   cd $srcdir/rstudio/src/node/desktop
-  npm install
+  
+  # workaround to finish building with node25
+  # mkdir -p src/types
+  # echo "export type RStudioUserState = any;" > src/types/user-state-schema.ts
+  mkdir -p src/types
+  npx --yes tsx scripts/generate.ts
+  if [ -f "src/types/user-state-schema.d.ts" ]; then
+    mv src/types/user-state-schema.d.ts src/types/user-state-schema.ts
+  fi
 
+  npm install
 }
 
 build(){
