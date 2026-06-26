@@ -4,8 +4,8 @@
 # Contributor: Mika Fischer <mika.fischer@zoopnet.de>
 
 pkgname=soci
-pkgver=4.1.2
-pkgrel=5
+pkgver=4.1.4
+pkgrel=1
 pkgdesc="The C++ Database Access Library"
 arch=('x86_64')
 url="http://soci.sf.net"
@@ -20,7 +20,7 @@ optdepends=('oracle-instantclient-basic: support for oracle databases'
             'libmysqlclient'
             'boost-libs')
 source=("http://downloads.sourceforge.net/project/soci/soci/$pkgname-$pkgver/$pkgname-$pkgver.zip")
-sha1sums=('d7e307cf9660193120934ef948625bdc2f0201f8')
+sha1sums=('9208d5965d1b9e4f22ab06ff731e05516a262c09')
 
 prepare() {
 
