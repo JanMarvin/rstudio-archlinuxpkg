@@ -20,11 +20,13 @@ source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         'rstudio.desktop'
         'rstudio.png'
         'yaml_cmake.diff'
+        'fix_soci_4-1-4.diff'
         )
 md5sums=('SKIP'
          '07b7333a588e5629f86b7dc3fba79ecf'
          '99ad4e9914f50ecec97e5cdb4001ad29'
-         '3ea50bedd4f294c82ed78eca19ba8ada')
+         '3ea50bedd4f294c82ed78eca19ba8ada'
+         'ad28c85803b2a536b5b7776648a65996')
 options=(!debug)
 
 prepare() {
@@ -32,6 +34,7 @@ prepare() {
   git reset --hard
 
   git apply ../yaml_cmake.diff
+  git apply ../fix_soci_4-1-4.diff
 
   sed -i \
     -e "s:/usr:$pkgdir/usr:g" \

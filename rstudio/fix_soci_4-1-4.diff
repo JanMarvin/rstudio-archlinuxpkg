@@ -1,0 +1,27 @@
+diff --git a/src/cpp/core/Database.cpp b/src/cpp/core/Database.cpp
+index 65082fb475..974110f596 100644
+--- a/src/cpp/core/Database.cpp
++++ b/src/cpp/core/Database.cpp
+@@ -40,6 +40,7 @@
+ # include <soci/postgresql/soci-postgresql.h>
+ #endif
+ 
++#include <sqlite3.h>
+ 
+ #include "config.h"
+ 
+@@ -1583,9 +1584,13 @@ void rollbackOpenSqliteTransaction(const boost::shared_ptr<Connection>& connecti
+    if (backend == nullptr || backend->conn_ == nullptr)
+       return;
+ 
++   // Cast the connection pointer directly to the standard SQLite handle.
++   // This guarantees compatibility whether sqlite_api::sqlite3 is a typedef or an incomplete struct.
++   auto* nativeConn = reinterpret_cast<sqlite3*>(backend->conn_);
++
+    // A nonzero result means the connection is in autocommit (no open
+    // transaction), which is the expected state - nothing to roll back.
+-   if (sqlite_api::sqlite3_get_autocommit(backend->conn_) != 0)
++   if (::sqlite3_get_autocommit(nativeConn) != 0)
+       return;
+ 
+    try
