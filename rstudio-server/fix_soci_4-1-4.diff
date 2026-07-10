@@ -1,0 +1,57 @@
+diff --git a/src/cpp/core/Database.cpp b/src/cpp/core/Database.cpp
+index 65082fb475..974110f596 100644
+--- a/src/cpp/core/Database.cpp
++++ b/src/cpp/core/Database.cpp
+@@ -40,6 +40,7 @@
+ # include <soci/postgresql/soci-postgresql.h>
+ #endif
+ 
++#include <sqlite3.h>
+ 
+ #include "config.h"
+ 
+@@ -1583,9 +1584,13 @@ void rollbackOpenSqliteTransaction(const boost::shared_ptr<Connection>& connecti
+    if (backend == nullptr || backend->conn_ == nullptr)
+       return;
+ 
++   // Cast the connection pointer directly to the standard SQLite handle.
++   // This guarantees compatibility whether sqlite_api::sqlite3 is a typedef or an incomplete struct.
++   auto* nativeConn = reinterpret_cast<sqlite3*>(backend->conn_);
++
+    // A nonzero result means the connection is in autocommit (no open
+    // transaction), which is the expected state - nothing to roll back.
+-   if (sqlite_api::sqlite3_get_autocommit(backend->conn_) != 0)
++   if (::sqlite3_get_autocommit(nativeConn) != 0)
+       return;
+ 
+    try
+diff --git a/src/cpp/server/DBActiveSessionStorage.cpp b/src/cpp/server/DBActiveSessionStorage.cpp
+index ffb95d67ce..6c6e19b918 100644
+--- a/src/cpp/server/DBActiveSessionStorage.cpp
++++ b/src/cpp/server/DBActiveSessionStorage.cpp
+@@ -303,8 +303,11 @@ Error DBActiveSessionStorage::readProperty(const std::string& name, std::string*
+    if (++iter != rowset.end())
+    {
+       int count = 1;
+-      while (iter++ != rowset.end())
++      while (iter != rowset.end())
++      {
+          ++count;
++         ++iter;
++      }
+       return Error("Too many sessions returned", errc::TooManySessionsReturned, "Expected only one session returned, found " + std::to_string(count) + "[ session:" + sessionId_ + " ]", ERROR_LOCATION);
+    }
+
+@@ -346,8 +349,11 @@ Error DBActiveSessionStorage::readProperties(const std::set<std::string>& names,
+       if (++iter != rowset.end())
+       {
+          int count = 1;
+-         while (iter++ != rowset.end())
++         while (iter != rowset.end())
++         {
+             ++count;
++            ++iter;
++         }
+          return Error("Too many sessions returned", errc::TooManySessionsReturned, "Expected only one session returned, found " + std::to_string(count) + "[ session:" + sessionId_ + " ]", ERROR_LOCATION);
+       }
+    }

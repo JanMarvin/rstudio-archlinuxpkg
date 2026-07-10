@@ -22,12 +22,14 @@ source=('rstudio::git+https://github.com/rstudio/rstudio.git'
         'rstudio-server.sysusers'
         'rstudio-server.tmpfiles'
         'yaml_cmake.diff'
+        'fix_soci_4-1-4.diff'
         )
 md5sums=('SKIP'
          '6c48d54eae2436b4021106d976ee6b2c'
          '0140e5b2fbc96a62ace589f121cab45f'
          '63b8c7f91d3a019260191e545bde328f'
-         '3ea50bedd4f294c82ed78eca19ba8ada')
+         '3ea50bedd4f294c82ed78eca19ba8ada'
+         '6a330ac4f592f7a2e3c5ada8269be40d')
 options=(!debug)
 
 prepare() {
@@ -35,6 +37,7 @@ prepare() {
   git reset --hard
 
   git apply ../yaml_cmake.diff
+  git apply ../fix_soci_4-1-4.diff
 
   # make sure icons and mime stuff are with prefix
   sed -i \
