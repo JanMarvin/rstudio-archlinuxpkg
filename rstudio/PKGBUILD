@@ -12,7 +12,7 @@ arch=('x86_64')
 url="http://www.rstudio.org/"
 license=('AGPL3')
 depends=('r' 'boost-libs' 'clang' 'postgresql-libs' 'quarto' 'soci' 'sqlite') # 'yaml-cpp'
-makedepends=('git' 'cmake' 'jdk-openjdk' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax2' 'rrdtool' 'yarn' 'nodejs' 'typescript') # currently: nodejs-lts-jod
+makedepends=('git' 'cmake' 'jdk-openjdk' 'apache-ant' 'unzip' 'openssl' 'pam' 'mathjax' 'rrdtool' 'yarn' 'nodejs' 'typescript') # currently: nodejs-lts-jod
 provides=('rstudio-desktop')
 conflicts=('rstudio-desktop')
 install=rstudio.install
@@ -34,7 +34,7 @@ prepare() {
   git reset --hard
 
   git apply ../yaml_cmake.diff
-  git apply ../fix_soci_4-1-4.diff
+  # git apply ../fix_soci_4-1-4.diff
 
   sed -i \
     -e "s:/usr:$pkgdir/usr:g" \
@@ -55,8 +55,8 @@ prepare() {
   nodever_installed="${nodever_installed}-installed"
 
   # Add mathjax & quarto (this #!@*&% does not bother me at all)
-  rm -rf "mathjax-27" 
-  ln -s "/usr/share/mathjax2" "mathjax-27"
+  rm -rf "mathjax-4" 
+  ln -s "/usr/share/mathjax" "mathjax-4"
 
   rm -rf "quarto"
   if [[ $(which quarto) == "/usr/local/bin/quarto" ]] 
