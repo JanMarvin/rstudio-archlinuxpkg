@@ -58,6 +58,10 @@ prepare() {
   rm -rf "mathjax-4" 
   ln -s "/usr/share/mathjax" "mathjax-4"
 
+  # Something requests mathjax-27?
+  rm -rf "mathjax-27" 
+  ln -s "/usr/share/mathjax" "mathjax-27"
+
   rm -rf "quarto"
   if [[ $(which quarto) == "/usr/local/bin/quarto" ]] 
   then
