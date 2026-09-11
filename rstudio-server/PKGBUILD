@@ -37,7 +37,7 @@ prepare() {
   git reset --hard
 
   git apply ../yaml_cmake.diff
-  git apply ../fix_soci_4-1-4.diff
+  # git apply ../fix_soci_4-1-4.diff
 
   # make sure icons and mime stuff are with prefix
   sed -i \
@@ -59,8 +59,12 @@ prepare() {
   nodever_installed="${nodever_installed}-installed"
 
   # Add mathjax & quarto (this #!@*&% does not bother me at all)
+  rm -rf "mathjax-4"
+  ln -s "/usr/share/mathjax" "mathjax-4"
+
+  # Something requests mathjax-27?
   rm -rf "mathjax-27"
-  ln -s "/usr/share/mathjax2" "mathjax-27"
+  ln -s "/usr/share/mathjax" "mathjax-27"
 
   rm -rf "quarto"
   if [[ $(which quarto) == "/usr/local/bin/quarto" ]] 
