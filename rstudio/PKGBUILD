@@ -76,6 +76,7 @@ prepare() {
   ./install-packages
   ./install-panmirror
   ./install-gwt
+  ./install-rig
 
   # Nodejs: use any nodejs available (legacy or current does not seem to matter)
   rm -rf node
