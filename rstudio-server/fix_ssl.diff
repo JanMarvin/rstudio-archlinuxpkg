@@ -1,0 +1,15 @@
+diff --git a/src/cpp/core/http/Ssl.cpp b/src/cpp/core/http/Ssl.cpp
+index 26ef33f35d..4f6b047c65 100644
+--- a/src/cpp/core/http/Ssl.cpp
++++ b/src/cpp/core/http/Ssl.cpp
+@@ -188,8 +188,8 @@ Error loadCertificate(const std::string& certStr, X509** pCert)
+ bool isSelfSigned(X509* pCert)
+ {
+    // get the issuer and subject names
+-   X509_NAME* pIssuer = X509_get_issuer_name(pCert);
+-   X509_NAME* pSubject = X509_get_subject_name(pCert);
++   const X509_NAME* pIssuer = X509_get_issuer_name(pCert);
++   const X509_NAME* pSubject = X509_get_subject_name(pCert);
+
+    // compare the issuer and subject names
+    return X509_NAME_cmp(pIssuer, pSubject) == 0;
